@@ -1,9 +1,11 @@
 {% extends "campaign/base.html" %}
 
+{% load markdown_deux_tags %}
+
 {% block content %}
   <h1 class="title">{{ campaign.name }}</h1>
   <h2 class="subtitle">{{ campaign.tagline }}</h2>
-  <p>{{ campaign.description }}</p>
+  <p>{{ campaign.description | markdown }}</p>
 
   <hr />
 
