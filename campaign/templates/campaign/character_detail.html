@@ -1,5 +1,7 @@
 {% extends "campaign/base.html" %}
 
+{% load markdown_deux_tags %}
+
 {% block content %}
   <section class="hero is-primary">
     <div class="hero-body">
@@ -51,9 +53,9 @@
   </section>
 
   <section class="section">
-    <div>
+    <div class="content">
       <h4 class="subtitle">Description</h4>
-      <p>{{ character.description }}</p>
+      <p>{{ character.description | markdown}}</p>
     </div>
   </section>
 {% endblock %}

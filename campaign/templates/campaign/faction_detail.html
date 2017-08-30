@@ -1,8 +1,12 @@
 {% extends "campaign/base.html" %}
 
+{% load markdown_deux_tags %}
+
 {% block content %}
   <h1 class="title">{{ faction.name }}</h1>
   <h2 class="subtitle">{{ faction.tagline }}</h2>
   <br/>
-  <p>{{ faction.description }}</p>
+  <div class="content">
+    <p>{{ faction.description | markdown }}</p>
+  </div>
 {% endblock %}

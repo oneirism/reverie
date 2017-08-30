@@ -1,8 +1,12 @@
 {% extends "campaign/base.html" %}
 
+{% load markdown_deux_tags %}
+
 {% block content %}
   <h1 class="title">{{ location.name }}</h1>
   <h2 class="subtitle">{{ location.tagline }}</h2>
   <br />
-  <p>{{ location.description }}</p>
+  <div class="content">
+    <p>{{ location.description | markdown}}</p>
+  </div>
 {% endblock %}
