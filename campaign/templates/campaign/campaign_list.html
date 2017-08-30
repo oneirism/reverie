@@ -1,0 +1,19 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+  <h1 class="title">Campaigns</h1>
+
+  {% if campaign_list %}
+    <div>
+      {% for campaign in campaign_list %}
+        <div>
+          <h4><a href="{% url 'campaign:campaign_detail' campaign.slug %}">
+              {{ campaign.name }}
+          </a></h4>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No campaigns are available.</p>
+  {% endif %}
+{% endblock %}

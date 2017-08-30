@@ -1,0 +1,33 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+  <h1 class="title">{{campaign.name}}</h1>
+  <h2 class="subtitle">Characters</h2>
+
+  {% if character_list %}
+    <div>
+      <table class="table is-bordered is-fullwidth is-striped">
+        <tr>
+          <th>Name</th>
+          <th>Faction</th>
+          <th>Location</th>
+        </tr>
+        {% for character in character_list %}
+          <tr>
+            <td><a href="{% url 'campaign:character_detail' campaign.slug character.slug %}">{{character.name}}</a></td>
+
+            <td>
+              {% if character.faction %}
+              <a href="{% url 'campaign:faction_detail' campaign.slug character.faction.slug %}">{{ character.faction}}</a>
+              {% endif %}
+            </td>
+
+            <td><a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">{{ character.location }}</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <p>No characters are available.</p>
+  {% endif %}
+{% endblock %}
