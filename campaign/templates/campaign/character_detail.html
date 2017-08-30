@@ -1,0 +1,59 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          {{ character.name }}
+        </h1>
+        {% if character.tagline %}
+          <h2 class="subtitle">
+            <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
+              {{ character.location }}
+            </a>
+            | {{ character.tagline }}
+          </h2>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-bottom: 0px">
+    <div class="columns">
+      {% if character.faction %}
+        <div class="column is-one-quarter tags has-addons">
+          <span class="tag">Faction</span>
+          <a href="{% url 'campaign:faction_detail' campaign.slug character.faction.slug %}">
+            <span class="tag is-primary">{{ character.faction }}</span>
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="column is-one-quarter tags has-addons">
+        <span class="tag">Location</span>
+        <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
+          <span class="tag is-primary">{{ character.location }}</span>
+        </a>
+      </div>
+
+      {% if character.previous_locations.all %}
+        <div class="column is-one-quarter tags has-addons">
+          <span class="tag">Previous Locations</span>
+          {% for location in character.previous_locations.all %}
+            <a href="{% url 'campaign:location_detail' campaign.slug location.slug %}">
+              <span class="tag is-primary">{{ location }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section">
+    <div>
+      <h4 class="subtitle">Description</h4>
+      <p>{{ character.description }}</p>
+    </div>
+  </section>
+{% endblock %}

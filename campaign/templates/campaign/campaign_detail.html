@@ -1,0 +1,13 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+  <h1 class="title">{{ campaign.name }}</h1>
+  <h2 class="subtitle">{{ campaign.tagline }}</h2>
+  <p>{{ campaign.description }}</p>
+
+  <hr />
+
+  <h4><a href="{% url 'campaign:character_list' campaign.slug %}">Characters</a></h4>
+  <h4><a href="{% url 'campaign:faction_list' campaign.slug %}">Factions</a></h4>
+  <h4><a href="{% url 'campaign:location_list' campaign.slug %}">Locations</a></h4>
+{% endblock %}
