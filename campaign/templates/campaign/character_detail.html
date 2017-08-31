@@ -1,6 +1,7 @@
 {% extends "campaign/base.html" %}
 
 {% load markdown_deux_tags %}
+{% load markdown_extras %}
 
 {% block content %}
   <section class="hero is-primary">
@@ -9,14 +10,12 @@
         <h1 class="title">
           {{ character.name }}
         </h1>
-        {% if character.tagline %}
-          <h2 class="subtitle">
-            <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
-              {{ character.location }}
-            </a>
-            | {{ character.tagline }}
-          </h2>
-        {% endif %}
+        <h2 class="subtitle">
+          <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
+            {{ character.location }}
+          </a>
+          | {{ character.tagline }}
+        </h2>
       </div>
     </div>
   </section>
@@ -55,7 +54,7 @@
   <section class="section">
     <div class="content">
       <h4 class="subtitle">Description</h4>
-      <p>{{ character.description | markdown}}</p>
+      <p>{{ character.description | cross_reference | markdown}}</p>
     </div>
   </section>
 {% endblock %}

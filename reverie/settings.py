@@ -124,3 +124,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# django-markdown-deux
+MARKDOWN_DEUX_STYLES = {
+    'default': {
+        # Workaround for relative link bug #254.
+        # (https://github.com/trentm/python-markdown2/issues/254)
+        'safe_mode': False,
+    }
+}

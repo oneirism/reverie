@@ -1,12 +1,21 @@
 {% extends "campaign/base.html" %}
 
 {% load markdown_deux_tags %}
+{% load markdown_extras %}
 
 {% block content %}
-  <h1 class="title">{{ location.name }}</h1>
-  <h2 class="subtitle">{{ location.tagline }}</h2>
-  <br />
-  <div class="content">
-    <p>{{ location.description | markdown}}</p>
-  </div>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ location.name }}</h1>
+        <h2 class="subtitle">{{ location.tagline }}</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="content">
+      <p>{{ location.description | cross_reference | markdown}}</p>
+    </div>
+  </section>
 {% endblock %}
