@@ -1,15 +1,39 @@
 {% extends "campaign/base.html" %}
 
 {% load markdown_deux_tags %}
+{% load markdown_extras %}
 
 {% block content %}
-  <h1 class="title">{{ campaign.name }}</h1>
-  <h2 class="subtitle">{{ campaign.tagline }}</h2>
-  <p>{{ campaign.description | markdown }}</p>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ campaign.name }}</h1>
+        <h2 class="subtitle">{{ campaign.tagline }}</h2>
+      </div>
+    </div>
+  </section>
 
-  <hr />
+  <section class="section">
+    <p>{{ campaign.description | cross_reference | markdown }}</p>
 
-  <h4><a href="{% url 'campaign:character_list' campaign.slug %}">Characters</a></h4>
-  <h4><a href="{% url 'campaign:faction_list' campaign.slug %}">Factions</a></h4>
-  <h4><a href="{% url 'campaign:location_list' campaign.slug %}">Locations</a></h4>
+    <hr />
+
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title"><a href="{% url 'campaign:character_list' campaign.slug %}">Characters</a></p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title"><a href="{% url 'campaign:faction_list' campaign.slug %}">Factions</a></p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title"><a href="{% url 'campaign:location_list' campaign.slug %}">Locations</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}

@@ -1,21 +1,29 @@
 {% extends "campaign/base.html" %}
 
 {% block content %}
-  <h1 class="title">{{campaign.name}}</h1>
-  <h2 class="subtitle">Factions</h2>
-
-  {% if faction_list %}
-    <div>
-      {% for faction in faction_list %}
-        <div>
-          <h4>
-            <a href="{% url 'campaign:faction_detail' campaign.slug faction.slug %}">{{faction.name}}</a>
-          </h4>
-
-        </div>
-      {% endfor %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{campaign.name}}</h1>
+        <h2 class="subtitle">Factions</h2>
+      </div>
     </div>
-  {% else %}
-    <p>No factions are available.</p>
-  {% endif %}
+  </section>
+
+  <section class="section">
+    {% if faction_list %}
+      <div>
+        {% for faction in faction_list %}
+          <div>
+            <h4>
+              <a href="{% url 'campaign:faction_detail' campaign.slug faction.slug %}">{{faction.name}}</a>
+            </h4>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No factions are available.</p>
+    {% endif %}
+  </section>
 {% endblock %}
