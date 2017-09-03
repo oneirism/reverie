@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'markdown_deux',
     'pagedown',
+    'webpack_loader',
 ]
 
 # Use nose to run all tests
@@ -123,6 +124,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets')
+]
 STATIC_URL = '/static/'
 
 # django-markdown-deux
@@ -131,5 +135,13 @@ MARKDOWN_DEUX_STYLES = {
         # Workaround for relative link bug #254.
         # (https://github.com/trentm/python-markdown2/issues/254)
         'safe_mode': False,
+    }
+}
+
+# django-webpack-loader
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATUS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }

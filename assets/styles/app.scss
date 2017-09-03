@@ -1,0 +1,19 @@
+/* Palette available at http://paletton.com/palette.php?uid=72O0u0knkj4cHtKieobszdQA48M */
+
+$primary: #195C59;
+$light: #57908E;
+$dark: #002A28;
+
+$info: #327572;
+$info-invert: invert($info);
+
+$success: #257B21;
+$success-invert: invert($success);
+
+$warning: #985A29;
+$warning-invert: invert($warning);
+
+$danger: #97292C;
+$danger-invert: invert($danger);
+
+@import "~bulma";

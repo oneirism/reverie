@@ -1,10 +1,12 @@
+{% load render_bundle from webpack_loader %}
+
 <html>
   <head>
     {% block title %}
       <title>Reverie</title>
     {% endblock %}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+    {% render_bundle 'main' %}
 
     {% block extracss %}
     {% endblock %}
