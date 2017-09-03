@@ -11,7 +11,8 @@ install:
   - "pip install -r requirements.txt"
 script:
   - "prospector"
-  - "npm run build"
-  - "npm test"
+  - "yarn install"
+  - "yarn run build"
+  - "yarn test"
 after_success:
   - "coveralls"
