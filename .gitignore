@@ -1,6 +1,10 @@
 db.sqlite3
-htmlcov/
-**/migrations/*
+webpack-stats.json
+
+**/assets/bundles/
+**/htmlcov/
+**/migrations/
+**/node_modules/
 
 ### gitignore/Vim.gitignore ###
 
