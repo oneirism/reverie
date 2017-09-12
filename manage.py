@@ -9,7 +9,7 @@ if __name__ == "__main__":
     if is_testing:
         import coverage
         cov = coverage.coverage(
-            source=['campaign'],
+            source=['campaign', 'reverie'],
             omit=['*/tests/*']
         )
         cov.erase()

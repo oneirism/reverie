@@ -25,22 +25,32 @@ SECRET_KEY = '11@o_6o8u9d%%4c29hi7v@3ty(g^-7s63^dtipj*qu1sl#mvk$' # noqa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Reverie
     'campaign',
+
+    # Third-Party
+    'markdown_deux',
+    'pagedown',
+    'registration',
+    'webpack_loader',
+    'widget_tweaks',
+
+    # Django Contrib
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'markdown_deux',
-    'pagedown',
-    'webpack_loader',
 ]
 
 # Use nose to run all tests
@@ -61,7 +71,7 @@ ROOT_URLCONF = 'reverie.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +147,9 @@ MARKDOWN_DEUX_STYLES = {
         'safe_mode': False,
     }
 }
+
+# django-registration-redux
+ACCOUNT_ACTIVATION_DAYS = 7
 
 # django-webpack-loader
 WEBPACK_LOADER = {

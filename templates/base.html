@@ -1,0 +1,80 @@
+{% load render_bundle from webpack_loader %}
+
+<html>
+  <head>
+    {# Allow children to override the page title #}
+    <title>
+      {% block title %}Reverie{% endblock %}
+    </title>
+
+    {% block meta %}
+      {# Provided specifically for django-registration-redux's token leaking protection #}
+    {% endblock %}
+
+    {# Webpack bundle #}
+    {% render_bundle 'main' %}
+
+    {# TODO: Merge FontAwesome into the webpack config. #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    {% block extracss %}
+      {# Allow children to add their own CSS dependencies. Consider deprecating. #}
+    {% endblock %}
+  </head>
+
+  <body>
+    {# Navigation #}
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          Reverie
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          {# If the user is logged in #}
+          {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link" href="/">
+                {{user.username}}
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'auth_logout' %}">
+                  Logout
+                </a>
+              </div>
+            </div>
+          {# Anonymous user #}
+          {% else %}
+            <a class="navbar-item" href="{% url 'auth_login' %}">
+              Login
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {# Wrap child content in the necessary containers #}
+    <section class="section">
+      <div class="container">
+        <section class="container">
+          {% block content %}
+
+          {% endblock %}
+        </section>
+      </div>
+    </section>
+
+    {# Footer #}
+    <footer class="footer is-paddingless">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Reverie</strong> by <a href="https://github.com/devenney">@devenney</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -15,8 +15,21 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.core.urlresolvers import reverse_lazy
+
+from registration.backends.default.views import RegistrationView
+from registration.forms import RegistrationFormUniqueEmail
 
 urlpatterns = [
     url(r'^', include('campaign.urls', namespace='campaign')),
+    url(r'^accounts/register/$', RegistrationView.as_view(form_class=RegistrationFormUniqueEmail),
+        name='registration_register'),
+    url(r'^accounts/password/reset/$',
+        auth_views.password_reset, {
+            'post_reset_redirect': reverse_lazy('auth_password_reset_done'),
+            'html_email_template_name': 'registration/password_reset_email.html'
+        }, name='auth_password_reset'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', admin.site.urls),
 ]
