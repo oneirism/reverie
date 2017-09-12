@@ -1,19 +1,23 @@
 /* Palette available at http://paletton.com/palette.php?uid=72O0u0knkj4cHtKieobszdQA48M */
+@import "~bulma/sass/utilities/initial-variables";
 
 $primary: #195C59;
 $light: #57908E;
 $dark: #002A28;
 
+$black: #000000;
+$white: #FFFFFF;
+
 $info: #327572;
 $info-invert: invert($info);
 
 $success: #257B21;
-$success-invert: invert($success);
+$success-invert: $white;
 
-$warning: #985A29;
-$warning-invert: invert($warning);
+$warning: #EED202;
+$warning-invert: $dark;
 
 $danger: #97292C;
-$danger-invert: invert($danger);
+$danger-invert: $white;
 
 @import "~bulma";
