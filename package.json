@@ -17,6 +17,7 @@
   "scripts": {
     "build": "webpack -p",
     "start": "./manage.py runserver",
-    "test": "./manage.py test"
+    "test": "./manage.py test",
+    "watch": "webpack -p -w"
   }
 }
