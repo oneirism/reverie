@@ -10,6 +10,7 @@
     {% block meta %}
       {# Provided specifically for django-registration-redux's token leaking protection #}
     {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {# Webpack bundle #}
     {% render_bundle 'main' %}
