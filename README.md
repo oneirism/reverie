@@ -29,6 +29,21 @@
 
 ### Building and Running
 
+    # Install Python Dependencies
+    pip install -r requirements.txt
+
+    # Install Node Dependencies
     yarn install
+
+    # Webpack Build
     yarn run build
+
+    # Database Migrations
+    python manage.py makemigrations campaign
+    python manage.py migrate
+
+    # Start Development Server
     yarn start
+
+    # Create Administrative User
+    python manage.py createsuperuser
