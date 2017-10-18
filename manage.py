@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reverie.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reverie.settings.dev")
 
     is_testing = 'test' in sys.argv
     if is_testing:
@@ -14,6 +14,7 @@ if __name__ == "__main__":
         )
         cov.erase()
         cov.start()
+
     try:
         from django.core.management import execute_from_command_line
 
