@@ -46,7 +46,7 @@
             </div>
           {# Anonymous user #}
           {% else %}
-            <a class="navbar-item" href="{% url 'auth_login' %}">
+          <a class="navbar-item" href="{% url 'auth_login' %}?next={{request.path}}">
               Login
             </a>
           {% endif %}
