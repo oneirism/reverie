@@ -8,6 +8,8 @@ from reverie.settings.base import *
 
 ## Configuration
 
+ALLOWED_HOSTS = ['*']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
