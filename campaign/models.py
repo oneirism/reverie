@@ -23,7 +23,7 @@ class Faction(models.Model):
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
 
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=5000)
 
     def __str__(self) -> str:
         return self.name
@@ -37,7 +37,7 @@ class Location(models.Model):
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
 
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=5000)
 
     def __str__(self) -> str:
         return self.name
@@ -51,7 +51,7 @@ class Character(models.Model):
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
 
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=5000)
     faction = models.ForeignKey(Faction, blank=True, null=True)
     location = models.ForeignKey(Location, related_name='location')
     previous_locations = models.ManyToManyField(Location, related_name='previous_locations', blank=True)
