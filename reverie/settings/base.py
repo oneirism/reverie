@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'campaign',
 
     # Third-Party
+    'django_tables2',
     'markdown_deux',
     'pagedown',
     'registration',

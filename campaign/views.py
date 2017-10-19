@@ -1,7 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django_tables2 import RequestConfig
 
 from .models import Campaign, Character, Faction, Location
+from .tables import CharacterTable
 
 
 def campaign_list(request: HttpRequest) -> HttpResponse:
@@ -23,7 +25,10 @@ def character_list(request: HttpRequest, camp_slug:str) -> HttpResponse:
 
     character_list = Character.objects.filter(campaign=campaign).order_by('name')
 
-    context = {'campaign': campaign, 'character_list':character_list}
+    character_table = CharacterTable(character_list)
+    RequestConfig(request).configure(character_table)
+
+    context = {'campaign': campaign, 'character_list':character_list, 'table': character_table}
     return render(request, 'campaign/character_list.html', context)
 
 
