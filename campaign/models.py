@@ -39,6 +39,7 @@ class Location(models.Model):
 
     description = models.CharField(max_length=5000)
 
+
     def __str__(self) -> str:
         return self.name
 
@@ -50,6 +51,14 @@ class Character(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
+    status = models.CharField(
+        max_length=10,
+        choices=(
+            ('Alive', 'Alive'),
+            ('Deceased', 'Deceased'),
+            ('Unknown', 'Unknown'),
+        )
+    )
 
     description = models.CharField(max_length=5000)
     faction = models.ForeignKey(Faction, blank=True, null=True)

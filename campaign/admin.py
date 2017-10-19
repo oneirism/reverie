@@ -34,9 +34,9 @@ class CharacterAdmin(admin.ModelAdmin):
     model = Character
     form = CharacterForm
 
-    list_display = ['name', 'tagline', 'location', 'faction']
+    list_display = ['name', 'status', 'tagline', 'location', 'faction']
     list_display_links = ['name']
-    list_filter = ['faction', 'location']
+    list_filter = ['faction', 'location', 'status']
     search_fields = ['name']
 
 
