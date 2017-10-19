@@ -1,5 +1,3 @@
-from django.urls import reverse
-from django.utils.html import format_html
 import django_tables2 as tables
 from django_tables2 import A
 
@@ -17,4 +15,3 @@ class CharacterTable(tables.Table):
     faction = tables.LinkColumn("campaign:faction_detail", args=[A('campaign.slug'), A('faction.slug')])
     location = tables.LinkColumn("campaign:location_detail", args=[A('campaign.slug'), A('location.slug')])
     name = tables.LinkColumn("campaign:character_detail", args=[A('campaign.slug'), A('slug')])
-
