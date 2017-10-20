@@ -1,4 +1,6 @@
-from campaign.models import Campaign, Character, Faction, Location
+import datetime
+
+from campaign.models import Campaign, Character, Faction, Location, LogEntry
 
 
 def create_campaign(campaign_name: str) -> Campaign:
@@ -44,3 +46,14 @@ def create_location(campaign: Campaign, location_name: str) -> Location:
     }
 
     return Location.objects.create(**location)
+
+
+def create_log_entry(campaign: Campaign, date: datetime, log_entry_title: str) -> LogEntry:
+    log_entry = {
+        'campaign': campaign,
+        'date': date,
+        'title': log_entry_title,
+        'description': 'Test description'
+    }
+
+    return LogEntry.objects.create(**log_entry)

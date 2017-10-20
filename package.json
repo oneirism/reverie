@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "bulma": "^0.5.1",
+    "bulma-timeline": "^0.0.3",
     "css-loader": "^0.28.7",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",

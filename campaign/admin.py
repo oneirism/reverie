@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from pagedown.widgets import AdminPagedownWidget
 
-from .models import Campaign, Character, Faction, Location
+from .models import Campaign, Character, Faction, Location, LogEntry
 
 
 class CampaignForm(forms.ModelForm):
@@ -74,7 +74,24 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class LogEntryForm(forms.ModelForm):
+    description = forms.CharField(widget=AdminPagedownWidget())
+
+    class Meta:
+        model = LogEntry
+        fields = '__all__'
+
+
+class LogEntryAdmin(admin.ModelAdmin):
+    model = LogEntry
+    form = LogEntryForm
+
+    list_display = ['title', 'date']
+    search_fields = ['title']
+
+
 admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(Character, CharacterAdmin)
 admin.site.register(Faction, FactionAdmin)
 admin.site.register(Location, LocationAdmin)
+admin.site.register(LogEntry, LogEntryAdmin)
