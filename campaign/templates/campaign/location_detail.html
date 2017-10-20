@@ -13,8 +13,38 @@
     </div>
   </section>
 
+  {% if location.superlocation %}
+    <section class="section">
+      <span class="tag">Superlocation</span>
+      <a href="{% url 'campaign:location_detail' campaign.slug location.superlocation.slug %}">
+        <span class="tag is-primary">{{ location.superlocation }}</span>
+      </a>
+    <section>
+  {% endif %}
+
   <section class="section">
+    {% if location.sublocations.all %}
+      <div class="content">
+        <h4 class="subtitle">Sublocations</h1>
+        <ul>
+          {% for loc in location.sublocations.all|dictsort:"name" %}
+            <li>
+              <a href="{% url 'campaign:location_detail' campaign.slug loc.slug %}">{{ loc }}</a>
+              {% if loc.tagline %}
+                - {{ loc.tagline }}
+              {% endif %}
+              {% if loc.sublocations.all %}
+                ({{ loc.sublocations.count }}
+                sublocation{%if loc.sublocations.count > 1%}s{%endif%})
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
     <div class="content">
+      <h4>Description</h4>
       <p>{{ location.description | cross_reference | markdown}}</p>
     </div>
   </section>

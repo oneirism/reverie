@@ -34,6 +34,8 @@ class Location(models.Model):
 
     campaign = models.ForeignKey(Campaign)
 
+    superlocation = models.ForeignKey("self", blank=True, null=True, related_name="sublocations")
+
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
 
