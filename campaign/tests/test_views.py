@@ -142,3 +142,37 @@ class CampaignViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, location_name)
 
+    def test_no_log_entries(self):
+        campaign_name = 'Test campaign'
+        campaign = create_campaign(campaign_name)
+
+        response = self.client.get(reverse('campaign:log_entry_list', args=[campaign.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'No log entries are available.')
+        self.assertQuerysetEqual(response.context['log_entry_list'], [])
+
+    def test_log_entries(self):
+        campaign_name = 'Test campaign'
+        log_entry_date = datetime.date.today()
+        log_entry_title = 'Test Title'
+
+        campaign = create_campaign(campaign_name)
+        log_entry = create_log_entry(campaign, log_entry_date, log_entry_title)
+
+        response = self.client.get(reverse('campaign:log_entry_list', args=[campaign.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, log_entry_title)
+        self.assertQuerysetEqual(response.context['log_entry_list'], [string_repr(log_entry)])
+
+    def test_log_entry_detail(self):
+        campaign_name = 'Test campaign'
+        log_entry_date = datetime.date.today()
+        log_entry_title = 'Test Title'
+
+        campaign = create_campaign(campaign_name)
+        log_entry = create_log_entry(campaign, log_entry_date, log_entry_title)
+
+        response = self.client.get(reverse('campaign:log_entry_detail', args=[campaign.slug, log_entry.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, log_entry_title)
+

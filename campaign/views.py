@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django_tables2 import RequestConfig
 
-from .models import Campaign, Character, Faction, Location
+from .models import Campaign, Character, Faction, Location, LogEntry
 from .tables import CharacterTable
 
 
@@ -75,3 +75,21 @@ def location_detail(request: HttpRequest, camp_slug: str, loc_slug: str) -> Http
 
     context = {'campaign': campaign, 'location': location}
     return render(request, 'campaign/location_detail.html', context)
+
+
+def log_entry_list(request: HttpRequest, camp_slug: str) -> HttpResponse:
+    campaign = get_object_or_404(Campaign, slug=camp_slug)
+
+    log_entry_list = LogEntry.objects.filter(campaign=campaign).order_by('date')
+
+    context = {'campaign': campaign, 'log_entry_list': log_entry_list}
+    return render(request, 'campaign/log_entry_list.html', context)
+
+
+def log_entry_detail(request: HttpRequest, camp_slug: str, log_slug: str) -> HttpResponse:
+    campaign = get_object_or_404(Campaign, slug=camp_slug)
+
+    log = get_object_or_404(LogEntry, slug=log_slug)
+
+    context = {'campaign': campaign, 'log': log}
+    return render(request, 'campaign/log_entry_detail.html', context)

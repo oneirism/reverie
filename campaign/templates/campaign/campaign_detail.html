@@ -21,6 +21,11 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <div>
+          <p class="title"><a href="{% url 'campaign:log_entry_list' campaign.slug %}">Campaign Log</a></p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
           <p class="title"><a href="{% url 'campaign:character_list' campaign.slug %}">Characters</a></p>
         </div>
       </div>

@@ -20,4 +20,6 @@ urlpatterns = [
         url(r'^campaign/(?P<camp_slug>[\w-]+)/locations/$', views.location_list, name='location_list'),
         # example: /locations/5/
         url(r'^campaign/(?P<camp_slug>[\w-]+)/locations/(?P<loc_slug>[\w-]+)$', views.location_detail, name='location_detail'),
+        url(r'^campaign/(?P<camp_slug>[\w-]+)/log/$', views.log_entry_list, name='log_entry_list'),
+        url(r'^campaign/(?P<camp_slug>[\w-]+)/log/(?P<log_slug>[\w-]+)$', views.log_entry_detail, name='log_entry_detail'),
 ]
