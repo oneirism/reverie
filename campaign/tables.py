@@ -12,6 +12,6 @@ class CharacterTable(tables.Table):
         }
         exclude = {'campaign', 'description', 'id', 'is_pc', 'slug', 'tagline'}
 
-    faction = tables.LinkColumn("campaign:faction_detail", args=[A('campaign.slug'), A('faction.slug')])
-    location = tables.LinkColumn("campaign:location_detail", args=[A('campaign.slug'), A('location.slug')])
+    faction = tables.LinkColumn("campaign:faction_detail", args=[A('campaign.slug'), A('faction.slug')], order_by='faction.name')
+    location = tables.LinkColumn("campaign:location_detail", args=[A('campaign.slug'), A('location.slug')], order_by='location.name')
     name = tables.LinkColumn("campaign:character_detail", args=[A('campaign.slug'), A('slug')])
