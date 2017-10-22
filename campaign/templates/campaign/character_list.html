@@ -21,9 +21,17 @@
   </section>
 
   <section class="section">
-    {% if character_list %}
-      {% render_table table %}
-    {% else %}
+    {% if pc_list %}
+      <h4 class="subtitle">Player Characters</h4>
+      {% render_table pc_table %}
+    {% endif %}
+
+    {% if npc_list %}
+      <h4 class="subtitle">Non-Player Characters</h4>
+      {% render_table npc_table %}
+    {% endif %}
+
+    {% if not pc_list and not npc_list %}
       <p>No characters are available.</p>
     {% endif %}
   </section>
