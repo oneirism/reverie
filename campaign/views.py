@@ -23,12 +23,16 @@ def campaign_detail(request: HttpRequest, camp_slug: str) -> HttpResponse:
 def character_list(request: HttpRequest, camp_slug:str) -> HttpResponse:
     campaign = get_object_or_404(Campaign, slug=camp_slug)
 
-    character_list = Character.objects.filter(campaign=campaign).order_by('name')
+    npc_list = Character.objects.filter(campaign=campaign).filter(is_pc=False).order_by('name')
+    npc_table = CharacterTable(npc_list)
 
-    character_table = CharacterTable(character_list)
-    RequestConfig(request).configure(character_table)
+    pc_list = Character.objects.filter(campaign=campaign).filter(is_pc=True).order_by('name')
+    pc_table = CharacterTable(pc_list)
 
-    context = {'campaign': campaign, 'character_list':character_list, 'table': character_table}
+    RequestConfig(request).configure(npc_table)
+    RequestConfig(request).configure(pc_table)
+
+    context = {'campaign': campaign, 'npc_list':npc_list, 'npc_table': npc_table, 'pc_list':pc_list, 'pc_table': pc_table}
     return render(request, 'campaign/character_list.html', context)
 
 

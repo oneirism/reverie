@@ -73,7 +73,8 @@ class CampaignViewTests(TestCase):
         response = self.client.get(reverse('campaign:character_list', args=[campaign.slug]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'No characters are available.')
-        self.assertQuerysetEqual(response.context['character_list'], [])
+        self.assertQuerysetEqual(response.context['npc_list'], [])
+        self.assertQuerysetEqual(response.context['pc_list'], [])
 
     def test_characters(self):
         campaign_name = 'Test campaign'
@@ -90,7 +91,8 @@ class CampaignViewTests(TestCase):
         response = self.client.get(reverse('campaign:character_list', args=[campaign.slug]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, character_name)
-        self.assertQuerysetEqual(response.context['character_list'], [string_repr(character)])
+        self.assertQuerysetEqual(response.context['npc_list'], [string_repr(character)])
+        self.assertQuerysetEqual(response.context['pc_list'], [])
 
     def test_character_detail(self):
         campaign_name = 'Test campaign'

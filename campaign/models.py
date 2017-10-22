@@ -19,6 +19,7 @@ class Character(models.Model):
     slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
 
     campaign = models.ForeignKey('Campaign')
+    is_pc = models.BooleanField(default=False)
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
