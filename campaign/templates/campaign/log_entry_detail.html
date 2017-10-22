@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+  {{ log.title }} - {{ campaign.name }}
+{% endblock %}
+
 {% load markdown_deux_tags %}
 {% load markdown_extras %}
 

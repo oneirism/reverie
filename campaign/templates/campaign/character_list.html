@@ -2,6 +2,10 @@
 {% load render_table from django_tables2 %}
 {% load static %}
 
+{% block title %}
+  Characters - {{ campaign.name }}
+{% endblock %}
+
 {% block extracss %}
   <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
 {% endblock %}
@@ -10,7 +14,7 @@
   <section class="hero is-primary">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">{{campaign.name}}</h1>
+        <h1 class="title">{{ campaign.name }}</h1>
         <h2 class="subtitle">Characters</h2>
       </div>
     </div>

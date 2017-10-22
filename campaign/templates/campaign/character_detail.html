@@ -3,6 +3,10 @@
 {% load markdown_deux_tags %}
 {% load markdown_extras %}
 
+{% block title %}
+  {{ character.name }} - {{ campaign.name }}
+{% endblock %}
+
 {% block content %}
   <section class="hero is-primary">
     <div class="hero-body">
