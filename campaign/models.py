@@ -9,7 +9,7 @@ class Campaign(models.Model):
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
 
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=5000)
 
     def __str__(self) -> str:
         return self.name
