@@ -7,7 +7,7 @@ class Campaign(models.Model):
     slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
 
     name = models.CharField(max_length=50, unique=True)
-    tagline = models.CharField(max_length=50)
+    tagline = models.CharField(max_length=100)
 
     description = models.CharField(max_length=5000)
 
@@ -22,7 +22,7 @@ class Character(models.Model):
     is_pc = models.BooleanField(default=False)
 
     name = models.CharField(max_length=50, unique=True)
-    tagline = models.CharField(max_length=50)
+    tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
     status = models.CharField(
         max_length=10,
@@ -48,7 +48,7 @@ class Faction(models.Model):
     campaign = models.ForeignKey('Campaign')
 
     name = models.CharField(max_length=50, unique=True)
-    tagline = models.CharField(max_length=50)
+    tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
@@ -65,7 +65,7 @@ class Location(models.Model):
     superlocation = models.ForeignKey("self", blank=True, null=True, related_name="sublocations")
 
     name = models.CharField(max_length=50, unique=True)
-    tagline = models.CharField(max_length=50)
+    tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
