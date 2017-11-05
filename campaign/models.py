@@ -49,6 +49,7 @@ class Faction(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
+    image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
 
@@ -65,6 +66,7 @@ class Location(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
+    image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
 
