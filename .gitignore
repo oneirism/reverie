@@ -3,6 +3,7 @@ webpack-stats.json
 
 **/assets/bundles/
 **/htmlcov/
+**/media/
 **/migrations/
 **/node_modules/
 
