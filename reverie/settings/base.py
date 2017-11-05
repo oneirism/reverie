@@ -21,6 +21,9 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
+MEDIA_ROOT='./media'
+MEDIA_URL='/media/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

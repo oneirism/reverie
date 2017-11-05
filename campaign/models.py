@@ -23,6 +23,7 @@ class Character(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=50)
+    image = models.ImageField(blank=True, null=True)
     status = models.CharField(
         max_length=10,
         choices=(
