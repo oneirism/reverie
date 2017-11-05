@@ -8,19 +8,32 @@
 {% endblock %}
 
 {% block content %}
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">{{ faction.name }}</h1>
-        <h2 class="subtitle">{{ faction.tagline }}</h2>
+  <div class="card article">
+    <div class="card-content">
+      <div class="media">
+        {% if faction.image %}
+          <a href="{{ faction.image.url }}">
+            <div class="media-center">
+              <img src="{{ faction.image.url }}"
+                   class="faction-image" alt="{{ faction.name }}"
+              >
+            </div>
+          </a>
+        {% endif %}
+
+        <div class="media-content has-text-centered">
+          <h1 class="title">
+            {{ faction.name }}
+          </h1>
+          <h2 class="subtitle is-4">
+            {{ faction.tagline }}
+          </h2>
+
+          <div class="content">
+            {{ faction.description | cross_reference | markdown }}
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-
-  <section class="section">
-    <div class="content">
-      <h4 class="subtitle">Description</h4>
-      <p>{{ faction.description | cross_reference | markdown }}</p>
-    </div>
-  </section>
+  </div>
 {% endblock %}
