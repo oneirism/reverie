@@ -43,6 +43,8 @@
 
     <hr />
 
-    <p>{{ campaign.description | cross_reference | markdown }}</p>
+    <div class="content">
+      {{ campaign.description | cross_reference | markdown }}
+    </div>
   </section>
 {% endblock %}
