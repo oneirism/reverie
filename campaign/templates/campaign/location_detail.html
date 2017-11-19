@@ -8,48 +8,64 @@
 {% endblock %}
 
 {% block content %}
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">{{ location.name }}</h1>
-        <h2 class="subtitle">{{ location.tagline }}</h2>
+  <div class="card article">
+    <div class="card-content">
+      <div class="media">
+        {% if location.image %}
+          <a href="{{ location.image.url }}">
+            <div class="media-center">
+              <img src="{{ location.image.url }}"
+                   class="avatar-image" alt="{{ character.name }}"
+              >
+            </div>
+          </a>
+        {% endif %}
+
+        <div class="media-content has-text-centered">
+          <h1 class="title">
+            {{ location.name }}
+          </h1>
+
+          <h2 class="subtitle is-4">
+            {{ location.tagline }}
+          </h2>
+        </div>
       </div>
-    </div>
-  </section>
 
-  {% if location.superlocation %}
-    <section class="section">
-      <span class="tag">Superlocation</span>
-      <a href="{% url 'campaign:location_detail' campaign.slug location.superlocation.slug %}">
-        <span class="tag is-primary">{{ location.superlocation }}</span>
-      </a>
-    <section>
-  {% endif %}
+      {% if location.superlocation %}
+        <div class="content">
+          <section class="section">
+            <a href="{% url 'campaign:location_detail' campaign.slug location.superlocation.slug %}">
+              <span class="tag is-primary">{{ location.superlocation }}</span>
+            </a>
+          </section>
+        </div>
+      {% endif %}
 
-  <section class="section">
-    {% if location.sublocations.all %}
+      {% if location.sublocations.all %}
+        <div class="content">
+          <h4 class="subtitle">Sublocations</h1>
+          <ul>
+            {% for loc in location.sublocations.all|dictsort:"name" %}
+              <li>
+                <a href="{% url 'campaign:location_detail' campaign.slug loc.slug %}">{{ loc }}</a>
+                {% if loc.tagline %}
+                  - {{ loc.tagline }}
+                {% endif %}
+                {% if loc.sublocations.all %}
+                  ({{ loc.sublocations.count }}
+                  sublocation{%if loc.sublocations.count > 1%}s{%endif%})
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
       <div class="content">
-        <h4 class="subtitle">Sublocations</h1>
-        <ul>
-          {% for loc in location.sublocations.all|dictsort:"name" %}
-            <li>
-              <a href="{% url 'campaign:location_detail' campaign.slug loc.slug %}">{{ loc }}</a>
-              {% if loc.tagline %}
-                - {{ loc.tagline }}
-              {% endif %}
-              {% if loc.sublocations.all %}
-                ({{ loc.sublocations.count }}
-                sublocation{%if loc.sublocations.count > 1%}s{%endif%})
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
+        <h4>Description</h4>
+        {{ location.description | cross_reference | markdown}}
       </div>
-    {% endif %}
-
-    <div class="content">
-      <h4>Description</h4>
-      <p>{{ location.description | cross_reference | markdown}}</p>
     </div>
-  </section>
+  </div>
 {% endblock %}

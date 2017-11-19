@@ -18,10 +18,6 @@
   </section>
 
   <section class="section">
-    <p>{{ campaign.description | cross_reference | markdown }}</p>
-
-    <hr />
-
     <nav class="level">
       <div class="level-item has-text-centered">
         <div>
@@ -43,6 +39,12 @@
           <p class="title"><a href="{% url 'campaign:location_list' campaign.slug %}">Locations</a></p>
         </div>
       </div>
+    </nav>
+
+    <hr />
+
+    <div class="content">
+      {{ campaign.description | cross_reference | markdown }}
     </div>
   </section>
 {% endblock %}
