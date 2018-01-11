@@ -11,7 +11,7 @@ class Campaign(models.Model):
 
     description = models.CharField(max_length=5000)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.slug:
             self.slug = get_unique_slug(self, 'name', 'slug')
         super().save()
@@ -43,7 +43,7 @@ class Character(models.Model):
     location = models.ForeignKey('Location', models.CASCADE, related_name='location')
     previous_locations = models.ManyToManyField('Location', related_name='previous_locations', blank=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.slug:
             self.slug = get_unique_slug(self, 'name', 'slug')
         super().save()
@@ -63,7 +63,7 @@ class Faction(models.Model):
 
     description = models.CharField(max_length=5000)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.slug:
             self.slug = get_unique_slug(self, 'name', 'slug')
         super().save()
@@ -85,7 +85,7 @@ class Location(models.Model):
 
     description = models.CharField(max_length=5000)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.slug:
             self.slug = get_unique_slug(self, 'name', 'slug')
         super().save()
@@ -107,7 +107,7 @@ class LogEntry(models.Model):
 
     description = models.CharField(max_length=5000)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.slug:
             self.slug = get_unique_slug(self, 'title', 'slug')
         super().save()
