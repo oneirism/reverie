@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
-
+app_name = 'campaign'
 urlpatterns = [
         # example: /
         url(r'^$', views.campaign_list, name='campaign_list'),
