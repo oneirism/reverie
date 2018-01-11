@@ -1,27 +1,32 @@
 from django.db import models
 
-from autoslug import AutoSlugField
+from .utils import get_unique_slug
 
 
 class Campaign(models.Model):
-    slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
+    slug = models.SlugField(max_length=140, unique=True)
 
     name = models.CharField(max_length=50, unique=True)
     tagline = models.CharField(max_length=100)
 
     description = models.CharField(max_length=5000)
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.slug:
+            self.slug = get_unique_slug(self, 'name', 'slug')
+        super().save()
+
     def __str__(self) -> str:
         return self.name
 
 
 class Character(models.Model):
-    slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
+    slug = models.SlugField(max_length=140, unique=True)
 
-    campaign = models.ForeignKey('Campaign')
+    campaign = models.ForeignKey('Campaign', models.CASCADE)
     is_pc = models.BooleanField(default=False)
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
     status = models.CharField(
@@ -34,42 +39,56 @@ class Character(models.Model):
     )
 
     description = models.CharField(max_length=5000)
-    faction = models.ForeignKey('Faction', blank=True, null=True)
-    location = models.ForeignKey('Location', related_name='location')
+    faction = models.ForeignKey('Faction', models.CASCADE, blank=True, null=True)
+    location = models.ForeignKey('Location', models.CASCADE, related_name='location')
     previous_locations = models.ManyToManyField('Location', related_name='previous_locations', blank=True)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.slug:
+            self.slug = get_unique_slug(self, 'name', 'slug')
+        super().save()
 
     def __str__(self) -> str:
         return self.name
 
 
 class Faction(models.Model):
-    slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
+    slug = models.SlugField(max_length=140, unique=True)
 
-    campaign = models.ForeignKey('Campaign')
+    campaign = models.ForeignKey('Campaign', models.CASCADE)
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.slug:
+            self.slug = get_unique_slug(self, 'name', 'slug')
+        super().save()
 
     def __str__(self) -> str:
         return self.name
 
 
 class Location(models.Model):
-    slug = AutoSlugField(null=True, default=None, unique=True, populate_from='name')
+    slug = models.SlugField(max_length=140, unique=True)
 
-    campaign = models.ForeignKey('Campaign')
+    campaign = models.ForeignKey('Campaign', models.CASCADE)
 
-    superlocation = models.ForeignKey("self", blank=True, null=True, related_name="sublocations")
+    superlocation = models.ForeignKey("self", models.CASCADE, blank=True, null=True, related_name="sublocations")
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     tagline = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
 
     description = models.CharField(max_length=5000)
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.slug:
+            self.slug = get_unique_slug(self, 'name', 'slug')
+        super().save()
 
     def __str__(self) -> str:
         return self.name
@@ -79,14 +98,19 @@ class LogEntry(models.Model):
     class Meta:
         verbose_name_plural = "Log Entries"
 
-    slug = AutoSlugField(null=True, default=None, unique=True, populate_from='title')
+    slug = models.SlugField(max_length=140, unique=True)
 
-    campaign = models.ForeignKey('Campaign')
+    campaign = models.ForeignKey('Campaign', models.CASCADE)
 
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=50)
     date = models.DateField()
 
     description = models.CharField(max_length=5000)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.slug:
+            self.slug = get_unique_slug(self, 'title', 'slug')
+        super().save()
 
     def __str__(self) -> str:
         return self.title
