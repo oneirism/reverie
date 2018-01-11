@@ -7,6 +7,11 @@
       {% block title %}Reverie{% endblock %}
     </title>
 
+    {# Google Analytics #}
+    {% if GOOGLE_ANALYTICS_KEY %}
+      {% include "ga.html" %}
+    {% endif %}
+
     {% block meta %}
       {# Provided specifically for django-registration-redux's token leaking protection #}
     {% endblock %}

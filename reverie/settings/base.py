@@ -35,7 +35,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+               'reverie.context_processors.google_analytics',
+           ],
         },
     },
 ]
@@ -96,6 +97,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Context Processors
 
 ## Third-Party Module Configuration
 
