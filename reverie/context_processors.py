@@ -1,9 +1,8 @@
 from django.conf import settings
+from django.http import HttpRequest
 
-def google_analytics(request):
-    ga_key = getattr(settings, 'GOOGLE_ANALYTICS_KEY')
-    if not settings.DEBUG and ga_key:
-        return {
-            'GOOGLE_ANALYTICS_KEY': ga_key,
-        }
-    return {}
+# Google Analytics Context
+def google_analytics(request: HttpRequest) -> dict:
+    return {
+        'GOOGLE_ANALYTICS_KEY': getattr(settings, 'GOOGLE_ANALYTICS_KEY', None),
+    }
