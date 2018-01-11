@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "webpack -p",
+    "ci": "prospector && yarn test",
     "start": "./manage.py runserver 0:8000",
     "test": "./manage.py test",
     "watch": "webpack -p -w"
