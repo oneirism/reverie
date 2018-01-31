@@ -14,11 +14,14 @@ RUN apk add --update \
 
 # Setup User
 RUN adduser -D -s /bin/bash reverie
+
+# Copy source
+COPY . /home/reverie
+RUN chown -R reverie: /home/reverie
+
+# Become the user
 USER reverie
 ENV PATH="/home/reverie/.local/bin:${PATH}"
-
-# Copy Source
-COPY --chown=reverie . /home/reverie
 WORKDIR /home/reverie
 
 # Install Dependencies
