@@ -7,6 +7,7 @@ RUN apk update
 RUN apk add --update \
   build-base \
   jpeg-dev \
+  postgresql-dev \
   python3 \
   python3-dev \
   yarn \
