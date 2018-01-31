@@ -10,4 +10,4 @@ django-widget-tweaks==1.4.1
 gunicorn==19.6.0
 pillow==5.0.0
 prospector==0.12.7
-psycopg==2.7.3.1
+psycopg==2.7.3.2
