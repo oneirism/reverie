@@ -1,4 +1,4 @@
-coverage==4.4.2
+coverage==4.5
 Django==2.0.2
 django-markdown-deux==1.0.5
 django-nose==1.4.5
