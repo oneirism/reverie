@@ -9,6 +9,6 @@ django-tables2==1.21.1
 django-webpack-loader==0.6.0
 django-widget-tweaks==1.4.2
 gunicorn==19.7.1
-pillow==5.0.0
+pillow==5.1.0
 prospector==0.12.7
 psycopg2==2.7.4
