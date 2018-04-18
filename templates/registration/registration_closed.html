@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+  Reverie - {% trans "Registration closed" %}
+{% endblock %}
+
+{% block content %}
+  <div class="notification is-danger">
+    {% trans "Sorry, but registration is closed at this moment. Come back later." %}
+  </div>
+{% endblock %}

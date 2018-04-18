@@ -1,0 +1,59 @@
+<html>
+  <head>
+
+    <!-- Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css" integrity="sha256-zKA1Bf41O96+gJSlkn/Bh2HATW/OhwkApPlYTp3B5O8=" crossorigin="anonymous" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          Reverie
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          {# If the user is logged in... #}
+          {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link" href="/">
+                {{ user.username }}
+              </a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'auth_logout' %}">
+                  Logout
+                </a>
+              </div>
+            </div>
+
+          {# Anonymous users #}
+          {% else %}
+            <a class="navbar-item" href="{% url 'auth_login' %}?next={{ request.path }}">
+              Login
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Child Content -->
+    <section class="section">
+      <div class="container">
+        <section class="container">
+          {% block content %}
+
+          {% endblock %}
+        </section>
+      </div>
+    </section>
+
+    <!-- TODO: Footer -->
+
+  </body>
+</html>
