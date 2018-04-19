@@ -1,4 +1,4 @@
-from reverie.settings.base import *
+from reverie.settings.base import * # noqa
 
 DEBUG = True
 SECRET_KEY = '11@o_6o8u9d%%4c29hi7v@3ty(g^-7s63^dtipj*qu1sl#mvk$' # noqa
