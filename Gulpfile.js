@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const mjml = require('gulp-mjml');
 
 gulp.task('default', function() {
-  return gulp.src('./assets/mjml/*.mjml')
+  return gulp.src('./accounts/assets/mjml/*.mjml')
     .pipe(mjml())
-    .pipe(gulp.dest('./templates/registration'))
+    .pipe(gulp.dest('./accounts/templates/registration'))
 })

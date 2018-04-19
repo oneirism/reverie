@@ -22,6 +22,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # Reverie
+    'accounts',
+
     # Third-Party
     'django_nose', # FIXME: Only required for testing.
     'registration',
