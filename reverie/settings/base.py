@@ -23,6 +23,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # Third-Party
+    'django_nose', # FIXME: Only required for testing.
     'registration',
     'widget_tweaks',
 
@@ -65,6 +66,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'reverie.wsgi.application'
 
+
+# Testing
+TEST_RUNNER="django_nose.NoseTestSuiteRunner"
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=reverie',
+    '--cover-inclusive'
+]
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

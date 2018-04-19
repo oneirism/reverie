@@ -4,6 +4,7 @@
     "gulp-mjml": "^3.0.0"
   },
   "scripts": {
-    "build": "gulp"
+    "build": "gulp",
+    "test": "python manage.py test"
   }
 }
