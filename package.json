@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-mjml": "^3.0.0"
+  },
+  "scripts": {
+    "build": "gulp"
+  }
+}

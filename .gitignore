@@ -1,4 +1,10 @@
-# Created by https://www.gitignore.io
+### Node.js ###
+
+# yarn
+yarn-*
+
+# Dependencies
+node_modules/
 
 ### OSX ###
 .DS_Store
