@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1 class="title">{% trans "Disable Two-factor Authentication" %}</h1>
+  <h2 class="subtitle">{% blocktrans %}You are about to disable two-factor authentication. This weakens your account security, are you sure?{% endblocktrans %}</h2>
+  <form method="post">
+		{% trans "Disable" as purpose %}
+		{% include "bulma_form.html" %}
+  </form>
+{% endblock %}

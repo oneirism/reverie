@@ -23,11 +23,15 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # Reverie
-    'accounts',
+    'account',
 
     # Third-Party
     'django_nose', # FIXME: Only required for testing.
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
     'registration',
+    'two_factor',
     'widget_tweaks',
 
     # Django Contrib
@@ -45,6 +49,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'django_otp.middleware.OTPMiddleware', # Django 2FA
+    'two_factor.middleware.threadlocals.ThreadLocals', # Twilio Gateway
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -126,3 +134,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django Registration
+ACTIVATION_EMAIL_HTML='email/activation.html'
+PASSWORD_RESET_EMAIL_HTML='email/password_reset.html'
+
+# Django 2FA
+LOGIN_URL = 'auth_login'
+LOGIN_REDIRECT_URL = 'account_settings'
