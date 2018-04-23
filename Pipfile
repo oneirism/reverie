@@ -17,6 +17,7 @@ phonenumbers = "==8.9.4"
 twilio = "==6.12.0"
 
 [dev-packages]
+coveralls = "*"
 
 [requires]
 python_version = "3.6"
