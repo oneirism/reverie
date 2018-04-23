@@ -1,12 +1,10 @@
 from django.contrib.auth import views as auth_views
-from django.urls import include, path, re_path, reverse_lazy
+from django.urls import path, re_path, reverse_lazy
 from django.views.generic.base import TemplateView
 
 from registration.backends.default.views import ActivationView, RegistrationView, ResendActivationView
 from registration.forms import RegistrationFormUniqueEmail
-from two_factor.urls import urlpatterns as tf_urls
 from two_factor.views import BackupTokensView, DisableView, LoginView, PhoneDeleteView, PhoneSetupView, QRGeneratorView, SetupCompleteView, SetupView
-from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 
 from .views import SettingsView
 
