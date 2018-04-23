@@ -1,5 +1,10 @@
 <html>
   <head>
+    <title>
+      {% block title %}
+        Reverie
+      {% endblock %}
+    </title>
 
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +31,9 @@
               </a>
 
               <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'account_settings' %}">
+                  Account Settings
+                </a>
                 <a class="navbar-item" href="{% url 'auth_logout' %}">
                   Logout
                 </a>

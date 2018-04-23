@@ -22,5 +22,5 @@ from registration.forms import RegistrationFormUniqueEmail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    path('account/', include('account.urls')),
 ]

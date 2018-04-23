@@ -15,7 +15,9 @@
       You are already authenticated.
     </div>
   {% else %}
-    {% include "bulma_form.html" %}
+    <form method="post" action="">
+      {% include "bulma_form.html" %}
+    </form>
 
     <div class="section">
       <p class="subtitle">{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
