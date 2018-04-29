@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% load markdown_deux_tags %}
+{% load markdown_extras %}
+
+{% block title %}
+  {{ character.name }} - {{ campaign.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="card article">
+    <div class="card-content">
+      <div class="media">
+        {% if character.image %}
+          <a href="{{ character.image.url }}">
+            <div class="media-center">
+              <img src="{{ character.image.url }}"
+                   class="avatar-image" alt="{{ character.name }}"
+              >
+            </div>
+          </a>
+        {% endif %}
+
+        <div class="media-content has-text-centered">
+          <h1 class="title">
+            {{ character.name }}
+          </h1>
+          <h2 class="subtitle is-4">
+            <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
+              {{ character.location }}
+            </a>
+            | {{ character.tagline }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="content">
+        <br />
+        <div class="columns">
+          <div class="column is-one-quarter tags has-addons">
+            <span class="tag">Status</span>
+            <span class="tag is-primary">{{ character.status }}</span>
+          </div>
+
+          {% if character.faction %}
+            <div class="column is-one-quarter tags has-addons">
+              <span class="tag">Faction</span>
+              <a href="{% url 'campaign:faction_detail' campaign.slug character.faction.slug %}">
+                <span class="tag is-primary">{{ character.faction }}</span>
+              </a>
+            </div>
+          {% endif %}
+
+          <div class="column is-one-quarter tags has-addons">
+            <span class="tag">Location</span>
+            <a href="{% url 'campaign:location_detail' campaign.slug character.location.slug %}">
+              <span class="tag is-primary">{{ character.location }}</span>
+            </a>
+          </div>
+
+          {% if character.previous_locations.all %}
+            <div class="column is-one-quarter tags has-addons">
+              <span class="tag">Previous Locations</span>
+              {% for location in character.previous_locations.all %}
+                <a href="{% url 'campaign:location_detail' campaign.slug location.slug %}">
+                  <span class="tag is-primary">{{ location }}</span>
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="content">
+          <h2 class="subtitle">Description</h4>
+          <p>{{ character.description | cross_reference | markdown}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

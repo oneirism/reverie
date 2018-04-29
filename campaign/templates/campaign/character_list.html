@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% load static %}
+
+{% block title %}
+  Characters - {{ campaign.name }}
+{% endblock %}
+
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ campaign.name }}</h1>
+        <h2 class="subtitle">Characters</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    {% if pc_list %}
+      <h4 class="subtitle">Player Characters</h4>
+      {% render_table pc_table %}
+    {% endif %}
+
+    {% if npc_list %}
+      <h4 class="subtitle">Non-Player Characters</h4>
+      {% render_table npc_table %}
+    {% endif %}
+
+    {% if not pc_list and not npc_list %}
+      <p>No characters are available.</p>
+    {% endif %}
+  </section>
+{% endblock %}
