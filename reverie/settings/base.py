@@ -24,6 +24,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     # Reverie
     'account',
+    'campaign',
     'splash',
 
     # Third-Party
@@ -31,6 +32,9 @@ INSTALLED_APPS = [
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
+    'django_tables2',
+    'markdown_deux',
+    'pagedown',
     'registration',
     'two_factor',
     'widget_tweaks',

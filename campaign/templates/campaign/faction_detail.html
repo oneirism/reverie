@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load markdown_deux_tags %}
+{% load markdown_extras %}
+
+{% block title %}
+  {{ faction.name }} - {{ campaign.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="card article">
+    <div class="card-content">
+      <div class="media">
+        {% if faction.image %}
+          <a href="{{ faction.image.url }}">
+            <div class="media-center">
+              <img src="{{ faction.image.url }}"
+                   class="avatar-image" alt="{{ faction.name }}"
+              >
+            </div>
+          </a>
+        {% endif %}
+
+        <div class="media-content has-text-centered">
+          <h1 class="title">
+            {{ faction.name }}
+          </h1>
+          <h2 class="subtitle is-4">
+            {{ faction.tagline }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="content">
+        {{ faction.description | cross_reference | markdown }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

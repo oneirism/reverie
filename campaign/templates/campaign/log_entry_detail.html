@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ log.title }} - {{ campaign.name }}
+{% endblock %}
+
+{% load markdown_deux_tags %}
+{% load markdown_extras %}
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ log.title }}</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="content">
+      <p>{{ log.description | cross_reference | markdown}}</p>
+    </div>
+  </section>
+{% endblock %}
