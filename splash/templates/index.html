@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Reverie
+{% endblock %}
+
+{% block hero %}
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Reverie - Under Construction
+        </h1>
+        <h2 class="subtitle">
+          A campaign tracker for tabletop role-playing games
+        </h2>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="columns has-text-centered">
+      <div class="column">
+        <p class="is-flex-touch">&nbsp;</p>
+        <p class="title">
+          <span class="icon">
+            <i class="fab fa-3x fa-fort-awesome-alt"></i>
+          </span>
+          &nbsp;
+        </p>
+        <p class="subtitle">A collaborative space for your favourite group to track the progress of your world. From session logs to NPC details, we've got it covered.</p>
+      </div>
+      <div class="column">
+        <p class="is-flex-touch">&nbsp;</p>
+        <p class="title">
+          <span class="icon">
+            <i class="fas fa-3x fa-user-secret"></i>
+          </span>
+          &nbsp;
+        </p>
+        <p class="subtitle">
+          Support for secret fields - log your players' secret downtime activities without spoiling the surprise. Or, you know, the fact that their favourite NPC is a dopplegänger.
+        </p>
+      </div>
+      <div class="column">
+        <p class="is-flex-touch">&nbsp;</p>
+        <p class="title">
+          <span class="icon">
+            <i class="fas fa-3x fa-code"></i>
+          </span>
+          &nbsp;
+        </p>
+        <p class="subtitle">
+          Missing features? Everyone is welcome to discuss ideas, request features, and contribute code.
+        </p>
+        <p class="subtitle">
+          <a href="https://join.slack.com/t/oneirism/shared_invite/enQtMzU1NDQ3MzIzNDQyLTQwNGQwMzE1MDU4NWM4MTcwMWYyMzY3YWRmMzExZmI2MzU3MjNlYmJkMjgxOWQ4MDUzMTJkNDQyOTkzMjQyZjM">
+            Join us on Slack
+          </a>
+          or
+          <a href="https://github.com/oneirism/reverie/">
+            visit our GitGub.
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <progress class="progress is-large"
+      value={{ complete | length}}
+      max={{ max }}
+    >
+    </progress>
+
+    <div class="tags">
+      {% for feature in complete %}
+        <span class="tag is-success">{{ feature }}</span>
+      {% endfor %}
+
+      {% for feature in in_progress %}
+        <span class="tag is-warning">{{ feature }}</span>
+      {% endfor %}
+
+      {% for feature in backlog %}
+        <span class="tag is-danger">{{ feature }}</span>
+      {% endfor %}
+    </div>
+
+    <hr />
+
+    <p class="title has-text-centered">
+      Want more details?
+    </p>
+    <p class="subtitle has-text-centered">
+      <a href="https://github.com/oneirism/reverie">
+        <i class="fab fa-3x fa-github"></i>
+      </a>
+      &nbsp;
+      <a href="https://join.slack.com/t/oneirism/shared_invite/enQtMzU1NDQ3MzIzNDQyLTQwNGQwMzE1MDU4NWM4MTcwMWYyMzY3YWRmMzExZmI2MzU3MjNlYmJkMjgxOWQ4MDUzMTJkNDQyOTkzMjQyZjM">
+        <i class="fab fa-3x fa-slack"></i>
+      </a>
+    </p>
+  </section>
+{% endblock %}
