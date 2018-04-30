@@ -1,0 +1,18 @@
+language: python
+cache:
+  - "pip"
+  - "yarn"
+python:
+  - "3.6"
+install:
+  - "nvm install --lts"
+  - "nvm use --lts"
+  - "pip install pipenv"
+  - "pipenv install --dev"
+script:
+  - "pipenv run prospector"
+  - "pipenv run yarn install"
+  - "pipenv run yarn build"
+  - "pipenv run yarn test"
+after_success:
+  - "pipenv run coveralls"

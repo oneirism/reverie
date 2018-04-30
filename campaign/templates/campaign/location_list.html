@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Locations - {{ campaign.name }}
+{% endblock %}
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ campaign.name }}</h1>
+        <h2 class="subtitle">Locations</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    {% if location_list %}
+      <div>
+        {% for location in location_list %}
+          {% if not location.superlocation %}
+            <div>
+              <h4>
+                <a href="{% url 'campaign:location_detail' campaign.slug location.slug %}">{{location.name}}</a>
+                {% if location.sublocations.all %}
+                ({{ location.sublocations.count }}
+                sublocation{% if location.sublocations.count > 1 %}s{% else %}{% endif %})
+                {% endif %}
+              </h4>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No locations are available.</p>
+    {% endif %}
+  </section>
+{% endblock %}

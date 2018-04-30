@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Resend Activation Email" %}{% endblock %}
+
+{% block content %}
+	<h1 class="title">Resend Activation Email</h1>
+	<h2 class="subtitle">Enter your email below and your activation link will be resent.</h2>
+
+	<form method="post" action="">
+    {% trans "Resend Activation Email" as purpose %}
+		{% include "bulma_form.html" %}
+	</form>
+{% endblock %}

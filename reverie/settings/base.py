@@ -16,21 +16,29 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bu0uw+hy^n(ew+!!20%4((da^tv6@$=69)$t0pmj2*g0w$et=-'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Reverie
+    'account',
+    'campaign',
+
+    # Third-Party
+    'django_nose', # FIXME: Only required for testing.
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'django_tables2',
+    'markdown_deux',
+    'pagedown',
+    'registration',
+    'two_factor',
+    'widget_tweaks',
+
+    # Django Contrib
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +53,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'django_otp.middleware.OTPMiddleware', # Django 2FA
+    'two_factor.middleware.threadlocals.ThreadLocals', # Twilio Gateway
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -54,7 +66,7 @@ ROOT_URLCONF = 'reverie.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +81,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'reverie.wsgi.application'
 
+
+# Testing
+TEST_RUNNER="django_nose.NoseTestSuiteRunner"
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=reverie',
+    '--cover-inclusive'
+]
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -118,3 +138,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django Registration
+ACTIVATION_EMAIL_HTML='email/activation.html'
+PASSWORD_RESET_EMAIL_HTML='email/password_reset.html'
+
+# Django 2FA
+LOGIN_URL = 'auth_login'
+LOGIN_REDIRECT_URL = 'account_settings'
