@@ -5,14 +5,20 @@ cache:
 python:
   - "3.6"
 install:
+  - "pip install pipenv"
   - "nvm install --lts"
   - "nvm use --lts"
-  - "pip install pipenv"
   - "pipenv install --dev"
-script:
-  - "pipenv run prospector"
   - "pipenv run yarn install"
+script:
+  # Package Safety Check
+  - "pipenv check"
+  # Static Code Analysis
+  - "pipenv run prospector"
+  # Build Static Content
   - "pipenv run yarn build"
+  # Django Tests
   - "pipenv run yarn test"
 after_success:
+  # Submit Coverage
   - "pipenv run coveralls"
