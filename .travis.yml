@@ -7,12 +7,12 @@ python:
 install:
   - "nvm install --lts"
   - "nvm use --lts"
-  - "pip install coveralls"
-  - "pip install -r requirements.txt"
+  - "pip install pipenv"
+  - "pipenv install --dev"
 script:
-  - "prospector"
-  - "yarn install"
-  - "yarn run build"
-  - "yarn test"
+  - "pipenv run prospector"
+  - "pipenv run yarn install"
+  - "pipenv run yarn build"
+  - "pipenv run yarn test"
 after_success:
-  - "coveralls"
+  - "pipenv run coveralls"

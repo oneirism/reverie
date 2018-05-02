@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title %}Reverie - {% trans "Register" %}{% endblock %}
+
+{% block content %}
+  {% trans "Register" as purpose %}
+
+  <h1 class="title">{{ purpose }}</h1>
+
+  {% if user.is_authenticated %}
+    <div class="notification is-warning">
+      You are already authenticated.
+    </div>
+  {% else %}
+    <form method="post" action="">
+      {% include "bulma_form.html" %}
+    </form>
+
+    <div class="section">
+      <p class="subtitle">{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
+      <p class="subtitle">{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+    </div>
+  {% endif %}
+{% endblock %}
