@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/oneirism/reverie.svg?branch=master)](https://travis-ci.org/oneirism/reverie)
 [![Coverage Status](https://coveralls.io/repos/github/oneirism/reverie/badge.svg)](https://coveralls.io/github/oneirism/reverie)
-[![Known Vulnerabilities](https://snyk.io/test/github/oneirism/reverie/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/oneirism/reverie?targetFile=requirements.txt)
-
+[![Known Vulnerabilities](https://snyk.io/test/github/oneirism/reverie/badge.svg?targetFile=package.json)](https://snyk.io/test/github/oneirism/reverie?targetFile=package.json)
 
 # reverie
 
