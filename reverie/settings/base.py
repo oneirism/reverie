@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     # Reverie
     'account',
     'campaign',
+    'splash',
 
     # Third-Party
     'django_nose', # FIXME: Only required for testing.
@@ -86,7 +87,7 @@ WSGI_APPLICATION = 'reverie.wsgi.application'
 TEST_RUNNER="django_nose.NoseTestSuiteRunner"
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=reverie',
+    '--cover-package=reverie,splash',
     '--cover-inclusive'
 ]
 
