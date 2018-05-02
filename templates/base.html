@@ -10,22 +10,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css" integrity="sha256-zKA1Bf41O96+gJSlkn/Bh2HATW/OhwkApPlYTp3B5O8=" crossorigin="anonymous" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+    {# FIXME: Static Resources #}
+		<script
+  		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	  	crossorigin="anonymous">
+		</script>
+
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', function () {
+
+				// Get all "navbar-burger" elements
+				var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+				// Check if there are any navbar burgers
+				if ($navbarBurgers.length > 0) {
+
+					// Add a click event on each of them
+					$navbarBurgers.forEach(function ($el) {
+						$el.addEventListener('click', function () {
+
+							// Get the target from the "data-target" attribute
+							var target = $el.dataset.target;
+							var $target = document.getElementById(target);
+
+							// Toggle the class on both the "navbar-burger" and the "navbar-menu"
+							$el.classList.toggle('is-active');
+							$target.classList.toggle('is-active');
+
+						});
+					});
+				}
+			});
+		</script>
   </head>
 
   <body>
     <!-- Navigation -->
     <nav class="navbar">
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
+        <a class="navbar-item has-text-weight-bold" href="/">
           Reverie
+        </a>
+
+        <!-- Hamburger -->
+        <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
       </div>
 
-      <div class="navbar-menu">
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="{% url 'campaign:campaign_list' %}">
+            Campaigns
+          </a>
+        </div>
         <div class="navbar-end">
           {# If the user is logged in... #}
           {% if user.is_authenticated %}
-            <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-item has-dropdown is-hoverable is-hidden-touch">
               <a class="navbar-link" href="/">
                 {{ user.username }}
               </a>
