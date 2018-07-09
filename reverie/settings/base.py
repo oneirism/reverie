@@ -28,10 +28,13 @@ INSTALLED_APPS = [
     'splash',
 
     # Third-Party
+    'dal',
+    'dal_select2',
     'django_nose', # FIXME: Only required for testing.
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
+    'django_select2',
     'django_tables2',
     'markdown_deux',
     'pagedown',
@@ -88,7 +91,7 @@ WSGI_APPLICATION = 'reverie.wsgi.application'
 TEST_RUNNER="django_nose.NoseTestSuiteRunner"
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=reverie,splash',
+    '--cover-package=campaign,reverie,splash',
     '--cover-inclusive'
 ]
 
@@ -139,7 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+STATIC_ROOT = './static/'
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join('assets/dist'),
+)
 
 # Django Registration
 ACTIVATION_EMAIL_HTML='email/activation.html'

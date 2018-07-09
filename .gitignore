@@ -1,5 +1,10 @@
+### Assets ###
+assets/dist/**
+templates/email/**
+
 ### Django ###
-**/migrations/
+**/migrations
+**/static
 
 ### Node.js ###
 
@@ -34,6 +39,9 @@ Temporary Items
 
 
 ### Python ###
+# Test Coverage
+cover
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

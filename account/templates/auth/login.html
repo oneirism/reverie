@@ -41,7 +41,7 @@
         <p>
           {% for other in other_devices %}
           <button name="challenge_device" value="{{ other.persistent_id }}"
-                  class="btn btn-default btn-block" type="submit">
+                  class="button is-default" type="submit">
             {{ other|device_action }}
           </button>
         {% endfor %}</p>
