@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 
-const css = require('gulp-css');
+const css = require('gulp-clean-css');
 const mjml = require('gulp-mjml');
 
 gulp.task('emails', function() {

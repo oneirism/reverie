@@ -8,6 +8,6 @@
     "test": "python manage.py test"
   },
   "dependencies": {
-    "gulp-css": "^0.1.0"
+    "gulp-clean-css": "^3.9.4"
   }
 }
