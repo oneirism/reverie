@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Campaign Entry
+{% endblock %}
+
+{% block extracss %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/select2.css" %}">
+{% endblock %}
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          {% if form.instance.id %}
+            Edit {{ form.instance }}
+          {% else %}
+            New Campaign
+          {% endif %}
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <form action="" method="post">
+      {% csrf_token %}
+
+      {% include "bulma_form.html" %}
+
+      <button class="button is-primary" type="submit">
+        {% if form.instance.id %}
+          Update
+        {% else %}
+          Create Campaign
+        {% endif %}
+      </button>
+    </form>
+  </section>
+
+  {{ form.media.js }}
+{% endblock %}

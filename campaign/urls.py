@@ -1,25 +1,12 @@
-from django.conf.urls import url
+from django.urls import path
 
-from . import views
+from .views import index, newcampaign, campaign_detail, campaign_edit, PlayerAutocomplete
 
-app_name = 'campaign'
 urlpatterns = [
-        # example: /
-        url(r'^$', views.campaign_list, name='campaign_list'),
-        # example: /5/
-        url(r'^(?P<camp_slug>[\w-]+)/$', views.campaign_detail, name='campaign_detail'),
-        # example: /characters/
-        url(r'^(?P<camp_slug>[\w-]+)/characters/$', views.character_list, name='character_list'),
-        # example: /characters/5/
-        url(r'^(?P<camp_slug>[\w-]+)/characters/(?P<char_slug>[\w-]+)$', views.character_detail, name='character_detail'),
-        # example: /factions/
-        url(r'^(?P<camp_slug>[\w-]+)/factions/$', views.faction_list, name='faction_list'),
-        # example: /factions/5/
-        url(r'^(?P<camp_slug>[\w-]+)/factions/(?P<fact_slug>[\w-]+)$', views.faction_detail, name='faction_detail'),
-        # example: /locations/
-        url(r'^(?P<camp_slug>[\w-]+)/locations/$', views.location_list, name='location_list'),
-        # example: /locations/5/
-        url(r'^(?P<camp_slug>[\w-]+)/locations/(?P<loc_slug>[\w-]+)$', views.location_detail, name='location_detail'),
-        url(r'^(?P<camp_slug>[\w-]+)/log/$', views.log_entry_list, name='log_entry_list'),
-        url(r'^(?P<camp_slug>[\w-]+)/log/(?P<log_slug>[\w-]+)$', views.log_entry_detail, name='log_entry_detail'),
+    path('player-autocomplete/', PlayerAutocomplete.as_view(), name='player_autocomplete'),
+
+    path('', index, name='campaign_index'),
+    path('new', newcampaign, name='campaign_entry'),
+    path('<campaign_id>/', campaign_detail, name='campaign_detail'),
+    path('<campaign_id>/edit/', campaign_edit, name='campaign_edit'),
 ]

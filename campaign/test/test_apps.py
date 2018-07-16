@@ -5,6 +5,6 @@ from campaign.apps import CampaignConfig
 
 
 class CampaignConfigTest(TestCase):
-    def test_campaign(self):
+    def test_apps(self):
         self.assertEqual(CampaignConfig.name, 'campaign')
         self.assertEqual(apps.get_app_config('campaign').name, 'campaign')

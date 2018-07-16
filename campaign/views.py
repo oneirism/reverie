@@ -1,99 +1,113 @@
-from django.http import HttpRequest, HttpResponse
+from dal import autocomplete
+from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django_tables2 import RequestConfig
+from django.urls import reverse
 
-from .models import Campaign, Character, Faction, Location, LogEntry
-from .tables import CharacterTable
-
-
-def campaign_list(request: HttpRequest) -> HttpResponse:
-    campaign_list = Campaign.objects.order_by('name')
-
-    context = {'campaign_list': campaign_list}
-    return render(request, 'campaign/campaign_list.html', context)
+from .forms import CampaignEntryForm
+from .models import Campaign
+from . import utils
 
 
-def campaign_detail(request: HttpRequest, camp_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
+class PlayerAutocomplete(autocomplete.Select2QuerySetView):
+    autocomplete_template = 'autocomplete_template.html'
 
-    context = {'campaign': campaign}
+    def get_queryset(self):
+        qs = User.objects.exclude(id=self.request.user.id)
+
+        return qs
+
+    def get_result_label(self, result):
+        label = result.username
+
+        return label
+
+def index(request):
+    context = {}
+
+    if request.user.is_authenticated:
+        dm_campaigns = Campaign.objects.filter(
+            game_master=request.user
+        ).order_by('name')
+
+        if dm_campaigns is not None:
+            context['dm_campaigns'] = dm_campaigns
+
+        player_campaigns = Campaign.objects.filter(
+            players__id__exact=request.user.id
+        ).order_by('name')
+
+        if player_campaigns is not None:
+            context['player_campaigns'] = player_campaigns
+
+        public_campaigns = Campaign.objects.filter(
+            public=True,
+        ).exclude(
+            game_master=request.user
+        ).exclude(
+            players__in=[request.user]
+        ).order_by('name')
+
+    else:
+        public_campaigns = Campaign.objects.filter(
+            public=True
+        ).order_by('name')
+
+
+    if public_campaigns is not None:
+        context['public_campaigns'] = public_campaigns
+
+    return render(request, 'campaign/index.html', context)
+
+
+def newcampaign(request):
+    form = CampaignEntryForm(request.POST or None)
+
+    players = request.POST.getlist('players')
+
+    if form.is_valid():
+        campaign = form.save(commit=False)
+
+        campaign.game_master_id = request.user.id
+        campaign.save()
+        campaign.players.set(players)
+        campaign.save()
+
+        # FIXME(devenney): Should redirect to campaign details.
+        return HttpResponseRedirect(reverse('campaign:campaign_index'))
+
+    context = {'form': form}
+
+    return render(request, 'campaign/campaign_form.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def campaign_edit(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    form = CampaignEntryForm(request.POST or None, instance=campaign)
+
+    context = {
+        'form': form,
+        'action': 'Edit'
+    }
+
+    if form.is_valid():
+        form.save()
+        # FIXME(devenney): Should redirect to campaign details.
+        return HttpResponseRedirect('/campaign/{}/'.format(campaign_id))
+
+    return render(request, 'campaign/campaign_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def campaign_detail(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    context = {
+        'campaign': campaign
+    }
+
     return render(request, 'campaign/campaign_detail.html', context)
-
-
-def character_list(request: HttpRequest, camp_slug:str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    npc_list = Character.objects.filter(campaign=campaign).filter(is_pc=False).order_by('name')
-    npc_table = CharacterTable(npc_list)
-
-    pc_list = Character.objects.filter(campaign=campaign).filter(is_pc=True).order_by('name')
-    pc_table = CharacterTable(pc_list)
-
-    RequestConfig(request).configure(npc_table)
-    RequestConfig(request).configure(pc_table)
-
-    context = {'campaign': campaign, 'npc_list':npc_list, 'npc_table': npc_table, 'pc_list':pc_list, 'pc_table': pc_table}
-    return render(request, 'campaign/character_list.html', context)
-
-
-def character_detail(request: HttpRequest, camp_slug: str, char_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    character = get_object_or_404(Character, slug=char_slug)
-
-    context = {'campaign': campaign, 'character': character}
-    return render(request, 'campaign/character_detail.html', context)
-
-
-def faction_list(request: HttpRequest, camp_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    faction_list = Faction.objects.filter(campaign=campaign).order_by('name')
-
-    context = {'campaign': campaign, 'faction_list':faction_list}
-    return render(request, 'campaign/faction_list.html', context)
-
-
-def faction_detail(request: HttpRequest, camp_slug: str, fact_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    faction = get_object_or_404(Faction, slug=fact_slug)
-
-    context = {'campaign': campaign, 'faction': faction}
-    return render(request, 'campaign/faction_detail.html', context)
-
-
-def location_list(request: HttpRequest, camp_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    location_list = Location.objects.filter(campaign=campaign).order_by('name')
-
-    context = {'campaign': campaign, 'location_list': location_list}
-    return render(request, 'campaign/location_list.html', context)
-
-
-def location_detail(request: HttpRequest, camp_slug: str, loc_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    location = get_object_or_404(Location, slug=loc_slug)
-
-    context = {'campaign': campaign, 'location': location}
-    return render(request, 'campaign/location_detail.html', context)
-
-
-def log_entry_list(request: HttpRequest, camp_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    log_entry_list = LogEntry.objects.filter(campaign=campaign).order_by('date')
-
-    context = {'campaign': campaign, 'log_entry_list': log_entry_list}
-    return render(request, 'campaign/log_entry_list.html', context)
-
-
-def log_entry_detail(request: HttpRequest, camp_slug: str, log_slug: str) -> HttpResponse:
-    campaign = get_object_or_404(Campaign, slug=camp_slug)
-
-    log = get_object_or_404(LogEntry, slug=log_slug)
-
-    context = {'campaign': campaign, 'log': log}
-    return render(request, 'campaign/log_entry_detail.html', context)

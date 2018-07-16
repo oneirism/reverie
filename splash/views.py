@@ -30,4 +30,4 @@ def index(request):
     # TODO: Make this more readable.
     context["max"] = len(context["complete"]) + len(context["in_progress"]) + len(context["backlog"])
 
-    return render(request, "index.html", context)
+    return render(request, "splash/index.html", context)
