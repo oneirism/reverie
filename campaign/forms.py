@@ -12,4 +12,4 @@ class CampaignEntryForm(forms.ModelForm):
 
     class Meta:
         model = Campaign
-        fields = ['name', 'description', 'players']
+        fields = ['name', 'description', 'players', 'public']
