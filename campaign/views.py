@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from .forms import CampaignEntryForm
 from .models import Campaign
@@ -13,25 +14,12 @@ class PlayerAutocomplete(autocomplete.Select2QuerySetView):
     autocomplete_template = 'autocomplete_template.html'
 
     def get_queryset(self):
-        print(self.request.user)
-
         qs = User.objects.exclude(id=self.request.user.id)
-
-        if self.q:
-            qs = qs.filter(
-                Q(username__istartswith=self.q) | Q(first_name__istartswith=self.q) | Q(last_name__istartswith=self.q)
-            )
 
         return qs
 
     def get_result_label(self, result):
         label = result.username
-
-        if result.first_name:
-            if result.last_name:
-                label = "{} ({} {})".format(label, result.first_name, result.last_name)
-            else:
-                label = "{} ({})".format(label, result.first_name)
 
         return label
 
@@ -47,7 +35,7 @@ def index(request):
             context['dm_campaigns'] = dm_campaigns
 
         player_campaigns = Campaign.objects.filter(
-            players__in=[request.user]
+            players__id__exact=request.user.id
         ).order_by('name')
 
         if player_campaigns is not None:
@@ -77,16 +65,17 @@ def newcampaign(request):
     form = CampaignEntryForm(request.POST or None)
 
     players = request.POST.getlist('players')
-    print(players)
 
     if form.is_valid():
         campaign = form.save(commit=False)
 
         campaign.game_master_id = request.user.id
         campaign.save()
+        campaign.players.set(players)
+        campaign.save()
 
         # FIXME(devenney): Should redirect to campaign details.
-        return HttpResponseRedirect('/campaign')
+        return HttpResponseRedirect(reverse('campaign:campaign_index'))
 
     context = {'form': form}
 
@@ -99,8 +88,6 @@ def campaign_edit(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
 
     form = CampaignEntryForm(request.POST or None, instance=campaign)
-
-    print(campaign.players)
 
     context = {
         'form': form,
