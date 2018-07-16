@@ -89,11 +89,6 @@ WSGI_APPLICATION = 'reverie.wsgi.application'
 
 # Testing
 TEST_RUNNER="django_nose.NoseTestSuiteRunner"
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=campaign,reverie,splash',
-    '--cover-inclusive'
-]
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
