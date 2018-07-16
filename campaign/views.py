@@ -1,6 +1,5 @@
 from dal import autocomplete
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
