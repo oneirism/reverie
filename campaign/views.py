@@ -116,7 +116,7 @@ def campaign_edit(request, campaign_id=None):
 
 
 @utils.login_required_if_private
-@utils.is_player
+@utils.is_player_if_private
 def campaign_detail(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
 

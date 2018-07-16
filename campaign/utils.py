@@ -26,9 +26,12 @@ def is_gm(func):
 
     return check_and_call
 
-def is_player(func):
+def is_player_if_private(func):
     def wrap(request, *args, **kwargs):
         campaign = Campaign.objects.get(id=kwargs['campaign_id'])
+
+        if campaign.public:
+            return func(request, *args, **kwargs)
 
         if not (request.user.id == campaign.game_master_id) and not (request.user in campaign.players.all()):
             return HttpResponse("Unauthorised", status=403)
