@@ -3,16 +3,21 @@ cache:
   - "pip"
   - "yarn"
 python:
-  - "3.6"
+  - "3.7-dev"
 install:
+  # Python Dependencies
   - "pip install pipenv"
-  - "nvm install --lts"
-  - "nvm use --lts"
-  - "pipenv install --dev"
-  - "pipenv run yarn install"
-script:
+  # Production Dependencies
+  - "pipenv install"
   # Package Safety Check
   - "pipenv check"
+  # Development Dependencies
+  - "pipenv install --dev"
+  # Node Dependencies
+  - "nvm install --lts"
+  - "nvm use --lts"
+  - "pipenv run yarn install"
+script:
   # Static Code Analysis
   - "pipenv run prospector"
   # Build Static Content
@@ -22,3 +27,9 @@ script:
 after_success:
   # Submit Coverage
   - "pipenv run coveralls"
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: "pipenv run python manage.py collectstatic --settings reverie.settings.deploy --no-input"
+  on:
+    all_branches: true

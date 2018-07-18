@@ -11,6 +11,13 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reverie.settings.prod")
+django_env = os.environ.get('django_env')
+
+if not django_env:
+    django_env = 'dev'
+
+settings_module = "reverie.settings.{0}".format(django_env)
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
 application = get_wsgi_application()

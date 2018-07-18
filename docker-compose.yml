@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    networks:
+      - web
+
+  migration:
+    build: .
+    environment:
+      - ENV=docker
+    entrypoint: sh /code/reverie/migrate.sh
+    volumes:
+      - ./reverie/settings:/code/reverie/settings
+    depends_on:
+      - db
+    networks:
+      - web
+
+  reverie:
+    build: .
+    entrypoint: "pipenv run python manage.py runserver 0.0.0.0:8000 --settings reverie.settings.docker"
+    ports:
+      - 8000
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - migration
+    networks:
+      - web
+
+  proxy:
+    image: dockercloud/haproxy
+    links:
+      - reverie
+    environment:
+      - BALANCE=leastconn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 0.0.0.0:80:80
+      - 1936:1936
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
