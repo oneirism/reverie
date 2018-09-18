@@ -10,4 +10,5 @@ class CampaignAdmin(admin.ModelAdmin):
     list_display_links = ['name']
     search_fields = ['name']
 
+
 admin.site.register(Campaign, CampaignAdmin)
