@@ -1,4 +1,5 @@
 from dal import autocomplete
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -60,7 +61,8 @@ def index(request):
     return render(request, 'campaign/index.html', context)
 
 
-def newcampaign(request):
+@login_required
+def new_campaign(request):
     form = CampaignEntryForm(request.POST or None)
 
     players = request.POST.getlist('players')
