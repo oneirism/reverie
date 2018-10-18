@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'two_factor',
     'webpack_loader',
     'widget_tweaks',
+    'zappa_django_utils',
 
     # Django Contrib
     'django.contrib.admin',

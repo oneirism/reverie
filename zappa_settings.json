@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "aws_region": "eu-west-1",
+        "project_name": "reverie",
+        "runtime": "python3.6",
+        "django_settings": "reverie.settings.dev",
+        "s3_bucket": "zappa-91bqxapat"
+    }
+}
