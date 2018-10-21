@@ -25,10 +25,11 @@ gunicorn = "==19.9.0"
 psycopg2 = "==2.7.5"
 
 [dev-packages]
-coveralls = "==1.4.0"
-prospector = "==1.1.2"
+coverage = "==4.5.2"
+coveralls = "==1.5.1"
 nose = "==1.3.7"
-docker-compose = "*"
+prospector = "==1.1.6.2"
+jedi = "==0.13.1"
 
 [requires]
 python_version = "3.7"

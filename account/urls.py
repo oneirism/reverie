@@ -12,7 +12,7 @@ from .views import SettingsView
 urlpatterns = [
     path(
         'settings/',
-        SettingsView.as_view(),
+        SettingsView.as_view(), # noqa: W605
         name='account_settings'
     ),
 

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Character Entry
+{% endblock %}
+
+{% block extracss %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/select2.css" %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+  <li>
+    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+      {{ campaign.name }}
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'campaign:character_list' campaign.id %}">
+      Characters
+    </a>
+  </li>
+  {% if character %}
+    <li>
+      <a href="{% url 'campaign:character_detail' campaign.id character.id %}">
+        {{ character.name }}
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'campaign:character_edit' campaign.id character.id %}">
+        Edit
+      </a>
+    </li>
+  {% else %}
+    <li>
+      <a href="{% url 'campaign:character_entry' campaign.id %}">
+        New
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          {% if form.instance.id %}
+            Edit {{ form.instance }}
+          {% else %}
+            New Character
+          {% endif %}
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <form action="" method="post">
+      {% csrf_token %}
+
+      {% include "bulma_form.html" %}
+
+      <button class="button is-primary" type="submit">
+        {% if form.instance.id %}
+          Update
+        {% else %}
+          Create Character
+        {% endif %}
+      </button>
+    </form>
+  </section>
+
+  {{ form.media.js }}
+{% endblock %}

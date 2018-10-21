@@ -32,4 +32,4 @@ deploy:
   provider: script
   script: "pipenv run python manage.py collectstatic --settings reverie.settings.deploy --no-input"
   on:
-    all_branches: true
+    branch: master
