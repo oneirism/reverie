@@ -7,7 +7,8 @@ from .models import Campaign
 class CampaignEntryForm(forms.ModelForm):
     players = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
-        widget=autocomplete.ModelSelect2Multiple(url='campaign:player_autocomplete', forward=['game_master'])
+        widget=autocomplete.ModelSelect2Multiple(url='campaign:player_autocomplete', forward=['game_master']),
+        required=False
     )
 
     class Meta:
