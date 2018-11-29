@@ -31,3 +31,58 @@ class Campaign(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Character(models.Model):
+  name = models.CharField(
+    unique=True,
+    max_length=50,
+  )
+
+  tagline = models.CharField(
+    max_length=50,
+  )
+
+  player = models.ForeignKey(
+    User,
+    on_delete=models.PROTECT,
+    blank=True,
+    null=True,
+  )
+
+  def __str__(self):
+    return self.name
+
+
+class Faction(models.Model):
+  name = models.CharField(
+    unique=True,
+    max_length=50,
+  )
+
+  tagline = models.CharField(
+    max_length=50,
+  )
+
+  def __str__(self):
+    return self.name
+
+
+class Item(models.Model):
+  name = models.CharField(
+    unique=True,
+    max_length=50,
+  )
+
+  def __str__(self):
+    return self.name
+
+
+class Location(models.Model):
+  name = models.CharField(
+    unique=True,
+    max_length=50,
+  )
+
+  def __str__(self):
+    return self.name
