@@ -1,26 +1,33 @@
+""" Reverie campaign model definitions. """
+
 from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
 class Campaign(models.Model):
+    """ A Reverie campaign. """
     name = models.CharField(
         unique=True,
         max_length=50,
     )
 
-    description = models.CharField(
+    tagline = models.CharField(
         max_length=50,
+    )
+
+    description = models.TextField(
+        max_length=500,
     )
 
     game_master = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        related_name = 'gm'
+        related_name='gm'
     )
 
     players = models.ManyToManyField(
         User,
-        related_name = 'player',
+        related_name='player',
         blank=True,
         null=True,
     )
@@ -34,55 +41,105 @@ class Campaign(models.Model):
 
 
 class Character(models.Model):
-  name = models.CharField(
-    unique=True,
-    max_length=50,
-  )
+    """ A Reverie campaign character. """
+    name = models.CharField(
+        unique=True,
+        max_length=50,
+    )
 
-  tagline = models.CharField(
-    max_length=50,
-  )
+    tagline = models.CharField(
+        max_length=50,
+    )
 
-  player = models.ForeignKey(
-    User,
-    on_delete=models.PROTECT,
-    blank=True,
-    null=True,
-  )
+    description = models.TextField(
+        max_length=500,
+    )
 
-  def __str__(self):
-    return self.name
+    player = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
+
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.PROTECT,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Faction(models.Model):
-  name = models.CharField(
-    unique=True,
-    max_length=50,
-  )
+    """ A Reverie campaign faction. """
+    name = models.CharField(
+        unique=True,
+        max_length=50,
+    )
 
-  tagline = models.CharField(
-    max_length=50,
-  )
+    tagline = models.CharField(
+        max_length=50,
+    )
 
-  def __str__(self):
-    return self.name
+    description = models.TextField(
+        max_length=500,
+    )
+
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.PROTECT,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Item(models.Model):
-  name = models.CharField(
-    unique=True,
-    max_length=50,
-  )
+    """ A Reverie campaign item. """
+    name = models.CharField(
+        unique=True,
+        max_length=50,
+    )
 
-  def __str__(self):
-    return self.name
+    tagline = models.CharField(
+        unique=True,
+        max_length=50,
+    )
+
+    description = models.TextField(
+        max_length=500,
+    )
+
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.PROTECT,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Location(models.Model):
-  name = models.CharField(
-    unique=True,
-    max_length=50,
-  )
+    """ A Reverie campaign location. """
+    name = models.CharField(
+        unique=True,
+        max_length=50,
+    )
 
-  def __str__(self):
-    return self.name
+    tagline = models.CharField(
+        unique=True,
+        max_length=50,
+    )
+
+    description = models.TextField(
+        max_length=500,
+    )
+
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.PROTECT,
+    )
+
+    def __str__(self):
+        return self.name

@@ -1,9 +1,18 @@
+""" Reverie campaign admin interface.
+
+The expected ordering of this file is as follows:
+
+    1. Definition of all required ModelAdmin classes.
+    2. Registration of the above classes to the admin site.
+"""
+
 from django.contrib import admin
 
-from .models import Campaign, Character, Faction, Item, Location 
+from .models import Campaign, Character, Faction, Item, Location
 
 
 class CampaignAdmin(admin.ModelAdmin):
+    """ ModelAdmin for the Campaign class. """
     model = Campaign
 
     list_display = ['name']
@@ -12,6 +21,7 @@ class CampaignAdmin(admin.ModelAdmin):
 
 
 class CharacterAdmin(admin.ModelAdmin):
+    """ ModelAdmin for the Character class. """
     model = Character
 
     list_display = ['name']
@@ -20,6 +30,7 @@ class CharacterAdmin(admin.ModelAdmin):
 
 
 class FactionAdmin(admin.ModelAdmin):
+    """ ModelAdmin for the Faction class. """
     model = Faction
 
     list_display = ['name']
@@ -28,6 +39,7 @@ class FactionAdmin(admin.ModelAdmin):
 
 
 class ItemAdmin(admin.ModelAdmin):
+    """ ModelAdmin for the Item class. """
     model = Item
 
     list_display = ['name']
@@ -36,6 +48,7 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
+    """ ModelAdmin for the Location class. """
     model = Location
 
     list_display = ['name']

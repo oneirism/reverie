@@ -6,8 +6,6 @@ from campaign.models import Campaign
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from campaign.forms import CampaignEntryForm
-
 GM_USER = 'gm'
 PLAYER_USER = 'player'
 NOT_PLAYER_USER = 'not_player'
@@ -19,6 +17,7 @@ TEST_CAMPAIGNS = [
     {
         'name': 'Private Campaign',
         'gm_id': TEST_USERS.index(GM_USER),
+        'tagline': 'Test Tagline',
         'description': 'Test Description',
         'players': [TEST_USERS.index(PLAYER_USER)],
         'public': False,
@@ -26,6 +25,7 @@ TEST_CAMPAIGNS = [
     {
         'name': 'Public Campaign',
         'gm_id': TEST_USERS.index(GM_USER),
+        'tagline': 'Test Tagline',
         'description': 'Test Description',
         'players': [TEST_USERS.index(PLAYER_USER)],
         'public': True,
@@ -40,6 +40,7 @@ class CampaignOwnershipTest(TestCase):
         form_data = {
             'name': name,
             'description': description,
+            'tagline': 'Test Tagline',
             'players': players,
             'public': public,
         }
@@ -114,6 +115,7 @@ class CampaignOwnershipTest(TestCase):
         form_data = {
             'name': 'New Name',
             'description': 'New Description',
+            'tagline': 'Test Tagline',
             'players': [2],
             'public': campaign.public,
         }
@@ -136,6 +138,7 @@ class CampaignOwnershipTest(TestCase):
         form_data = {
             'name': 'New Name',
             'description': 'New Description',
+            'tagline': 'Test Tagline',
             'players': [2],
             'public': campaign.public,
         }

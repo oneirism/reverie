@@ -8,19 +8,19 @@ def index(request):
             "Multi-Factor Authentication",
             "User Authentication",
             "User Registration",
-        ],
-        "in_progress": [
+            "Campaign Ownership",
+            "Character Ownership",
             "Splash",
         ],
-        "backlog": [
-            "Campaign Ownership",
-            "Campaign Log",
-            "Character Ownership",
+        "in_progress": [
             "Character Tracking",
-            "Cross Referencing",
-            "Deployment Pipeline",
             "Faction Tracking",
             "Location Tracking",
+            "Deployment Pipeline",
+        ],
+        "backlog": [
+            "Campaign Log",
+            "Cross Referencing",
             "Markdown Entries",
             "Search Functionality",
             "Secret Information",
