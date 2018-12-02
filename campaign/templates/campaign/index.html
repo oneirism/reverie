@@ -5,6 +5,19 @@
 {% endblock %}
 
 {% block content %}
+  {% if user.is_authenticated %}
+    <section class="section">
+      <div class="is-pulled-right">
+        <p>
+          GM Controls -
+          <a href="{% url 'campaign:campaign_entry' %}">
+            Create Campaign
+          </a>
+        </p>
+      </div>
+    </section>
+  {% endif %}
+
   <section class="hero is-primary">
     <div class="hero-body">
       <div class="container">

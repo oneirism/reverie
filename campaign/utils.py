@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-from .models import Campaign
+from .models import Campaign, Character
 
 
 def login_required_if_private(func):
@@ -25,6 +25,18 @@ def is_gm(func):
         return func(request, *args, **kwargs)
 
     return check_and_call
+
+def can_edit_character(func):
+    def wrap(request, *args, **kwargs):
+        campaign = Campaign.objects.get(id=kwargs['campaign_id'])
+        character = Character.objects.get(id=kwargs['character_id'])
+
+        if not (request.user == character.player or request.user == campaign.game_master):
+            return HttpResponse("Unauthorised", status=403)
+
+        return func(request, *args, **kwargs)
+
+    return wrap
 
 def is_player_if_private(func):
     def wrap(request, *args, **kwargs):

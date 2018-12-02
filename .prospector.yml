@@ -1,0 +1,6 @@
+ignore-paths:
+  - node_modules
+  - venv
+
+ignore-patterns:
+  - .+/migrations/.+

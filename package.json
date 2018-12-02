@@ -5,7 +5,7 @@
   },
   "scripts": {
     "build": "gulp",
-    "test": "pipenv run python manage.py test"
+    "test": "python manage.py test"
   },
   "dependencies": {
     "gulp-clean-css": "^3.9.4"

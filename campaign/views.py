@@ -1,12 +1,12 @@
 from dal import autocomplete
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from .forms import CampaignEntryForm
-from .models import Campaign
+from .forms import CampaignEntryForm, CharacterEntryForm, FactionEntryForm, \
+    ItemEntryForm, LocationEntryForm
+from .models import Campaign, Character, Faction, Item, Location
 from . import utils
 
 
@@ -22,6 +22,7 @@ class PlayerAutocomplete(autocomplete.Select2QuerySetView):
         label = result.username
 
         return label
+
 
 def index(request):
     context = {}
@@ -61,7 +62,7 @@ def index(request):
     return render(request, 'campaign/index.html', context)
 
 
-@login_required
+@utils.login_required
 def new_campaign(request):
     form = CampaignEntryForm(request.POST or None)
 
@@ -75,7 +76,7 @@ def new_campaign(request):
         campaign.players.set(players)
         campaign.save()
 
-        # FIXME(devenney): Should redirect to campaign details.
+        # fixme(devenney): should redirect to campaign details.
         return HttpResponseRedirect(reverse('campaign:campaign_index'))
 
     context = {'form': form}
@@ -97,7 +98,6 @@ def campaign_edit(request, campaign_id=None):
 
     if form.is_valid():
         form.save()
-        # FIXME(devenney): Should redirect to campaign details.
         return HttpResponseRedirect('/campaign/{}/'.format(campaign_id))
 
     return render(request, 'campaign/campaign_form.html', context)
@@ -108,8 +108,316 @@ def campaign_edit(request, campaign_id=None):
 def campaign_detail(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
 
+    characters = Character.objects.filter(
+        campaign = campaign
+    )
+
     context = {
-        'campaign': campaign
+        'campaign': campaign,
+        'characters': characters
     }
 
     return render(request, 'campaign/campaign_detail.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def character_list(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    characters = Character.objects.filter(
+        campaign = campaign
+    )
+
+    context = {
+        'campaign': campaign,
+        'characters': characters,
+    }
+
+    return render(request, 'campaign/character_list.html', context)
+
+@utils.login_required
+@utils.is_gm
+def new_character(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    character = Character(campaign_id = campaign_id)
+
+    form = CharacterEntryForm(request.POST or None, instance=character)
+
+    if form.is_valid():
+        character = form.save(commit=False)
+        character.campaign_id = campaign_id
+        character.save()
+
+        # fixme(devenney): should redirect to character details.
+        return HttpResponseRedirect(reverse('campaign:character_list', kwargs={'campaign_id': campaign.id}))
+
+    context = {
+        'campaign': campaign,
+        'form': form
+    }
+
+    return render(request, 'campaign/character_form.html', context)
+
+@utils.login_required
+@utils.can_edit_character
+def character_edit(request, campaign_id=None, character_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    character = get_object_or_404(Character, id=character_id)
+
+    form = CharacterEntryForm(request.POST or None, instance=character)
+
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'campaign': campaign,
+        'character': character,
+    }
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/campaign/{}/characters/{}/'.format(campaign_id, character_id))
+
+    return render(request, 'campaign/character_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def character_detail(request, campaign_id=None, character_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    character = get_object_or_404(Character, id=character_id)
+
+    context = {
+        'campaign': campaign,
+        'character': character
+    }
+
+    return render(request, 'campaign/character_detail.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def faction_list(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    factions = Faction.objects.filter(
+        campaign = campaign
+    )
+
+    context = {
+        'campaign': campaign,
+        'factions': factions,
+    }
+
+    return render(request, 'campaign/faction_list.html', context)
+
+@utils.login_required
+@utils.is_gm
+def new_faction(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    faction = Faction(campaign_id = campaign_id)
+
+    form = FactionEntryForm(request.POST or None, instance=faction)
+
+    if form.is_valid():
+        faction = form.save(commit=False)
+        faction.campaign_id = campaign_id
+        faction.save()
+
+        # fixme(devenney): should redirect to faction details.
+        return HttpResponseRedirect(reverse('campaign:faction_list', kwargs={'campaign_id': campaign.id}))
+
+    context = {
+        'campaign': campaign,
+        'form': form
+    }
+
+    return render(request, 'campaign/faction_form.html', context)
+
+@utils.login_required
+@utils.is_gm
+def faction_edit(request, campaign_id=None, faction_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    faction = get_object_or_404(Faction, id=faction_id)
+
+    form = FactionEntryForm(request.POST or None, instance=faction)
+
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'campaign': campaign,
+        'faction': faction,
+    }
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/campaign/{}/factions/{}/'.format(campaign_id, faction_id))
+
+    return render(request, 'campaign/faction_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def faction_detail(request, campaign_id=None, faction_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    faction = get_object_or_404(Faction, id=faction_id)
+
+    context = {
+        'campaign': campaign,
+        'faction': faction
+    }
+
+    return render(request, 'campaign/faction_detail.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def item_list(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    items = Item.objects.filter(
+        campaign = campaign
+    )
+
+    context = {
+        'campaign': campaign,
+        'items': items,
+    }
+
+    return render(request, 'campaign/item_list.html', context)
+
+@utils.login_required
+@utils.is_gm
+def new_item(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    item = Item(campaign_id = campaign_id)
+
+    form = ItemEntryForm(request.POST or None, instance=item)
+
+    if form.is_valid():
+        item = form.save(commit=False)
+        item.campaign_id = campaign_id
+        item.save()
+
+        # fixme(devenney): should redirect to item details.
+        return HttpResponseRedirect(reverse('campaign:item_list', kwargs={'campaign_id': campaign.id}))
+
+    context = {
+        'campaign': campaign,
+        'form': form
+    }
+
+    return render(request, 'campaign/item_form.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def item_edit(request, campaign_id=None, item_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    item = get_object_or_404(Item, id=item_id)
+
+    form = ItemEntryForm(request.POST or None, instance=item)
+
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'campaign': campaign,
+        'item': item,
+    }
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/campaign/{}/items/{}/'.format(campaign_id, item_id))
+
+    return render(request, 'campaign/item_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def item_detail(request, campaign_id=None, item_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    item = get_object_or_404(Item, id=item_id)
+
+    context = {
+        'campaign': campaign,
+        'item': item
+    }
+
+    return render(request, 'campaign/item_detail.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def location_list(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    locations = Location.objects.filter(
+        campaign = campaign
+    )
+
+    context = {
+        'campaign': campaign,
+        'locations': locations,
+    }
+
+    return render(request, 'campaign/location_list.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def new_location(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    location = Location(campaign_id = campaign_id)
+
+    form = LocationEntryForm(request.POST or None, instance=location)
+
+    if form.is_valid():
+        location = form.save(commit=False)
+        location.campaign_id = campaign_id
+        location.save()
+
+        # fixme(devenney): should redirect to location details.
+        return HttpResponseRedirect(reverse('campaign:location_list', kwargs={'campaign_id': campaign.id}))
+
+    context = {
+        'campaign': campaign,
+        'form': form
+    }
+
+    return render(request, 'campaign/location_form.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def location_edit(request, campaign_id=None, location_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    location = get_object_or_404(Location, id=location_id)
+
+    form = LocationEntryForm(request.POST or None, instance=location)
+
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'campaign': campaign,
+        'location': location,
+    }
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/campaign/{}/locations/{}/'.format(campaign_id, location_id))
+
+    return render(request, 'campaign/location_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def location_detail(request, campaign_id=None, location_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    location = get_object_or_404(Location, id=location_id)
+
+    context = {
+        'campaign': campaign,
+        'location': location
+    }
+
+    return render(request, 'campaign/location_detail.html', context)

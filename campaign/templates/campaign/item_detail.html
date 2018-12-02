@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ campaign.name }}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <li>
+    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+      {{ campaign.name }}
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'campaign:item_list' campaign.id %}">
+      Items
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'campaign:item_detail' campaign.id item.id %}">
+      {{ item.name }}
+    </a>
+  </li>
+{% endblock %}
+
+{% block content %}
+  {% ifequal user.id campaign.game_master_id %}
+    <section class="section">
+      <div class="is-pulled-right">
+        <p>
+          GM Controls -
+          <a href="{% url 'campaign:item_edit' campaign.id item.id %}">
+            Edit
+          </a>
+        </p>
+      </div>
+    </section>
+  {% endifequal %}
+
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{ item.name }}</h1>
+        <h2 class="subtitle">{{ item.tagline }}</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {{ item.description | linebreaksbr }}
+    </div>
+  </section>
+{% endblock %}

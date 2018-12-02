@@ -4,6 +4,14 @@
   {{ campaign.name }}
 {% endblock %}
 
+{% block breadcrumbs %}
+  <li>
+    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+      {{ campaign.name }}
+    </a>
+  </li>
+{% endblock %}
+
 {% block content %}
   {% ifequal user.id campaign.game_master_id %}
     <section class="section">
@@ -22,8 +30,55 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">{{ campaign.name }}</h1>
-        <h2 class="subtitle">{{ campaign.description }}</h2>
+        <h2 class="subtitle">{{ campaign.tagline }}</h2>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">
+            <a href="{% url 'campaign:character_list' campaign.id %}">
+              Characters
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">
+            <a href="{% url 'campaign:faction_list' campaign.id %}">
+              Factions
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">
+            <a href="{% url 'campaign:item_list' campaign.id %}">
+              Items
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">
+            <a href="{% url 'campaign:location_list' campaign.id %}">
+              Locations
+            </a>
+          </p>
+        </div>
+      </div>
+    </nav>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {{ campaign.description | linebreaksbr }}
     </div>
   </section>
 {% endblock %}
