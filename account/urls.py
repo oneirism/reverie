@@ -12,7 +12,7 @@ from .views import SettingsView
 urlpatterns = [
     path(
         'settings/',
-        SettingsView.as_view(), # noqa: W605
+        SettingsView.as_view(),
         name='account_settings'
     ),
 
@@ -169,7 +169,7 @@ urlpatterns = [
     ),
 
     re_path(
-        'password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
+        r'password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
         auth_views.PasswordResetConfirmView.as_view(
             template_name='password_management/password_reset_confirm.html',
             success_url=reverse_lazy('auth_password_reset_complete')
