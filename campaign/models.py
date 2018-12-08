@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
 # Create your models here.
 class Campaign(models.Model):
     """ A Reverie campaign. """
@@ -143,3 +144,28 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Log(models.Model):
+    """ A Reverie campaign log entry. """
+    title = models.CharField(
+        unique=True,
+        max_length=50,
+    )
+
+    description = models.TextField(
+        max_length=5000,
+    )
+
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.PROTECT,
+    )
+
+    date = models.DateField()
+
+    class Meta:
+        ordering = ['date']
+
+    def __str__(self):
+        return self.title

@@ -1,9 +1,11 @@
-from django.test import TestCase
+from datetime import datetime
 
-from campaign.models import Campaign, Character, Faction, Item, Location
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.test import TestCase
 from django.urls import reverse
+
+from campaign.models import Campaign, Character, Faction, Item, Location, Log
 
 GM_USER = 'gm'
 PLAYER_USER = 'player'
@@ -47,6 +49,13 @@ TEST_LOCATION = {
     'name': 'Test Location',
     'tagline': 'Test Tagline',
     'description': 'Test Description',
+    'campaign_id': 1,
+}
+
+TEST_LOG = {
+    'title': 'Test Log',
+    'description': 'Test Description',
+    'date': '01/01/2001',
     'campaign_id': 1,
 }
 
@@ -385,5 +394,77 @@ class LocationViewTest(TestCase):
         location = Location.objects.get(id=self.location.id)
 
         self.assertEqual(location.tagline, 'New tagline!')
+
+        self.client.logout()
+
+
+class LogViewTest(TestCase):
+    """ Test cases related to the Log view. """
+
+    def setUp(self):
+        # Create Users
+        for idx, user in enumerate(TEST_USERS):
+            User.objects.create_user(
+                id=TEST_USERS.index(user),
+                password=TEST_PASSWORD,
+                username=user,
+            )
+
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        # Create Campaigns
+        response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
+        self.assertRedirects(response, reverse('campaign:campaign_index'))
+        self.campaign = Campaign.objects.get(name = 'Public Campaign')
+
+        # Create Logs
+        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_id': self.campaign.id}), TEST_LOG)
+        self.assertRedirects(response, reverse('campaign:log_list', kwargs={'campaign_id': self.campaign.id}))
+        self.log = Log.objects.get(title = 'Test Log')
+
+        # Logout
+        self.client.logout()
+
+
+    def test_invalid_log_entry(self):
+        # Missing description
+        bad_log_form = {
+            'title': 'Test Log',
+            'campaign_id': 'aa',
+        }
+
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_id': self.campaign.id}), bad_log_form)
+        self.assertEqual(response.status_code, 200)
+
+        self.client.logout()
+
+    def test_invalid_edit_log(self):
+        bad_log_form = {
+            'tagline': 'Test tagline.',
+            'description': 'Test description',
+        }
+
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}), bad_log_form)
+        self.assertEqual(response.status_code, 200)
+
+        self.client.logout()
+
+
+    def test_edit_log(self):
+        new_log = TEST_LOG
+        new_log['description'] = 'New description!'
+
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}), new_log)
+        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}))
+
+        log = Log.objects.get(id=self.log.id)
+
+        self.assertEqual(log.description, 'New description!')
 
         self.client.logout()

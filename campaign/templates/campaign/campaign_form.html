@@ -6,10 +6,6 @@
   Campaign Entry
 {% endblock %}
 
-{% block extracss %}
-  <link rel="stylesheet" type="text/css" href="{% static "css/select2.css" %}">
-{% endblock %}
-
 {% block content %}
   <section class="hero is-primary">
     <div class="hero-body">
@@ -40,6 +36,4 @@
       </button>
     </form>
   </section>
-
-  {{ form.media.js }}
 {% endblock %}

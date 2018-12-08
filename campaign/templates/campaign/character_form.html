@@ -6,10 +6,6 @@
   Character Entry
 {% endblock %}
 
-{% block extracss %}
-  <link rel="stylesheet" type="text/css" href="{% static "css/select2.css" %}">
-{% endblock %}
-
 {% block breadcrumbs %}
   <li>
     <a href="{% url 'campaign:campaign_detail' campaign.id %}">

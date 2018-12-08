@@ -13,6 +13,7 @@ services:
     entrypoint: sh /code/reverie/migrate.sh
     volumes:
       - ./reverie/settings:/code/reverie/settings
+      - ./campaign/migrations:/code/reverie/campaign/migrations
     depends_on:
       - db
     networks:

@@ -1,16 +1,17 @@
 from django.shortcuts import render
 
+
 # Create your views here.
 def index(request):
-
     context = {
         "complete": [
+            "Campaign Ownership",
+            "Campaign Log",
+            "Character Ownership",
             "Multi-Factor Authentication",
+            "Splash",
             "User Authentication",
             "User Registration",
-            "Campaign Ownership",
-            "Character Ownership",
-            "Splash",
         ],
         "in_progress": [
             "Character Tracking",
@@ -19,7 +20,6 @@ def index(request):
             "Deployment Pipeline",
         ],
         "backlog": [
-            "Campaign Log",
             "Cross Referencing",
             "Markdown Entries",
             "Search Functionality",
