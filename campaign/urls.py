@@ -5,6 +5,7 @@ from .views import index, new_campaign, campaign_detail, campaign_edit, \
     new_faction, faction_list, faction_detail, faction_edit, \
     new_item, item_list, item_detail, item_edit, \
     new_location, location_list, location_detail, location_edit, \
+    new_log, log_list, log_detail, log_edit, \
     PlayerAutocomplete
 
 urlpatterns = [
@@ -34,4 +35,9 @@ urlpatterns = [
     path('<campaign_id>/locations/new', new_location, name='location_entry'),
     path('<campaign_id>/locations/<location_id>/', location_detail, name='location_detail'),
     path('<campaign_id>/locations/<location_id>/edit/', location_edit, name='location_edit'),
+
+    path('<campaign_id>/log/', log_list, name='log_list'),
+    path('<campaign_id>/log/new/', new_log, name='log_entry'),
+    path('<campaign_id>/log/<log_id>/', log_detail, name='log_detail'),
+    path('<campaign_id>/log/<log_id>/edit/', log_edit, name='log_edit'),
 ]

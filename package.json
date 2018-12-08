@@ -1,13 +1,26 @@
 {
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.5.0",
+    "bulma": "^0.7.2",
+    "bulma-calendar": "^5.0.3",
+    "bulma-timeline": "^3.0.0",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
     "gulp": "^3.9.1",
-    "gulp-mjml": "^3.0.0"
+    "gulp-mjml": "^3.0.0",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.26.1",
+    "webpack-bundle-tracker": "^0.4.2-beta",
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
+    "bundle": "webpack",
     "build": "gulp",
     "test": "python manage.py test"
   },
-  "dependencies": {
-    "gulp-clean-css": "^3.9.4"
-  }
+  "dependencies": {}
 }

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Campaign Log
+{% endblock %}
+
+{% block breadcrumbs %}
+  <li>
+    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+      {{ campaign.name }}
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'campaign:log_list' campaign.id %}">
+      Campaign Log
+    </a>
+  </li>
+{% endblock %}
+
+{% block content %}
+  {% ifequal user.id campaign.game_master_id %}
+    <section class="section">
+      <div class="is-pulled-right">
+        <p>
+          GM Controls -
+          <a href="{% url 'campaign:log_entry' campaign.id %}">
+            New Log Entry
+          </a>
+        </p>
+      </div>
+    </section>
+  {% endifequal %}
+
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container is-clearfix">
+        <h1 class="title">Campaign Logs</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+      <h2 class="subtitle">
+        Campaign Logs
+      </h2>
+      {% if logs %}
+        <div class="section">
+          <div class="timeline is-centered">
+            <header class="timeline-header">
+              <span class="tag is-medium is-primary">Present Day</span>
+            </header>
+            {% for log in logs reversed %}
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <p class="heading">{{ log.date }}</p>
+                  <p>
+                    <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
+                      {{ log.title }}
+                    </a>
+                  </p>
+                </div>
+              </div>
+            {% endfor %}
+            <header class="timeline-header">
+              <span class="tag is-medium is-primary">You meet in a tavern...</span>
+            </header>
+          </div>
+        </div>
+      {% else %}
+        <div>
+          <h2 style="subtitle">No campaign logs are available.</h2>
+        </div>
+      {% endif %}
+      </div>
+  </section>
+{% endblock %}

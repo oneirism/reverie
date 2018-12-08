@@ -1,0 +1,15 @@
+@import "~bulma/sass/utilities/initial-variables";
+
+$primary: hsl(0, 0%, 21%);
+@import "~bulma/bulma";
+
+@import "~bulma-calendar/dist/css/bulma-calendar.sass";
+@import "~bulma-timeline";
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+
+@import "../../src/css/select2.css";

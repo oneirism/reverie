@@ -22,6 +22,7 @@ script:
   - "pipenv run prospector"
   # Build Static Content
   - "pipenv run yarn build"
+  - "pipenv run yarn bundle"
   # Django Tests
   - "pipenv run yarn test"
 after_success:

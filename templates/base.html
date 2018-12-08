@@ -1,3 +1,5 @@
+{% load render_bundle from webpack_loader %}
+
 <html>
   <head>
     <title>
@@ -6,8 +8,8 @@
       {% endblock %}
     </title>
 
-    {% block extracss %}
-    {% endblock %}
+    {% render_bundle 'main' 'css' %}
+    {% render_bundle 'main' 'js' %}
 
     {# Google Analytics #}
     {% if GOOGLE_ANALYTICS_KEY %}
@@ -20,16 +22,7 @@
     <!-- FIXME: This prevents users from translating the page to their native language. -->
     <meta name="google" value="notranslate">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css" integrity="sha256-zKA1Bf41O96+gJSlkn/Bh2HATW/OhwkApPlYTp3B5O8=" crossorigin="anonymous" />
-    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-
-    {# FIXME: Static Resources #}
-		<script
-  		src="https://code.jquery.com/jquery-3.3.1.min.js"
-		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-	  	crossorigin="anonymous">
-		</script>
-
+    <!-- FIXME: Static Resources -->
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function () {
 

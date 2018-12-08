@@ -1,9 +1,11 @@
 """ Campaign model test cases. """
 
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from campaign.models import Campaign, Character, Faction, Item, Location
+from campaign.models import Campaign, Character, Faction, Item, Location, Log
 
 
 class CampaignTest(TestCase):
@@ -154,3 +156,31 @@ class LocationTest(TestCase):
         location = self.location
 
         self.assertEqual(str(location), self.location_raw['name'])
+
+
+class LogTest(TestCase):
+    """ Test cases related to the Log model. """
+    def setUp(self):
+        self.log_raw = {
+            'title': 'Test Log',
+            'description': 'Test Description',
+            'date': datetime(2010, 9, 12),
+            'campaign_id': 1,
+        }
+
+        self.log = Log.objects.create(**self.log_raw)
+
+
+    def test_create_log(self):
+        """ Test Log model creation. """
+        log = self.log
+
+        self.assertTrue(isinstance(log, Log))
+        self.assertEqual(log.title, "Test Log")
+
+
+    def test_str(self):
+        """ Test informal printable string representation. """
+        log = self.log
+
+        self.assertEqual(str(log), self.log_raw['title'])

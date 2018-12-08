@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .forms import CampaignEntryForm, CharacterEntryForm, FactionEntryForm, \
-    ItemEntryForm, LocationEntryForm
-from .models import Campaign, Character, Faction, Item, Location
+    ItemEntryForm, LocationEntryForm, LogEntryForm
+from .models import Campaign, Character, Faction, Item, Location, Log
 from . import utils
 
 
@@ -421,3 +421,80 @@ def location_detail(request, campaign_id=None, location_id=None):
     }
 
     return render(request, 'campaign/location_detail.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def log_list(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    logs = Log.objects.filter(
+        campaign=campaign
+    )
+
+    context = {
+        'campaign': campaign,
+        'logs': logs,
+    }
+
+    return render(request, 'campaign/log_list.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def new_log(request, campaign_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    log = Log(campaign_id = campaign_id)
+
+    form = LogEntryForm(request.POST or None, instance=log)
+
+    if form.is_valid():
+        log = form.save(commit=False)
+        log.campaign_id = campaign_id
+        log.save()
+
+        # fixme(devenney): should redirect to log details.
+        return HttpResponseRedirect(reverse('campaign:log_list', kwargs={'campaign_id': campaign.id}))
+
+    context = {
+        'campaign': campaign,
+        'form': form
+    }
+
+    return render(request, 'campaign/log_form.html', context)
+
+
+@utils.login_required_if_private
+@utils.is_player_if_private
+def log_detail(request, campaign_id=None, log_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    log = get_object_or_404(Log, id=log_id)
+
+    context = {
+        'campaign': campaign,
+        'log': log
+    }
+
+    return render(request, 'campaign/log_detail.html', context)
+
+
+@utils.login_required
+@utils.is_gm
+def log_edit(request, campaign_id=None, log_id=None):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    log = get_object_or_404(Log, id=log_id)
+
+    form = LogEntryForm(request.POST or None, instance=log)
+
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'campaign': campaign,
+        'log': log,
+    }
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/campaign/{}/log/{}/'.format(campaign_id, log_id))
+
+    return render(request, 'campaign/log_form.html', context)

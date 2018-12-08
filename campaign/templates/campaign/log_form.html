@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-  Item Entry
+  Log Entry
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -13,30 +13,29 @@
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:item_list' campaign.id %}">
-      Items
+    <a href="{% url 'campaign:log_list' campaign.id %}">
+      Campaign Log
     </a>
   </li>
-  {% if item %}
+  {% if log %}
     <li>
-      <a href="{% url 'campaign:item_detail' campaign.id item.id %}">
-        {{ item.name }}
+      <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
+        {{ log.title }}
       </a>
     </li>
     <li>
-      <a href="{% url 'campaign:item_edit' campaign.id item.id %}">
+      <a href="{% url 'campaign:log_edit' campaign.id log.id %}">
         Edit
       </a>
     </li>
   {% else %}
     <li>
-      <a href="{% url 'campaign:item_entry' campaign.id %}">
+      <a href="{% url 'campaign:log_entry' campaign.id %}">
         New
       </a>
     </li>
   {% endif %}
 {% endblock %}
-
 
 {% block content %}
   <section class="hero is-primary">
@@ -46,7 +45,7 @@
           {% if form.instance.id %}
             Edit {{ form.instance }}
           {% else %}
-            New Item
+            New Log
           {% endif %}
         </h1>
       </div>
@@ -63,7 +62,7 @@
         {% if form.instance.id %}
           Update
         {% else %}
-          Create Item
+          Create Log
         {% endif %}
       </button>
     </form>

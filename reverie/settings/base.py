@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     # Third-Party
     'dal',
     'dal_select2',
-    'django_nose', # FIXME: Only required for testing.
+    'django_nose',  # FIXME: Only required for testing.
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'pagedown',
     'registration',
     'two_factor',
+    'webpack_loader',
     'widget_tweaks',
 
     # Django Contrib
@@ -131,6 +132,17 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join('assets/dist'),
 )
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': False,
+        'BUNDLE_DIR_NAME': 'bundles/',  # must end with slash
+        'STATS_FILE': 'assets/dist/webpack-stats.json',
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
+    }
+}
 
 # Django Registration
 ACTIVATION_EMAIL_HTML='email/activation.html'

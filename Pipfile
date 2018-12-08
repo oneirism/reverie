@@ -23,6 +23,8 @@ django-storages = "==1.7.1"
 boto3 = "==1.7.59"
 gunicorn = "==19.9.0"
 psycopg2 = "==2.7.5"
+django-webpack-loader = "*"
+django-datetime-widget = "*"
 
 [dev-packages]
 coverage = "==4.5.2"
