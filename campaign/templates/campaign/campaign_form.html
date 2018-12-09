@@ -6,6 +6,28 @@
   Campaign Entry
 {% endblock %}
 
+{% block breadcrumbs %}
+  {% if campaign %}
+    <li>
+      <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+        {{ campaign.name }}
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'campaign:campaign_edit' campaign.id %}">
+        Edit
+      </a>
+    </li>
+  {% else %}
+    <li>
+      <a href="{% url 'campaign:campaign_entry' %}">
+        New
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}
+
+
 {% block content %}
   <section class="hero is-primary">
     <div class="hero-body">
@@ -22,7 +44,7 @@
   </section>
 
   <section class="section">
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
       {% include "bulma_form.html" %}

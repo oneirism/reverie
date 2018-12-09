@@ -64,7 +64,7 @@ def index(request):
 
 @utils.login_required
 def new_campaign(request):
-    form = CampaignEntryForm(request.POST or None)
+    form = CampaignEntryForm(request.POST or None, request.FILES or None)
 
     players = request.POST.getlist('players')
 
@@ -89,11 +89,12 @@ def new_campaign(request):
 def campaign_edit(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
 
-    form = CampaignEntryForm(request.POST or None, instance=campaign)
+    form = CampaignEntryForm(request.POST or None, request.FILES or None, instance=campaign)
 
     context = {
         'form': form,
-        'action': 'Edit'
+        'action': 'Edit',
+        'campaign': campaign,
     }
 
     if form.is_valid():
@@ -165,7 +166,7 @@ def character_edit(request, campaign_id=None, character_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     character = get_object_or_404(Character, id=character_id)
 
-    form = CharacterEntryForm(request.POST or None, instance=character)
+    form = CharacterEntryForm(request.POST or None, request.FILES or None, instance=character)
 
     context = {
         'form': form,
@@ -217,7 +218,7 @@ def new_faction(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     faction = Faction(campaign_id = campaign_id)
 
-    form = FactionEntryForm(request.POST or None, instance=faction)
+    form = FactionEntryForm(request.POST or None, request.FILES or None, instance=faction)
 
     if form.is_valid():
         faction = form.save(commit=False)
@@ -240,7 +241,7 @@ def faction_edit(request, campaign_id=None, faction_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     faction = get_object_or_404(Faction, id=faction_id)
 
-    form = FactionEntryForm(request.POST or None, instance=faction)
+    form = FactionEntryForm(request.POST or None, request.FILES or None, instance=faction)
 
     context = {
         'form': form,
@@ -292,7 +293,7 @@ def new_item(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     item = Item(campaign_id = campaign_id)
 
-    form = ItemEntryForm(request.POST or None, instance=item)
+    form = ItemEntryForm(request.POST or None, request.FILES or None, instance=item)
 
     if form.is_valid():
         item = form.save(commit=False)
@@ -316,7 +317,7 @@ def item_edit(request, campaign_id=None, item_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     item = get_object_or_404(Item, id=item_id)
 
-    form = ItemEntryForm(request.POST or None, instance=item)
+    form = ItemEntryForm(request.POST or None, request.FILES or None, instance=item)
 
     context = {
         'form': form,
@@ -369,7 +370,7 @@ def new_location(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     location = Location(campaign_id = campaign_id)
 
-    form = LocationEntryForm(request.POST or None, instance=location)
+    form = LocationEntryForm(request.POST or None, request.FILES or None, instance=location)
 
     if form.is_valid():
         location = form.save(commit=False)
@@ -393,7 +394,7 @@ def location_edit(request, campaign_id=None, location_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     location = get_object_or_404(Location, id=location_id)
 
-    form = LocationEntryForm(request.POST or None, instance=location)
+    form = LocationEntryForm(request.POST or None, request.FILES or None, instance=location)
 
     context = {
         'form': form,
@@ -446,7 +447,7 @@ def new_log(request, campaign_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     log = Log(campaign_id = campaign_id)
 
-    form = LogEntryForm(request.POST or None, instance=log)
+    form = LogEntryForm(request.POST or None, request.FILES or None, instance=log)
 
     if form.is_valid():
         log = form.save(commit=False)
@@ -484,7 +485,7 @@ def log_edit(request, campaign_id=None, log_id=None):
     campaign = get_object_or_404(Campaign, id=campaign_id)
     log = get_object_or_404(Log, id=log_id)
 
-    form = LogEntryForm(request.POST or None, instance=log)
+    form = LogEntryForm(request.POST or None, request.FILES or None, instance=log)
 
     context = {
         'form': form,

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load cropping %}
+
 {% block title %}
   {{ campaign.name }}
 {% endblock %}
@@ -14,7 +16,7 @@
     <a href="{% url 'campaign:log_list' campaign.id %}">
       Campaign Log
     </a>
-  </li> 
+  </li>
   <li>
     <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
       {{ log.title }}
@@ -37,16 +39,26 @@
   {% endifequal %}
 
   <section class="hero is-primary">
-    <div class="hero-body">
+    {% if log.image %}
+      <a href="{{ log.image.url }}">
+        <figure class="image is-3by1">
+          <img src="{% cropped_thumbnail log "cropping" %}">
+        </figure>
+      </a>
+    {% endif %}
+    <div class="hero-body is-small">
       <div class="container">
         <h1 class="title">{{ log.title }}</h1>
+        <h2 class="subtitle">{{ log.date }}</h2>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      {{ log.description | linebreaksbr }}
+  <section class="section is-small">
+    <div class="columns has-text-centered is-centered">
+      <div class="column is-three-fifths">
+        {{ log.description | linebreaksbr }}
+      </div>
     </div>
   </section>
 {% endblock %}

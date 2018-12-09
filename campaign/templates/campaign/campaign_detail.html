@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load cropping %}
+
 {% block title %}
   {{ campaign.name }}
 {% endblock %}
@@ -27,7 +29,14 @@
   {% endifequal %}
 
   <section class="hero is-primary">
-    <div class="hero-body">
+    {% if campaign.image %}
+      <a href="{{ campaign.image.url }}">
+        <figure class="image is-3by1">
+          <img src="{% cropped_thumbnail campaign "cropping" %}">
+        </figure>
+      </a>
+    {% endif %}
+    <div class="hero-body is-small">
       <div class="container">
         <h1 class="title">{{ campaign.name }}</h1>
         <h2 class="subtitle">{{ campaign.tagline }}</h2>
@@ -90,9 +99,11 @@
     </nav>
   </section>
 
-  <section class="section">
-    <div class="container">
-      {{ campaign.description | linebreaksbr }}
+  <section class="section is-small">
+    <div class="columns has-text-centered is-centered">
+      <div class="column is-three-fifths">
+        {{ campaign.description | linebreaksbr }}
+      </div>
     </div>
   </section>
 {% endblock %}

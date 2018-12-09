@@ -4,6 +4,7 @@ from dal import autocomplete
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import widgets
+from image_cropping import ImageCropWidget
 
 from .models import Campaign, Character, Faction, Item, Location, Log
 
@@ -23,7 +24,13 @@ class CampaignEntryForm(forms.ModelForm):
 
     class Meta:
         model = Campaign
-        fields = ['name', 'description', 'players', 'public', 'tagline']
+
+        fields = ['name', 'image', 'cropping', 'description', 'players', 'public', 'tagline']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
+
 
 
 class CharacterEntryForm(forms.ModelForm):
@@ -40,35 +47,60 @@ class CharacterEntryForm(forms.ModelForm):
 
     class Meta:
         model = Character
-        fields = ['name', 'tagline', 'description', 'player']
+
+        fields = ['name', 'tagline', 'image', 'cropping', 'description', 'player']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
 
 
 class FactionEntryForm(forms.ModelForm):
     """ A Reverie faction form. """
     class Meta:
         model = Faction
-        fields = ['name', 'tagline', 'description']
+
+        fields = ['name', 'tagline','image', 'cropping', 'description']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
 
 
 class ItemEntryForm(forms.ModelForm):
     """ A Reverie item form. """
     class Meta:
         model = Item
-        fields = ['name', 'tagline', 'description']
+
+        fields = ['name', 'tagline', 'image', 'cropping', 'description']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
 
 
 class LocationEntryForm(forms.ModelForm):
     """ A reverie location form. """
     class Meta:
         model = Location
-        fields = ['name', 'tagline', 'description']
+
+        fields = ['name', 'tagline', 'image', 'cropping', 'description']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
 
 
 class LogEntryForm(forms.ModelForm):
     """ A Reverie log form. """
     class Meta:
         model = Log
-        fields = ['title', 'date', 'description']
+
+        fields = ['title', 'date', 'image', 'cropping', 'description']
+
+        widgets = {
+            'image': ImageCropWidget,
+        }
 
     this_year = datetime.date.today().year
     years = range(this_year-5, this_year+5)

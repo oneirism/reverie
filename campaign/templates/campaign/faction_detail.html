@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load cropping %}
+
 {% block title %}
   {{ campaign.name }}
 {% endblock %}
@@ -23,31 +25,47 @@
 {% endblock %}
 
 {% block content %}
-  {% ifequal user.id campaign.game_master_id %}
+  {% if user == campaign.game_master %}
     <section class="section">
       <div class="is-pulled-right">
         <p>
-          GM Controls -
+          {% if user == campaign.game_master %}
+            GM
+          {% else %}
+            Player
+          {% endif %}
+          Controls -
           <a href="{% url 'campaign:faction_edit' campaign.id faction.id %}">
             Edit
           </a>
         </p>
       </div>
     </section>
-  {% endifequal %}
+  {% endif %}
 
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
+  <section class="section is-small">
+    <div class="hero is-primary">
+      <div class="hero-body has-text-centered">
+        {% if faction.image %}
+          <a href="{{ faction.image.url }}">
+            <figure class="image is-128x128 has-image-centered">
+              <img class="is-rounded" src="{% cropped_thumbnail faction "cropping" %}">
+            </figure>
+          </a>
+          <br />
+        {% endif %}
+
         <h1 class="title">{{ faction.name }}</h1>
         <h2 class="subtitle">{{ faction.tagline }}</h2>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      {{ faction.description | linebreaksbr }}
+  <section class="section is-small">
+    <div class="columns has-text-centered is-centered">
+      <div class="column is-three-fifths">
+        {{ faction.description | linebreaksbr }}
+      </div>
     </div>
   </section>
 {% endblock %}
