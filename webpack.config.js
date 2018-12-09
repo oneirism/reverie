@@ -3,14 +3,24 @@ const path = require('path');
 const BundleTracker = require('webpack-bundle-tracker');
 const webpack = require('webpack');
 
+/* Variables */
+const PUBLIC_PATH = process.env.PUBLIC_PATH || '/static'
+const ENV = process.env.NODE_ENV || 'dev'
+
+const PUBLIC_PATHS = {
+  'dev': '/static/bundles/',
+  'production': 'https://cdn.reverie.devenney.io/static/',
+}
+
 module.exports = {
   entry: [
     'jquery',
     './assets/src/index.js'
   ],
   output: {
+    filename: "[name]-[contenthash].js",
     path: path.resolve(__dirname, 'assets/dist/bundles/'),
-    filename: "[name]-[contenthash].js"
+    publicPath: PUBLIC_PATHS[ENV],
   },
   module: {
     rules: [
@@ -30,7 +40,6 @@ module.exports = {
             options: {
               name: '[name].[ext]',
               outputPath: '../fonts/',
-              publicPath: '../static/fonts'
             }
           }
         ]
