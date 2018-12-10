@@ -7,11 +7,12 @@ The expected ordering of this file is as follows:
 """
 
 from django.contrib import admin
+from image_cropping import ImageCroppingMixin
 
 from .models import Campaign, Character, Faction, Item, Location
 
 
-class CampaignAdmin(admin.ModelAdmin):
+class CampaignAdmin(ImageCroppingMixin, admin.ModelAdmin):
     """ ModelAdmin for the Campaign class. """
     model = Campaign
 
@@ -20,7 +21,7 @@ class CampaignAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class CharacterAdmin(admin.ModelAdmin):
+class CharacterAdmin(ImageCroppingMixin, admin.ModelAdmin):
     """ ModelAdmin for the Character class. """
     model = Character
 
@@ -29,7 +30,7 @@ class CharacterAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class FactionAdmin(admin.ModelAdmin):
+class FactionAdmin(ImageCroppingMixin, admin.ModelAdmin):
     """ ModelAdmin for the Faction class. """
     model = Faction
 
@@ -38,7 +39,7 @@ class FactionAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class ItemAdmin(admin.ModelAdmin):
+class ItemAdmin(ImageCroppingMixin, admin.ModelAdmin):
     """ ModelAdmin for the Item class. """
     model = Item
 
@@ -47,7 +48,7 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class LocationAdmin(admin.ModelAdmin):
+class LocationAdmin(ImageCroppingMixin, admin.ModelAdmin):
     """ ModelAdmin for the Location class. """
     model = Location
 

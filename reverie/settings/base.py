@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'django_select2',
     'django_tables2',
+    'easy_thumbnails',
+    'image_cropping',
     'markdown_deux',
     'pagedown',
     'registration',
@@ -124,6 +126,9 @@ USE_L10N = True
 USE_TZ = True
 
 
+MEDIA_ROOT = './media/'
+MEDIA_URL ='/media/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
@@ -151,3 +156,9 @@ PASSWORD_RESET_EMAIL_HTML='email/password_reset.html'
 # Django 2FA
 LOGIN_URL = 'auth_login'
 LOGIN_REDIRECT_URL = 'account_settings'
+
+# Thumbnails
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

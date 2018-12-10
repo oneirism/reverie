@@ -53,7 +53,7 @@
   </section>
 
   <section class="section">
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
       {% include "bulma_form.html" %}
@@ -67,6 +67,4 @@
       </button>
     </form>
   </section>
-
-  {{ form.media.js }}
 {% endblock %}

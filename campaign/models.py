@@ -1,7 +1,9 @@
 """ Reverie campaign model definitions. """
-
 from django.contrib.auth.models import User
 from django.db import models
+from image_cropping import ImageRatioField
+
+from .helpers import RandomFileName
 
 
 # Create your models here.
@@ -15,6 +17,13 @@ class Campaign(models.Model):
     tagline = models.CharField(
         max_length=50,
     )
+
+    image = models.ImageField(
+        blank=True,
+        upload_to=RandomFileName('images/campaign')
+    )
+
+    cropping = ImageRatioField('image', '1500x500')
 
     description = models.TextField(
         max_length=500,
@@ -52,6 +61,13 @@ class Character(models.Model):
         max_length=50,
     )
 
+    image = models.ImageField(
+        blank=True,
+        upload_to='uploaded_images'
+    )
+
+    cropping = ImageRatioField('image', '500x500')
+
     description = models.TextField(
         max_length=500,
     )
@@ -83,6 +99,13 @@ class Faction(models.Model):
         max_length=50,
     )
 
+    image = models.ImageField(
+        blank=True,
+        upload_to='uploaded_images'
+    )
+
+    cropping = ImageRatioField('image', '500x500')
+
     description = models.TextField(
         max_length=500,
     )
@@ -107,6 +130,13 @@ class Item(models.Model):
         unique=True,
         max_length=50,
     )
+
+    image = models.ImageField(
+        blank=True,
+        upload_to='uploaded_images'
+    )
+
+    cropping = ImageRatioField('image', '500x500')
 
     description = models.TextField(
         max_length=500,
@@ -133,6 +163,13 @@ class Location(models.Model):
         max_length=50,
     )
 
+    image = models.ImageField(
+        blank=True,
+        upload_to='uploaded_images'
+    )
+
+    cropping = ImageRatioField('image', '500x500')
+
     description = models.TextField(
         max_length=500,
     )
@@ -152,6 +189,13 @@ class Log(models.Model):
         unique=True,
         max_length=50,
     )
+
+    image = models.ImageField(
+        blank=True,
+        upload_to='uploaded_images'
+    )
+
+    cropping = ImageRatioField('image', '1500x500')
 
     description = models.TextField(
         max_length=5000,

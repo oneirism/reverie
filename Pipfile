@@ -25,6 +25,8 @@ gunicorn = "==19.9.0"
 psycopg2 = "==2.7.5"
 django-webpack-loader = "*"
 django-datetime-widget = "*"
+django-image-cropping = "*"
+easy-thumbnails = "*"
 
 [dev-packages]
 coverage = "==4.5.2"

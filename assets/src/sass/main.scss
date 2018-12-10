@@ -12,4 +12,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
 
+@import "images.scss";
+
 @import "../../src/css/select2.css";
+@import "../../src/css/jquery.Jcrop.css";
+@import "../../src/css/image_cropping.css";
