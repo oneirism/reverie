@@ -5,7 +5,9 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import widgets
 from image_cropping import ImageCropWidget
+from markdownx.fields import MarkdownxFormField
 
+from reverie.widgets import ReverieMarkdownWidget
 from .models import Campaign, Character, Faction, Item, Location, Log
 
 
@@ -16,6 +18,10 @@ class BulmaDateInput(widgets.DateInput):
 
 class CampaignEntryForm(forms.ModelForm):
     """ A reverie Campaign form. """
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )
+
     players = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(url='campaign:player_autocomplete', forward=['game_master']),
@@ -45,6 +51,10 @@ class CharacterEntryForm(forms.ModelForm):
             empty_label="----",
         )
 
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )
+
     class Meta:
         model = Character
 
@@ -57,6 +67,10 @@ class CharacterEntryForm(forms.ModelForm):
 
 class FactionEntryForm(forms.ModelForm):
     """ A Reverie faction form. """
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )
+
     class Meta:
         model = Faction
 
@@ -69,6 +83,10 @@ class FactionEntryForm(forms.ModelForm):
 
 class ItemEntryForm(forms.ModelForm):
     """ A Reverie item form. """
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )
+
     class Meta:
         model = Item
 
@@ -81,6 +99,10 @@ class ItemEntryForm(forms.ModelForm):
 
 class LocationEntryForm(forms.ModelForm):
     """ A reverie location form. """
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )
+
     class Meta:
         model = Location
 
@@ -110,3 +132,7 @@ class LogEntryForm(forms.ModelForm):
             'autocomplete': 'off',
         }
     ))
+
+    description = MarkdownxFormField(
+        widget=ReverieMarkdownWidget()
+    )

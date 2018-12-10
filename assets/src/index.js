@@ -11,3 +11,5 @@ import './js/select2.js';
 
 import './js/jquery.Jcrop.js';
 import './js/image_cropping.js';
+
+import './js/markdownx.js';
