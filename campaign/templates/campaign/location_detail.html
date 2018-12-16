@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load cropping %}
+{% load markdown_deux_tags %}
 
 {% block title %}
   {{ campaign.name }}
@@ -64,7 +65,9 @@
   <section class="section is-small">
     <div class="columns has-text-centered is-centered">
       <div class="column is-three-fifths">
-        {{ location.description | linebreaksbr }}
+        <div class="content">
+          {{ location.description | markdown }}
+        </div>
       </div>
     </div>
   </section>

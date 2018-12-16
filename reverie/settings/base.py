@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'image_cropping',
     'markdown_deux',
-    'pagedown',
+    'markdownx',
     'registration',
     'two_factor',
     'webpack_loader',
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +163,9 @@ from easy_thumbnails.conf import Settings as thumbnail_settings
 THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'reverie.utils.markdownify'
+MARKDOWN_EXTENSIONS = {}
+MARKDOWN_EXTENSION_CONFIGS = {}
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
