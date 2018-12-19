@@ -1,4 +1,7 @@
+.venv
 assets/intermediate
+reverie/settings/prod.py
+webpack-stats.json
 
 ### vim ###
 

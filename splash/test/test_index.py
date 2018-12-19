@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 class IndexTest(TestCase):
     def test_get_index(self):
-        response = self.client.get(reverse_lazy('index'))
+        response = self.client.get(reverse_lazy('splash:index'))
 
         self.assertContains(
             response,

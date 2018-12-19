@@ -45,16 +45,12 @@ class CampaignOwnershipTest(TestCase):
             'public': public,
         }
 
-        response = self.client.get(reverse('campaign:campaign_entry'))
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post(reverse('campaign:campaign_entry'), form_data)
+        campaign = Campaign.objects.get(name=name)
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign.id}))
 
         self.client.logout()
 
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
-
-        campaign = Campaign.objects.get(name=name)
 
         return campaign
 

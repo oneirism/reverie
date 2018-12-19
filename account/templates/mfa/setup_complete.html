@@ -13,12 +13,17 @@
   {% else %}
     <p>{% blocktrans %}However, it might happen that you don't have access to
       your primary token device. To enable account recovery, add a phone
-      number.{% endblocktrans %}</p>
+      number.{% endblocktrans %}
+    </p>
 
-    <a href="{% url 'account_settings' %}"
+    <p>
+      <a href="{% url 'account_settings' %}"
         class="button is-link is-pulled-right">{% trans "Back to Profile" %}</a>
-    <p><a href="{% url 'phone_create' %}"
-        class="button is-success">{% trans "Add Phone Number" %}</a></p>
+    </p>
+    <p>
+      <a href="{% url 'phone_create' %}"
+        class="button is-success">{% trans "Add Phone Number" %}</a>
+    </p>
   {% endif %}
 
 {% endblock %}
