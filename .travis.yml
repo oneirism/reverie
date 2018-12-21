@@ -3,8 +3,10 @@ cache:
   - "pip"
   - "yarn"
 python:
-  - "3.7-dev"
+  - "3.6"
 install:
+  # Purge virtualenv
+  - "pip freeze | xargs pip uninstall -y"
   # Python Dependencies
   - "pip install pipenv"
   # Production Dependencies
@@ -31,6 +33,6 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: "pipenv run python manage.py collectstatic --settings reverie.settings.deploy --no-input"
+  script: "bash deploy.sh"
   on:
     branch: master

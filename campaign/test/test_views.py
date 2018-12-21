@@ -60,6 +60,48 @@ TEST_LOG = {
 }
 
 
+class CampaignViewTest(TestCase):
+    """ Test cases related to the Character view. """
+
+    def setUp(self):
+        # Create Users
+        for idx, user in enumerate(TEST_USERS):
+            User.objects.create_user(
+                id=TEST_USERS.index(user),
+                password=TEST_PASSWORD,
+                username=user,
+            )
+
+    def test_create_campaign(self):
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        # Create Campaigns
+        response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.campaign = Campaign.objects.get(name = 'Public Campaign')
+
+        # Logout
+        self.client.logout()
+
+
+    def test_invalid_campaign_entry(self):
+        # Missing name
+        bad_campaign_form = {
+            'gm_id': TEST_USERS.index(GM_USER),
+            'tagline': 'Test Tagline',
+            'description': 'Test Description',
+            'players': [TEST_USERS.index(PLAYER_USER)],
+            'public': True,
+        }
+
+        self.client.login(username=GM_USER, password=TEST_PASSWORD)
+
+        response = self.client.post(reverse('campaign:campaign_entry'), bad_campaign_form)
+        self.assertEqual(response.status_code, 200)
+
+        self.client.logout()
+
+
 class CharacterViewTest(TestCase):
     """ Test cases related to the Character view. """
 
@@ -76,13 +118,17 @@ class CharacterViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Characters
         response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_id': self.campaign.id}), TEST_CHARACTER)
-        self.assertRedirects(response, reverse('campaign:character_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_id': self.campaign.id, 'character_id': 1}))
         self.character = Character.objects.get(name = 'Test Character')
+
+        # Ensure character is visible
+        response = self.client.get(reverse('campaign:character_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertContains(response, 'Test Character', status_code=200)
 
         # Logout
         self.client.logout()
@@ -183,13 +229,17 @@ class FactionViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Factions
         response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_id': self.campaign.id}), TEST_FACTION)
-        self.assertRedirects(response, reverse('campaign:faction_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertRedirects(response, reverse('campaign:faction_detail', kwargs={'campaign_id': self.campaign.id, 'faction_id': 1}))
         self.faction = Faction.objects.get(name = 'Test Faction')
+
+        # Ensure faction is visible
+        response = self.client.get(reverse('campaign:faction_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertContains(response, 'Test Faction', status_code=200)
 
         # Logout
         self.client.logout()
@@ -260,13 +310,17 @@ class ItemViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Items
         response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_id': self.campaign.id}), TEST_ITEM)
-        self.assertRedirects(response, reverse('campaign:item_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertRedirects(response, reverse('campaign:item_detail', kwargs={'campaign_id': self.campaign.id, 'item_id': 1}))
         self.item = Item.objects.get(name = 'Test Item')
+
+        # Ensure item is visible
+        response = self.client.get(reverse('campaign:item_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertContains(response, 'Test Item', status_code=200)
 
         # Logout
         self.client.logout()
@@ -337,13 +391,18 @@ class LocationViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
+
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Locations
         response = self.client.post(reverse('campaign:location_entry', kwargs={'campaign_id': self.campaign.id}), TEST_LOCATION)
-        self.assertRedirects(response, reverse('campaign:location_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertRedirects(response, reverse('campaign:location_detail', kwargs={'campaign_id': self.campaign.id, 'location_id': 1}))
         self.location = Location.objects.get(name = 'Test Location')
+
+        # Ensure location is visible
+        response = self.client.get(reverse('campaign:location_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertContains(response, 'Test Location', status_code=200)
 
         # Logout
         self.client.logout()
@@ -414,13 +473,17 @@ class LogViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_index'))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Logs
         response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_id': self.campaign.id}), TEST_LOG)
-        self.assertRedirects(response, reverse('campaign:log_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_id': self.campaign.id, 'log_id': 1}))
         self.log = Log.objects.get(title = 'Test Log')
+
+        # Ensure log is visible
+        response = self.client.get(reverse('campaign:log_list', kwargs={'campaign_id': self.campaign.id}))
+        self.assertContains(response, 'Test Log', status_code=200)
 
         # Logout
         self.client.logout()

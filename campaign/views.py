@@ -76,8 +76,7 @@ def new_campaign(request):
         campaign.players.set(players)
         campaign.save()
 
-        # fixme(devenney): should redirect to campaign details.
-        return HttpResponseRedirect(reverse('campaign:campaign_index'))
+        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign.id}))
 
     context = {'form': form}
 
@@ -99,7 +98,7 @@ def campaign_edit(request, campaign_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/'.format(campaign_id))
+        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign_id}))
 
     return render(request, 'campaign/campaign_form.html', context)
 
@@ -150,8 +149,7 @@ def new_character(request, campaign_id=None):
         character.campaign_id = campaign_id
         character.save()
 
-        # fixme(devenney): should redirect to character details.
-        return HttpResponseRedirect(reverse('campaign:character_list', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_id': campaign.id, 'character_id': character.id}))
 
     context = {
         'campaign': campaign,
@@ -177,7 +175,7 @@ def character_edit(request, campaign_id=None, character_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/characters/{}/'.format(campaign_id, character_id))
+        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_id': campaign.id, 'character_id': character.id}))
 
     return render(request, 'campaign/character_form.html', context)
 
@@ -225,8 +223,7 @@ def new_faction(request, campaign_id=None):
         faction.campaign_id = campaign_id
         faction.save()
 
-        # fixme(devenney): should redirect to faction details.
-        return HttpResponseRedirect(reverse('campaign:faction_list', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_id': campaign.id, 'faction_id': faction.id}))
 
     context = {
         'campaign': campaign,
@@ -252,7 +249,7 @@ def faction_edit(request, campaign_id=None, faction_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/factions/{}/'.format(campaign_id, faction_id))
+        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_id': campaign.id, 'faction_id': faction.id}))
 
     return render(request, 'campaign/faction_form.html', context)
 
@@ -300,8 +297,7 @@ def new_item(request, campaign_id=None):
         item.campaign_id = campaign_id
         item.save()
 
-        # fixme(devenney): should redirect to item details.
-        return HttpResponseRedirect(reverse('campaign:item_list', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_id': campaign.id, 'item_id': item.id}))
 
     context = {
         'campaign': campaign,
@@ -328,7 +324,7 @@ def item_edit(request, campaign_id=None, item_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/items/{}/'.format(campaign_id, item_id))
+        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_id': campaign.id, 'item_id': item.id}))
 
     return render(request, 'campaign/item_form.html', context)
 
@@ -377,8 +373,7 @@ def new_location(request, campaign_id=None):
         location.campaign_id = campaign_id
         location.save()
 
-        # fixme(devenney): should redirect to location details.
-        return HttpResponseRedirect(reverse('campaign:location_list', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_id': campaign.id, 'location_id': location.id}))
 
     context = {
         'campaign': campaign,
@@ -405,7 +400,7 @@ def location_edit(request, campaign_id=None, location_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/locations/{}/'.format(campaign_id, location_id))
+        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_id': campaign.id, 'location_id': location.id}))
 
     return render(request, 'campaign/location_form.html', context)
 
@@ -454,8 +449,7 @@ def new_log(request, campaign_id=None):
         log.campaign_id = campaign_id
         log.save()
 
-        # fixme(devenney): should redirect to log details.
-        return HttpResponseRedirect(reverse('campaign:log_list', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_id': campaign.id, 'log_id': log.id}))
 
     context = {
         'campaign': campaign,
@@ -496,6 +490,6 @@ def log_edit(request, campaign_id=None, log_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/campaign/{}/log/{}/'.format(campaign_id, log_id))
+        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_id': campaign.id, 'log_id': log.id}))
 
     return render(request, 'campaign/log_form.html', context)

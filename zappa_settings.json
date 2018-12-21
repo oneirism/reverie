@@ -1,0 +1,85 @@
+{
+    "staging": {
+        "aws_region": "eu-west-1",
+        "project_name": "reverie",
+        "runtime": "python3.6",
+        "django_settings": "reverie.settings.staging",
+        "s3_bucket": "zappa-91bqxapat",
+        "extra_permissions": [{
+          "Effect": "Allow",
+          "Resource": "*",
+          "Action": [
+            "SES:GetSendQuota"
+          ]
+        }, {
+          "Effect": "Allow",
+          "Resource": "arn:aws:ses:eu-west-1:212595788859:identity/*",
+          "Action": [
+            "SES:SendEmail",
+            "SES:SendRawEmail"
+          ],
+          "Condition": {
+            "StringLike": {
+              "ses:FromAddress": "staging.*@oneirism.co"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["s3:ListBucket"],
+          "Resource": ["arn:aws:s3:::db.reverie.devenney.io"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutObject",
+              "s3:GetObject"
+          ],
+          "Resource": ["arn:aws:s3:::db.reverie.devenney.io/*"]
+        }]
+    },
+    "prod": {
+        "aws_region": "eu-west-1",
+        "domain": "preprod.reverie.devenney.io",
+        "certificate_arn": "arn:aws:acm:us-east-1:212595788859:certificate/20a1f920-3ee1-457e-b2e6-418e4b01e8a3",
+        "debug": false,
+        "route53_enabled": true,
+        "project_name": "reverie",
+        "runtime": "python3.6",
+        "exclude": [".coverage", "assets", "db.sqlite3", "htmlcov", "media", "node_modules", "static"],
+        "django_settings": "reverie.settings.prod",
+        "s3_bucket": "zappa-reverie-prod",
+        "extra_permissions": [{
+          "Effect": "Allow",
+          "Resource": "*",
+          "Action": [
+            "SES:GetSendQuota"
+          ]
+        }, {
+          "Effect": "Allow",
+          "Resource": "arn:aws:ses:eu-west-1:212595788859:identity/*",
+          "Action": [
+            "SES:SendEmail",
+            "SES:SendRawEmail"
+          ],
+          "Condition": {
+            "StringLike": {
+              "ses:FromAddress": "*@oneirism.co"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": ["s3:ListBucket"],
+          "Resource": ["arn:aws:s3:::db.reverie.devenney.io"]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutObject",
+              "s3:GetObject"
+          ],
+          "Resource": ["arn:aws:s3:::db.reverie.devenney.io/*"]
+        }]
+    }
+}
