@@ -23,7 +23,7 @@ services:
     build: .
     entrypoint: "pipenv run python manage.py runserver 0.0.0.0:8000 --settings reverie.settings.docker"
     ports:
-      - 8000
+      - "8000:8000"
     volumes:
       - .:/code
     depends_on:
@@ -31,18 +31,17 @@ services:
       - migration
     networks:
       - web
+    labels:
+      - "traefik.frontend.rule=Host:reverie.docker.localhost"
 
   proxy:
-    image: dockercloud/haproxy
-    links:
-      - reverie
-    environment:
-      - BALANCE=leastconn
+    image: traefik
+    command: --api --docker
+    ports:
+      - "80:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 0.0.0.0:80:80
-      - 1936:1936
     networks:
       - web
 

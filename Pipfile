@@ -29,6 +29,7 @@ django-markdownx = "*"
 zappa-django-utils = "*"
 zappa = "*"
 django-ses = "*"
+psycopg2 = "*"
 
 [dev-packages]
 coverage = "==4.5.2"

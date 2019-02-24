@@ -3,8 +3,6 @@ const path = require('path');
 const BundleTracker = require('webpack-bundle-tracker');
 const webpack = require('webpack');
 
-console.log(process.env.ASSET_PATH)
-
 module.exports = {
   entry: [
     'jquery',
@@ -13,18 +11,10 @@ module.exports = {
   output: {
     filename: "[name]-[contenthash].js",
     path: path.resolve(__dirname, 'assets/dist/bundles/'),
-    publicPath: process.env.ASSET_PATH,
+    publicPath: process.env.ASSET_PATH || 'static/bundles/',
   },
   module: {
     rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ]
-      },
       {
         test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         use: [
@@ -35,6 +25,14 @@ module.exports = {
               outputPath: '../fonts/',
             }
           }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
         ]
       },
       {
@@ -52,11 +50,6 @@ module.exports = {
   },
   plugins: [
     new BundleTracker({filename: 'webpack-stats.json'}),
-    new webpack.EnvironmentPlugin({
-      ASSET_PATH: '/',
-      DEBUG: false,
-      NODE_ENV: 'development',
-    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'

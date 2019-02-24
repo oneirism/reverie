@@ -6,7 +6,6 @@ DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # Databases
-# Databases
 DATABASES = {
   'default': {
     'ENGINE': 'zappa_django_utils.db.backends.s3sqlite',
