@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:3.6-alpine
 
 RUN apk add build-base jpeg-dev postgresql-dev zlib-dev
 
