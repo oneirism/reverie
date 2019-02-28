@@ -162,7 +162,7 @@ class LogTest(TestCase):
     """ Test cases related to the Log model. """
     def setUp(self):
         self.log_raw = {
-            'title': 'Test Log',
+            'name': 'Test Log',
             'description': 'Test Description',
             'date': datetime(2010, 9, 12),
             'campaign_id': 1,
@@ -176,11 +176,11 @@ class LogTest(TestCase):
         log = self.log
 
         self.assertTrue(isinstance(log, Log))
-        self.assertEqual(log.title, "Test Log")
+        self.assertEqual(log.name, "Test Log")
 
 
     def test_str(self):
         """ Test informal printable string representation. """
         log = self.log
 
-        self.assertEqual(str(log), self.log_raw['title'])
+        self.assertEqual(str(log), self.log_raw['name'])

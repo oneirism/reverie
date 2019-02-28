@@ -1,14 +1,19 @@
 """ Reverie campaign model definitions. """
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 from image_cropping import ImageRatioField
 
 from .helpers import RandomFileName
-
+from reverie.utils import markdownify
 
 # Create your models here.
 class Campaign(models.Model):
     """ A Reverie campaign. """
+    slug = models.SlugField(
+        unique=True,
+    )
+
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -49,9 +54,24 @@ class Campaign(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Campaign, self).save(*args, **kwargs)
+
 
 class Character(models.Model):
     """ A Reverie campaign character. """
+    slug = models.SlugField(
+        unique=True
+    )
+
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -87,9 +107,24 @@ class Character(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Character, self).save(*args, **kwargs)
+
 
 class Faction(models.Model):
     """ A Reverie campaign faction. """
+    slug = models.SlugField(
+        unique=True
+    )
+
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -117,10 +152,25 @@ class Faction(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Faction, self).save(*args, **kwargs)
 
 
 class Item(models.Model):
     """ A Reverie campaign item. """
+    slug = models.SlugField(
+        unique=True
+    )
+
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -149,10 +199,25 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Item, self).save(*args, **kwargs)
 
 
 class Location(models.Model):
     """ A Reverie campaign location. """
+    slug = models.SlugField(
+        unique=True
+    )
+
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -182,10 +247,25 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Location, self).save(*args, **kwargs)
+
 
 class Log(models.Model):
     """ A Reverie campaign log entry. """
-    title = models.CharField(
+    slug = models.SlugField(
+        unique=True
+    )
+
+    name = models.CharField(
         unique=True,
         max_length=50,
     )
@@ -212,4 +292,15 @@ class Log(models.Model):
         ordering = ['date']
 
     def __str__(self):
-        return self.title
+        return self.name
+
+    @property
+    def formatted_description(self):
+        return markdownify(self.description)
+
+    def save(self, *args, **kwargs): # pylint: disable=arguments-differ
+        # FIXME(devenney): Kind of smells, but users hardcode slugs in their MD
+        #                  cross-references so this can't change.
+        if self.slug == '':
+            self.slug = slugify(self.name)
+        super(Log, self).save(*args, **kwargs)

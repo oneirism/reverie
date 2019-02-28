@@ -9,7 +9,7 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
@@ -21,7 +21,7 @@
       <div class="is-pulled-right">
         <p>
           GM Controls -
-          <a href="{% url 'campaign:campaign_edit' campaign.id %}">
+          <a href="{% url 'campaign:campaign_edit' campaign.slug %}">
             Edit
           </a>
         </p>
@@ -50,7 +50,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="title">
-            <a href="{% url 'campaign:log_list' campaign.id %}">
+            <a href="{% url 'campaign:log_list' campaign.slug %}">
               Campaign Log
             </a>
           </p>
@@ -64,7 +64,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="title">
-            <a href="{% url 'campaign:character_list' campaign.id %}">
+            <a href="{% url 'campaign:character_list' campaign.slug %}">
               Characters
             </a>
           </p>
@@ -73,7 +73,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="title">
-            <a href="{% url 'campaign:faction_list' campaign.id %}">
+            <a href="{% url 'campaign:faction_list' campaign.slug %}">
               Factions
             </a>
           </p>
@@ -82,7 +82,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="title">
-            <a href="{% url 'campaign:item_list' campaign.id %}">
+            <a href="{% url 'campaign:item_list' campaign.slug %}">
               Items
             </a>
           </p>
@@ -91,7 +91,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="title">
-            <a href="{% url 'campaign:location_list' campaign.id %}">
+            <a href="{% url 'campaign:location_list' campaign.slug %}">
               Locations
             </a>
           </p>
@@ -104,7 +104,7 @@
     <div class="columns has-text-centered is-centered">
       <div class="column is-three-fifths">
         <div class="content">
-          {{ campaign.description | markdown }}
+          {{ campaign.formatted_description | safe }}
         </div>
       </div>
     </div>

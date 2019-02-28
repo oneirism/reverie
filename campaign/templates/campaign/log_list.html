@@ -6,12 +6,12 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:log_list' campaign.id %}">
+    <a href="{% url 'campaign:log_list' campaign.slug %}">
       Campaign Log
     </a>
   </li>
@@ -23,7 +23,7 @@
       <div class="is-pulled-right">
         <p>
           GM Controls -
-          <a href="{% url 'campaign:log_entry' campaign.id %}">
+          <a href="{% url 'campaign:log_entry' campaign.slug %}">
             New Log Entry
           </a>
         </p>
@@ -55,8 +55,8 @@
                 <div class="timeline-content">
                   <p class="heading">{{ log.date }}</p>
                   <p>
-                    <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
-                      {{ log.title }}
+                    <a href="{% url 'campaign:log_detail' campaign.slug log.slug %}">
+                      {{ log.name }}
                     </a>
                   </p>
                 </div>

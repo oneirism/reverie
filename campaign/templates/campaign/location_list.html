@@ -6,12 +6,12 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:location_list' campaign.id %}">
+    <a href="{% url 'campaign:location_list' campaign.slug %}">
       Locations
     </a>
   </li>
@@ -23,7 +23,7 @@
       <div class="is-pulled-right">
         <p>
           GM Controls -
-          <a href="{% url 'campaign:location_entry' campaign.id %}">
+          <a href="{% url 'campaign:location_entry' campaign.slug %}">
             New Location
           </a>
         </p>
@@ -46,7 +46,7 @@
       <div>
         {% if locations %}
           {% for location in locations %}
-            <a href="{% url 'campaign:location_detail' campaign.id location.id %}">
+            <a href="{% url 'campaign:location_detail' campaign.slug location.slug %}">
               <p>{{ location.name }}</p>
             </a>
           {% endfor %}

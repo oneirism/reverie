@@ -4,6 +4,23 @@
 
 # reverie
 
+## Docker Development Environment
+
+Launch the local Docker compose network:
+
+```shell
+docker-compose up
+```
+
+Create a superuser account from the Django container:
+
+```shell
+docker exec -it $(docker ps -f "name=reverie_reverie" -q) /bin/sh
+[/code #] pipenv run python manage.py createsuperuser --settings reverie.settings.docker
+```
+
+Try logging in at http://reverie.docker.localhost:8000/account/login
+
 ## Production Configuration
 
 Create a production settings file named `reverie/settings/prod.py` and configure:

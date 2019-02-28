@@ -9,12 +9,12 @@
 {% block breadcrumbs %}
   {% if campaign %}
     <li>
-      <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+      <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
         {{ campaign.name }}
       </a>
     </li>
     <li>
-      <a href="{% url 'campaign:campaign_edit' campaign.id %}">
+      <a href="{% url 'campaign:campaign_edit' campaign.slug %}">
         Edit
       </a>
     </li>

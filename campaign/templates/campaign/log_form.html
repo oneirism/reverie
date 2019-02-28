@@ -8,29 +8,29 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:log_list' campaign.id %}">
+    <a href="{% url 'campaign:log_list' campaign.slug %}">
       Campaign Log
     </a>
   </li>
   {% if log %}
     <li>
-      <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
-        {{ log.title }}
+      <a href="{% url 'campaign:log_detail' campaign.slug log.slug %}">
+        {{ log.name }}
       </a>
     </li>
     <li>
-      <a href="{% url 'campaign:log_edit' campaign.id log.id %}">
+      <a href="{% url 'campaign:log_edit' campaign.slug log.slug %}">
         Edit
       </a>
     </li>
   {% else %}
     <li>
-      <a href="{% url 'campaign:log_entry' campaign.id %}">
+      <a href="{% url 'campaign:log_entry' campaign.slug %}">
         New
       </a>
     </li>

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import slugify
 from django.test import TestCase
 from django.urls import reverse
 
@@ -28,35 +29,35 @@ TEST_CHARACTER = {
     'tagline': 'Test Tagline',
     'description': 'Test Description',
     'player': TEST_USERS.index(PLAYER_USER),
-    'campaign_id': 1,
+    'campaign_slug': 1,
 }
 
 TEST_FACTION = {
     'name': 'Test Faction',
     'tagline': 'Test Tagline',
     'description': 'Test Description',
-    'campaign_id': 1,
+    'campaign_slug': 1,
 }
 
 TEST_ITEM = {
     'name': 'Test Item',
     'tagline': 'Test Tagline',
     'description': 'Test Description',
-    'campaign_id': 1,
+    'campaign_slug': 1,
 }
 
 TEST_LOCATION = {
     'name': 'Test Location',
     'tagline': 'Test Tagline',
     'description': 'Test Description',
-    'campaign_id': 1,
+    'campaign_slug': 1,
 }
 
 TEST_LOG = {
-    'title': 'Test Log',
+    'name': 'Test Log',
     'description': 'Test Description',
     'date': '01/01/2001',
-    'campaign_id': 1,
+    'campaign_slug': 1,
 }
 
 
@@ -77,7 +78,7 @@ class CampaignViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Logout
@@ -118,16 +119,16 @@ class CharacterViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Characters
-        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_id': self.campaign.id}), TEST_CHARACTER)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_id': self.campaign.id, 'character_id': 1}))
+        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_CHARACTER)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(TEST_CHARACTER.get("name"))}))
         self.character = Character.objects.get(name = 'Test Character')
 
         # Ensure character is visible
-        response = self.client.get(reverse('campaign:character_list', kwargs={'campaign_id': self.campaign.id}))
+        response = self.client.get(reverse('campaign:character_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
         self.assertContains(response, 'Test Character', status_code=200)
 
         # Logout
@@ -140,12 +141,12 @@ class CharacterViewTest(TestCase):
             'tagline': 'Test tagline.',
             'description': 'Test description',
             'player': TEST_USERS.index(PLAYER_USER),
-            'campaign_id': 1,
+            'campaign_slug': 1,
         }
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_id': self.campaign.id}), bad_character_form)
+        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_character_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -159,10 +160,10 @@ class CharacterViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}), bad_character_form)
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), bad_character_form)
         self.assertEqual(response.status_code, 200)
 
-        character = Character.objects.get(id=self.character.id)
+        character = Character.objects.get(slug=slugify(self.character.name))
 
         self.assertEqual(character.tagline, 'New tagline!')
 
@@ -175,10 +176,10 @@ class CharacterViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}), new_character)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}))
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}))
 
-        character = Character.objects.get(id=self.character.id)
+        character = Character.objects.get(slug=slugify(self.character.name))
 
         self.assertEqual(character.tagline, 'New tagline!')
 
@@ -191,10 +192,10 @@ class CharacterViewTest(TestCase):
 
         self.client.login(username=PLAYER_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}), new_character)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}))
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}))
 
-        character = Character.objects.get(id=self.character.id)
+        character = Character.objects.get(slug=slugify(self.character.name))
 
         self.assertEqual(character.tagline, 'New tagline!')
 
@@ -207,7 +208,7 @@ class CharacterViewTest(TestCase):
 
         self.client.login(username=NOT_PLAYER_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_id': self.campaign.id, 'character_id': self.character.id}), new_character)
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
         self.assertEqual(response.status_code, 403)
 
         self.client.logout()
@@ -229,16 +230,16 @@ class FactionViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Factions
-        response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_id': self.campaign.id}), TEST_FACTION)
-        self.assertRedirects(response, reverse('campaign:faction_detail', kwargs={'campaign_id': self.campaign.id, 'faction_id': 1}))
+        response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_FACTION)
+        self.assertRedirects(response, reverse('campaign:faction_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'faction_slug': slugify(TEST_FACTION.get("name"))}))
         self.faction = Faction.objects.get(name = 'Test Faction')
 
         # Ensure faction is visible
-        response = self.client.get(reverse('campaign:faction_list', kwargs={'campaign_id': self.campaign.id}))
+        response = self.client.get(reverse('campaign:faction_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
         self.assertContains(response, 'Test Faction', status_code=200)
 
         # Logout
@@ -250,12 +251,12 @@ class FactionViewTest(TestCase):
         bad_faction_form = {
             'tagline': 'Test tagline.',
             'description': 'Test description',
-            'campaign_id': 1,
+            'campaign_slug': 1,
         }
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_id': self.campaign.id}), bad_faction_form)
+        response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_faction_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -268,10 +269,10 @@ class FactionViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:faction_edit', kwargs={'campaign_id': self.campaign.id, 'faction_id': self.faction.id}), bad_faction_form)
+        response = self.client.post(reverse('campaign:faction_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'faction_slug': slugify(self.faction.name)}), bad_faction_form)
         self.assertEqual(response.status_code, 200)
 
-        faction = Faction.objects.get(id=self.faction.id)
+        faction = Faction.objects.get(slug=slugify(self.faction.name))
 
         self.assertEqual(faction.tagline, 'New tagline!')
 
@@ -284,10 +285,10 @@ class FactionViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:faction_edit', kwargs={'campaign_id': self.campaign.id, 'faction_id': self.faction.id}), new_faction)
-        self.assertRedirects(response, reverse('campaign:faction_detail', kwargs={'campaign_id': self.campaign.id, 'faction_id': self.faction.id}))
+        response = self.client.post(reverse('campaign:faction_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'faction_slug': slugify(self.faction.name)}), new_faction)
+        self.assertRedirects(response, reverse('campaign:faction_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'faction_slug': slugify(self.faction.name)}))
 
-        faction = Faction.objects.get(id=self.faction.id)
+        faction = Faction.objects.get(slug=slugify(self.faction.name))
 
         self.assertEqual(faction.tagline, 'New tagline!')
 
@@ -310,16 +311,16 @@ class ItemViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Items
-        response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_id': self.campaign.id}), TEST_ITEM)
-        self.assertRedirects(response, reverse('campaign:item_detail', kwargs={'campaign_id': self.campaign.id, 'item_id': 1}))
+        response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_ITEM)
+        self.assertRedirects(response, reverse('campaign:item_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'item_slug': slugify(TEST_ITEM.get("name"))}))
         self.item = Item.objects.get(name = 'Test Item')
 
         # Ensure item is visible
-        response = self.client.get(reverse('campaign:item_list', kwargs={'campaign_id': self.campaign.id}))
+        response = self.client.get(reverse('campaign:item_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
         self.assertContains(response, 'Test Item', status_code=200)
 
         # Logout
@@ -331,12 +332,12 @@ class ItemViewTest(TestCase):
         bad_item_form = {
             'tagline': 'Test tagline.',
             'description': 'Test description',
-            'campaign_id': 1,
+            'campaign_slug': 1,
         }
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_id': self.campaign.id}), bad_item_form)
+        response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_item_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -349,10 +350,10 @@ class ItemViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:item_edit', kwargs={'campaign_id': self.campaign.id, 'item_id': self.item.id}), bad_item_form)
+        response = self.client.post(reverse('campaign:item_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'item_slug': slugify(self.item.name)}), bad_item_form)
         self.assertEqual(response.status_code, 200)
 
-        item = Item.objects.get(id=self.item.id)
+        item = Item.objects.get(slug=slugify(self.item.name))
 
         self.assertEqual(item.tagline, 'New tagline!')
 
@@ -365,10 +366,10 @@ class ItemViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:item_edit', kwargs={'campaign_id': self.campaign.id, 'item_id': self.item.id}), new_item)
-        self.assertRedirects(response, reverse('campaign:item_detail', kwargs={'campaign_id': self.campaign.id, 'item_id': self.item.id}))
+        response = self.client.post(reverse('campaign:item_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'item_slug': slugify(self.item.name)}), new_item)
+        self.assertRedirects(response, reverse('campaign:item_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'item_slug': slugify(self.item.name)}))
 
-        item = Item.objects.get(id=self.item.id)
+        item = Item.objects.get(slug=slugify(self.item.name))
 
         self.assertEqual(item.tagline, 'New tagline!')
 
@@ -392,16 +393,16 @@ class LocationViewTest(TestCase):
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
 
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Locations
-        response = self.client.post(reverse('campaign:location_entry', kwargs={'campaign_id': self.campaign.id}), TEST_LOCATION)
-        self.assertRedirects(response, reverse('campaign:location_detail', kwargs={'campaign_id': self.campaign.id, 'location_id': 1}))
+        response = self.client.post(reverse('campaign:location_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_LOCATION)
+        self.assertRedirects(response, reverse('campaign:location_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'location_slug': slugify(TEST_LOCATION.get("name"))}))
         self.location = Location.objects.get(name = 'Test Location')
 
         # Ensure location is visible
-        response = self.client.get(reverse('campaign:location_list', kwargs={'campaign_id': self.campaign.id}))
+        response = self.client.get(reverse('campaign:location_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
         self.assertContains(response, 'Test Location', status_code=200)
 
         # Logout
@@ -413,12 +414,12 @@ class LocationViewTest(TestCase):
         bad_location_form = {
             'tagline': 'Test tagline.',
             'description': 'Test description',
-            'campaign_id': 1,
+            'campaign_slug': 1,
         }
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:location_entry', kwargs={'campaign_id': self.campaign.id}), bad_location_form)
+        response = self.client.post(reverse('campaign:location_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_location_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -431,10 +432,10 @@ class LocationViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:location_edit', kwargs={'campaign_id': self.campaign.id, 'location_id': self.location.id}), bad_location_form)
+        response = self.client.post(reverse('campaign:location_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'location_slug': slugify(self.location.name)}), bad_location_form)
         self.assertEqual(response.status_code, 200)
 
-        location = Location.objects.get(id=self.location.id)
+        location = Location.objects.get(slug=slugify(self.location.name))
 
         self.assertEqual(location.tagline, 'New tagline!')
 
@@ -447,10 +448,10 @@ class LocationViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:location_edit', kwargs={'campaign_id': self.campaign.id, 'location_id': self.location.id}), new_location)
-        self.assertRedirects(response, reverse('campaign:location_detail', kwargs={'campaign_id': self.campaign.id, 'location_id': self.location.id}))
+        response = self.client.post(reverse('campaign:location_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'location_slug': slugify(self.location.name)}), new_location)
+        self.assertRedirects(response, reverse('campaign:location_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'location_slug': slugify(self.location.name)}))
 
-        location = Location.objects.get(id=self.location.id)
+        location = Location.objects.get(slug=slugify(self.location.name))
 
         self.assertEqual(location.tagline, 'New tagline!')
 
@@ -473,16 +474,16 @@ class LogViewTest(TestCase):
 
         # Create Campaigns
         response = self.client.post(reverse('campaign:campaign_entry'), TEST_CAMPAIGN)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': 1}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGN.get("name"))}))
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Logs
-        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_id': self.campaign.id}), TEST_LOG)
-        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_id': self.campaign.id, 'log_id': 1}))
-        self.log = Log.objects.get(title = 'Test Log')
+        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_LOG)
+        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'log_slug': slugify(TEST_LOG.get("name"))}))
+        self.log = Log.objects.get(name = 'Test Log')
 
         # Ensure log is visible
-        response = self.client.get(reverse('campaign:log_list', kwargs={'campaign_id': self.campaign.id}))
+        response = self.client.get(reverse('campaign:log_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
         self.assertContains(response, 'Test Log', status_code=200)
 
         # Logout
@@ -492,13 +493,13 @@ class LogViewTest(TestCase):
     def test_invalid_log_entry(self):
         # Missing description
         bad_log_form = {
-            'title': 'Test Log',
-            'campaign_id': 'aa',
+            'name': 'Test Log',
+            'description': '',
         }
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_id': self.campaign.id}), bad_log_form)
+        response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_log_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -511,7 +512,7 @@ class LogViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}), bad_log_form)
+        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'log_slug': slugify(self.log.name)}), bad_log_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()
@@ -523,10 +524,10 @@ class LogViewTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}), new_log)
-        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_id': self.campaign.id, 'log_id': self.log.id}))
+        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_slug': slugify(self.campaign.slug), 'log_slug': slugify(self.log.slug)}), new_log)
+        self.assertRedirects(response, reverse('campaign:log_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'log_slug': slugify(self.log.name)}))
 
-        log = Log.objects.get(id=self.log.id)
+        log = Log.objects.get(slug=slugify(self.log.name))
 
         self.assertEqual(log.description, 'New description!')
 

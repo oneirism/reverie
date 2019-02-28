@@ -6,7 +6,7 @@ RUN mkdir /code
 WORKDIR /code
 COPY Pipfile Pipfile.lock /code/
 RUN pip install pipenv
-RUN pipenv install
+RUN pipenv install --dev
 
 ADD manage.py /code/
 
