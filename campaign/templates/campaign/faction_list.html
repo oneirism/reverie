@@ -6,12 +6,12 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:faction_list' campaign.id %}">
+    <a href="{% url 'campaign:faction_list' campaign.slug %}">
       Factions
     </a>
   </li>
@@ -23,7 +23,7 @@
       <div class="is-pulled-right">
         <p>
           GM Controls -
-          <a href="{% url 'campaign:faction_entry' campaign.id %}">
+          <a href="{% url 'campaign:faction_entry' campaign.slug %}">
             New Faction
           </a>
         </p>
@@ -46,7 +46,7 @@
       <div>
         {% if factions %}
           {% for faction in factions %}
-            <a href="{% url 'campaign:faction_detail' campaign.id faction.id %}">
+            <a href="{% url 'campaign:faction_detail' campaign.slug faction.slug %}">
               <p>{{ faction.name }}</p>
             </a>
           {% endfor %}

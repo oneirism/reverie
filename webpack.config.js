@@ -11,7 +11,7 @@ module.exports = {
   output: {
     filename: "[name]-[contenthash].js",
     path: path.resolve(__dirname, 'assets/dist/bundles/'),
-    publicPath: process.env.ASSET_PATH || 'static/bundles/',
+    publicPath: process.env.ASSET_PATH || '/static/bundles/',
   },
   module: {
     rules: [

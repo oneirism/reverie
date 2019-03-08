@@ -33,7 +33,7 @@
         </h2>
         <div>
           {% for campaign in dm_campaigns %}
-            <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+            <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
               <p>{{ campaign.name }}</p>
             </a>
           {% endfor %}
@@ -48,7 +48,7 @@
         </h2>
         <div>
           {% for campaign in player_campaigns %}
-            <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+            <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
               <p>{{ campaign.name }}</p>
             </a>
           {% endfor %}
@@ -63,7 +63,7 @@
         </h2>
         <div>
           {% for campaign in public_campaigns %}
-            <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+            <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
               <p>{{ campaign.name }}</p>
             </a>
           {% endfor %}

@@ -76,7 +76,7 @@ def new_campaign(request):
         campaign.players.set(players)
         campaign.save()
 
-        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign.id}))
+        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_slug': campaign.slug}))
 
     context = {'form': form}
 
@@ -85,8 +85,8 @@ def new_campaign(request):
 
 @utils.login_required
 @utils.is_gm
-def campaign_edit(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def campaign_edit(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     form = CampaignEntryForm(request.POST or None, request.FILES or None, instance=campaign)
 
@@ -98,15 +98,15 @@ def campaign_edit(request, campaign_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign_id}))
+        return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_slug': campaign_slug}))
 
     return render(request, 'campaign/campaign_form.html', context)
 
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def campaign_detail(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def campaign_detail(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     characters = Character.objects.filter(
         campaign = campaign
@@ -122,8 +122,8 @@ def campaign_detail(request, campaign_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def character_list(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def character_list(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     characters = Character.objects.filter(
         campaign = campaign
@@ -138,18 +138,18 @@ def character_list(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def new_character(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    character = Character(campaign_id = campaign_id)
+def new_character(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    character = Character(campaign_id = campaign.id)
 
     form = CharacterEntryForm(request.POST or None, instance=character)
 
     if form.is_valid():
         character = form.save(commit=False)
-        character.campaign_id = campaign_id
+        character.campaign_id = campaign.id
         character.save()
 
-        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_id': campaign.id, 'character_id': character.id}))
+        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_slug': campaign.slug, 'character_slug': character.slug}))
 
     context = {
         'campaign': campaign,
@@ -160,9 +160,9 @@ def new_character(request, campaign_id=None):
 
 @utils.login_required
 @utils.can_edit_character
-def character_edit(request, campaign_id=None, character_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    character = get_object_or_404(Character, id=character_id)
+def character_edit(request, campaign_slug=None, character_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    character = get_object_or_404(Character, slug=character_slug)
 
     form = CharacterEntryForm(request.POST or None, request.FILES or None, instance=character)
 
@@ -175,16 +175,16 @@ def character_edit(request, campaign_id=None, character_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_id': campaign.id, 'character_id': character.id}))
+        return HttpResponseRedirect(reverse('campaign:character_detail', kwargs={'campaign_slug': campaign.slug, 'character_slug': character.slug}))
 
     return render(request, 'campaign/character_form.html', context)
 
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def character_detail(request, campaign_id=None, character_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    character = get_object_or_404(Character, id=character_id)
+def character_detail(request, campaign_slug=None, character_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    character = get_object_or_404(Character, slug=character_slug)
 
     context = {
         'campaign': campaign,
@@ -196,8 +196,8 @@ def character_detail(request, campaign_id=None, character_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def faction_list(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def faction_list(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     factions = Faction.objects.filter(
         campaign = campaign
@@ -212,18 +212,18 @@ def faction_list(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def new_faction(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    faction = Faction(campaign_id = campaign_id)
+def new_faction(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    faction = Faction(campaign_id = campaign.id)
 
     form = FactionEntryForm(request.POST or None, request.FILES or None, instance=faction)
 
     if form.is_valid():
         faction = form.save(commit=False)
-        faction.campaign_id = campaign_id
+        faction.campaign_id = campaign.id
         faction.save()
 
-        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_id': campaign.id, 'faction_id': faction.id}))
+        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_slug': campaign.slug, 'faction_slug': faction.slug}))
 
     context = {
         'campaign': campaign,
@@ -234,9 +234,9 @@ def new_faction(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def faction_edit(request, campaign_id=None, faction_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    faction = get_object_or_404(Faction, id=faction_id)
+def faction_edit(request, campaign_slug=None, faction_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    faction = get_object_or_404(Faction, slug=faction_slug)
 
     form = FactionEntryForm(request.POST or None, request.FILES or None, instance=faction)
 
@@ -249,16 +249,16 @@ def faction_edit(request, campaign_id=None, faction_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_id': campaign.id, 'faction_id': faction.id}))
+        return HttpResponseRedirect(reverse('campaign:faction_detail', kwargs={'campaign_slug': campaign.slug, 'faction_slug': faction.slug}))
 
     return render(request, 'campaign/faction_form.html', context)
 
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def faction_detail(request, campaign_id=None, faction_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    faction = get_object_or_404(Faction, id=faction_id)
+def faction_detail(request, campaign_slug=None, faction_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    faction = get_object_or_404(Faction, slug=faction_slug)
 
     context = {
         'campaign': campaign,
@@ -270,8 +270,8 @@ def faction_detail(request, campaign_id=None, faction_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def item_list(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def item_list(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     items = Item.objects.filter(
         campaign = campaign
@@ -286,18 +286,18 @@ def item_list(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def new_item(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    item = Item(campaign_id = campaign_id)
+def new_item(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    item = Item(campaign_id = campaign.id)
 
     form = ItemEntryForm(request.POST or None, request.FILES or None, instance=item)
 
     if form.is_valid():
         item = form.save(commit=False)
-        item.campaign_id = campaign_id
+        item.campaign_id = campaign.id
         item.save()
 
-        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_id': campaign.id, 'item_id': item.id}))
+        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_slug': campaign.slug, 'item_slug': item.slug}))
 
     context = {
         'campaign': campaign,
@@ -309,9 +309,9 @@ def new_item(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def item_edit(request, campaign_id=None, item_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    item = get_object_or_404(Item, id=item_id)
+def item_edit(request, campaign_slug=None, item_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    item = get_object_or_404(Item, slug=item_slug)
 
     form = ItemEntryForm(request.POST or None, request.FILES or None, instance=item)
 
@@ -324,16 +324,16 @@ def item_edit(request, campaign_id=None, item_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_id': campaign.id, 'item_id': item.id}))
+        return HttpResponseRedirect(reverse('campaign:item_detail', kwargs={'campaign_slug': campaign.slug, 'item_slug': item.slug}))
 
     return render(request, 'campaign/item_form.html', context)
 
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def item_detail(request, campaign_id=None, item_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    item = get_object_or_404(Item, id=item_id)
+def item_detail(request, campaign_slug=None, item_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    item = get_object_or_404(Item, slug=item_slug)
 
     context = {
         'campaign': campaign,
@@ -345,8 +345,8 @@ def item_detail(request, campaign_id=None, item_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def location_list(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def location_list(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     locations = Location.objects.filter(
         campaign = campaign
@@ -362,18 +362,18 @@ def location_list(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def new_location(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    location = Location(campaign_id = campaign_id)
+def new_location(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    location = Location(campaign_id = campaign.id)
 
     form = LocationEntryForm(request.POST or None, request.FILES or None, instance=location)
 
     if form.is_valid():
         location = form.save(commit=False)
-        location.campaign_id = campaign_id
+        location.campaign_id = campaign.id
         location.save()
 
-        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_id': campaign.id, 'location_id': location.id}))
+        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_slug': campaign.slug, 'location_slug': location.slug}))
 
     context = {
         'campaign': campaign,
@@ -385,9 +385,9 @@ def new_location(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def location_edit(request, campaign_id=None, location_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    location = get_object_or_404(Location, id=location_id)
+def location_edit(request, campaign_slug=None, location_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    location = get_object_or_404(Location, slug=location_slug)
 
     form = LocationEntryForm(request.POST or None, request.FILES or None, instance=location)
 
@@ -400,16 +400,16 @@ def location_edit(request, campaign_id=None, location_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_id': campaign.id, 'location_id': location.id}))
+        return HttpResponseRedirect(reverse('campaign:location_detail', kwargs={'campaign_slug': campaign.slug, 'location_slug': location.slug}))
 
     return render(request, 'campaign/location_form.html', context)
 
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def location_detail(request, campaign_id=None, location_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    location = get_object_or_404(Location, id=location_id)
+def location_detail(request, campaign_slug=None, location_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    location = get_object_or_404(Location, slug=location_slug)
 
     context = {
         'campaign': campaign,
@@ -421,8 +421,8 @@ def location_detail(request, campaign_id=None, location_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def log_list(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
+def log_list(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
     logs = Log.objects.filter(
         campaign=campaign
@@ -438,18 +438,18 @@ def log_list(request, campaign_id=None):
 
 @utils.login_required
 @utils.is_gm
-def new_log(request, campaign_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    log = Log(campaign_id = campaign_id)
+def new_log(request, campaign_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    log = Log(campaign_id = campaign.id)
 
     form = LogEntryForm(request.POST or None, request.FILES or None, instance=log)
 
     if form.is_valid():
         log = form.save(commit=False)
-        log.campaign_id = campaign_id
+        log.campaign_id = campaign.id
         log.save()
 
-        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_id': campaign.id, 'log_id': log.id}))
+        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_slug': campaign.slug, 'log_slug': log.slug}))
 
     context = {
         'campaign': campaign,
@@ -461,10 +461,9 @@ def new_log(request, campaign_id=None):
 
 @utils.login_required_if_private
 @utils.is_player_if_private
-def log_detail(request, campaign_id=None, log_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    log = get_object_or_404(Log, id=log_id)
-
+def log_detail(request, campaign_slug=None, log_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    log = get_object_or_404(Log, slug=log_slug)
     context = {
         'campaign': campaign,
         'log': log
@@ -475,9 +474,9 @@ def log_detail(request, campaign_id=None, log_id=None):
 
 @utils.login_required
 @utils.is_gm
-def log_edit(request, campaign_id=None, log_id=None):
-    campaign = get_object_or_404(Campaign, id=campaign_id)
-    log = get_object_or_404(Log, id=log_id)
+def log_edit(request, campaign_slug=None, log_slug=None):
+    campaign = get_object_or_404(Campaign, slug=campaign_slug)
+    log = get_object_or_404(Log, slug=log_slug)
 
     form = LogEntryForm(request.POST or None, request.FILES or None, instance=log)
 
@@ -490,6 +489,6 @@ def log_edit(request, campaign_id=None, log_id=None):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_id': campaign.id, 'log_id': log.id}))
+        return HttpResponseRedirect(reverse('campaign:log_detail', kwargs={'campaign_slug': campaign.slug, 'log_slug': log.slug}))
 
     return render(request, 'campaign/log_form.html', context)

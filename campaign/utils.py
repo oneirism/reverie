@@ -6,7 +6,7 @@ from .models import Campaign, Character
 
 def login_required_if_private(func):
     def wrap(request, *args, **kwargs):
-        campaign = Campaign.objects.get(id=kwargs['campaign_id'])
+        campaign = Campaign.objects.get(slug=kwargs['campaign_slug'])
 
         if campaign.public:
             return func(request, *args, **kwargs)
@@ -17,7 +17,7 @@ def login_required_if_private(func):
 
 def is_gm(func):
     def check_and_call(request, *args, **kwargs):
-        campaign = Campaign.objects.get(id=kwargs['campaign_id'])
+        campaign = Campaign.objects.get(slug=kwargs['campaign_slug'])
 
         if not (request.user.id == campaign.game_master_id):
             return HttpResponse("Unauthorised", status=403)
@@ -28,8 +28,8 @@ def is_gm(func):
 
 def can_edit_character(func):
     def wrap(request, *args, **kwargs):
-        campaign = Campaign.objects.get(id=kwargs['campaign_id'])
-        character = Character.objects.get(id=kwargs['character_id'])
+        campaign = Campaign.objects.get(slug=kwargs['campaign_slug'])
+        character = Character.objects.get(slug=kwargs['character_slug'])
 
         if not (request.user == character.player or request.user == campaign.game_master):
             return HttpResponse("Unauthorised", status=403)
@@ -40,7 +40,7 @@ def can_edit_character(func):
 
 def is_player_if_private(func):
     def wrap(request, *args, **kwargs):
-        campaign = Campaign.objects.get(id=kwargs['campaign_id'])
+        campaign = Campaign.objects.get(slug=kwargs['campaign_slug'])
 
         if campaign.public:
             return func(request, *args, **kwargs)

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% load cropping %}
-{% load markdown_deux_tags %}
 
 {% block title %}
   {{ campaign.name }}
@@ -9,18 +8,18 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:log_list' campaign.id %}">
+    <a href="{% url 'campaign:log_list' campaign.slug %}">
       Campaign Log
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:log_detail' campaign.id log.id %}">
-      {{ log.title }}
+    <a href="{% url 'campaign:log_detail' campaign.slug log.slug %}">
+      {{ log.name }}
     </a>
   </li>
 {% endblock %}
@@ -31,7 +30,7 @@
       <div class="is-pulled-right">
         <p>
           GM Controls -
-          <a href="{% url 'campaign:log_edit' campaign.id log.id %}">
+          <a href="{% url 'campaign:log_edit' campaign.slug log.slug %}">
             Edit
           </a>
         </p>
@@ -49,7 +48,7 @@
     {% endif %}
     <div class="hero-body is-small">
       <div class="container">
-        <h1 class="title">{{ log.title }}</h1>
+        <h1 class="title">{{ log.name }}</h1>
         <h2 class="subtitle">{{ log.date }}</h2>
       </div>
     </div>
@@ -59,7 +58,7 @@
     <div class="columns has-text-centered is-centered">
       <div class="column is-three-fifths">
         <div class="content">
-          {{ log.description | markdown }}
+          {{ log.formatted_description | safe }}
         </div>
       </div>
     </div>

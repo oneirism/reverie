@@ -1,9 +1,9 @@
 import json
 
-from django.test import TestCase
-
 from campaign.models import Campaign
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
+from django.test import TestCase
 from django.urls import reverse
 
 GM_USER = 'gm'
@@ -47,10 +47,9 @@ class CampaignOwnershipTest(TestCase):
 
         response = self.client.post(reverse('campaign:campaign_entry'), form_data)
         campaign = Campaign.objects.get(name=name)
-        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_id': campaign.id}))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(campaign.name)}))
 
         self.client.logout()
-
 
         return campaign
 
@@ -91,7 +90,8 @@ class CampaignOwnershipTest(TestCase):
             password=TEST_PASSWORD,
         )
 
-        response = self.client.get(reverse('campaign:campaign_detail', args=[1]))
+        # FIXME(devenney): This smells.
+        response = self.client.get(reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGNS[0].get("name"))}))
 
         self.assertEqual(response.status_code, 403)
 
@@ -101,7 +101,8 @@ class CampaignOwnershipTest(TestCase):
             password=TEST_PASSWORD,
         )
 
-        response = self.client.get(reverse('campaign:campaign_detail', args=[2]))
+        # FIXME(devenney): This smells.
+        response = self.client.get(reverse('campaign:campaign_detail', kwargs={'campaign_slug': slugify(TEST_CAMPAIGNS[1].get("name"))}))
 
         self.assertEqual(response.status_code, 200)
 
@@ -121,9 +122,9 @@ class CampaignOwnershipTest(TestCase):
             password=TEST_PASSWORD,
         )
 
-        response = self.client.post(reverse('campaign:campaign_edit', args=[1]), form_data)
+        response = self.client.post(reverse('campaign:campaign_edit', kwargs={"campaign_slug": campaign.slug}), form_data)
 
-        self.assertRedirects(response, reverse('campaign:campaign_detail', args=[campaign.id]))
+        self.assertRedirects(response, reverse('campaign:campaign_detail', kwargs={"campaign_slug": slugify(campaign.name)}))
 
         new_campaign = Campaign.objects.get(id=1)
         self.assertEqual(new_campaign.name, 'New Name')
@@ -144,7 +145,7 @@ class CampaignOwnershipTest(TestCase):
             password=TEST_PASSWORD,
         )
 
-        response = self.client.post(reverse('campaign:campaign_edit', args=[1]), form_data)
+        response = self.client.post(reverse('campaign:campaign_edit', kwargs={"campaign_slug": campaign.slug}), form_data)
 
         self.assertEqual(response.status_code, 403)
 
@@ -162,10 +163,10 @@ class CampaignOwnershipTest(TestCase):
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.get(reverse('campaign:campaign_edit', args=[campaign.id]))
+        response = self.client.get(reverse('campaign:campaign_edit', args=[slugify(campaign.name)]))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('campaign:campaign_detail', args=[campaign.id]))
+        response = self.client.get(reverse('campaign:campaign_detail', args=[slugify(campaign.name)]))
         self.assertEqual(response.status_code, 200)
 
     def test_player_autocomplete(self):

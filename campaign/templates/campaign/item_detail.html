@@ -9,17 +9,17 @@
 
 {% block breadcrumbs %}
   <li>
-    <a href="{% url 'campaign:campaign_detail' campaign.id %}">
+    <a href="{% url 'campaign:campaign_detail' campaign.slug %}">
       {{ campaign.name }}
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:item_list' campaign.id %}">
+    <a href="{% url 'campaign:item_list' campaign.slug %}">
       Items
     </a>
   </li>
   <li>
-    <a href="{% url 'campaign:item_detail' campaign.id item.id %}">
+    <a href="{% url 'campaign:item_detail' campaign.slug item.slug %}">
       {{ item.name }}
     </a>
   </li>
@@ -36,7 +36,7 @@
             Player
           {% endif %}
           Controls -
-          <a href="{% url 'campaign:item_edit' campaign.id item.id %}">
+          <a href="{% url 'campaign:item_edit' campaign.slug item.slug %}">
             Edit
           </a>
         </p>
@@ -66,7 +66,7 @@
     <div class="columns has-text-centered is-centered">
       <div class="column is-three-fifths">
         <div class="content">
-          {{ item.description | markdown }}
+          {{ item.formatted_description | safe }}
         </div>
       </div>
     </div>

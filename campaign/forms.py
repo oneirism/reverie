@@ -7,8 +7,8 @@ from django.forms import widgets
 from image_cropping import ImageCropWidget
 from markdownx.fields import MarkdownxFormField
 
-from reverie.widgets import ReverieMarkdownWidget
 from .models import Campaign, Character, Faction, Item, Location, Log
+from reverie.widgets import ReverieMarkdownWidget
 
 
 class BulmaDateInput(widgets.DateInput):
@@ -118,7 +118,7 @@ class LogEntryForm(forms.ModelForm):
     class Meta:
         model = Log
 
-        fields = ['title', 'date', 'image', 'cropping', 'description']
+        fields = ['name', 'date', 'image', 'cropping', 'description']
 
         widgets = {
             'image': ImageCropWidget,

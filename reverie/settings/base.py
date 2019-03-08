@@ -169,4 +169,11 @@ MARKDOWNX_MARKDOWNIFY_FUNCTION = 'reverie.utils.markdownify'
 MARKDOWN_EXTENSIONS = {}
 MARKDOWN_EXTENSION_CONFIGS = {}
 
+MARKDOWN_DEUX_STYLES = { 'default': {
+    "extras": {
+        "code-friendly": None,
+    },
+    "safe_mode": False, # << here's the change
+}}
+
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
