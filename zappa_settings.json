@@ -40,8 +40,8 @@
     },
     "prod": {
         "aws_region": "eu-west-1",
-        "domain": "preprod.reverie.devenney.io",
-        "certificate_arn": "arn:aws:acm:us-east-1:212595788859:certificate/20a1f920-3ee1-457e-b2e6-418e4b01e8a3",
+        "domain": "reverie.oneirism.co",
+        "certificate_arn": "arn:aws:acm:us-east-1:212595788859:certificate/f460bc3e-799d-4c76-ad19-7a5adb83d995",
         "debug": false,
         "route53_enabled": true,
         "project_name": "reverie",

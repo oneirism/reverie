@@ -16,7 +16,7 @@ Create a superuser account from the Django container:
 
 ```shell
 docker exec -it $(docker ps -f "name=reverie_reverie" -q) /bin/sh
-[/code #] pipenv run python manage.py createsuperuser --settings reverie.settings.docker
+[/code] pipenv run python manage.py createsuperuser --settings reverie.settings.docker
 ```
 
 Try logging in at http://reverie.docker.localhost:8000/account/login
@@ -27,3 +27,12 @@ Create a production settings file named `reverie/settings/prod.py` and configure
 
 1. `EMAIL_BACKEND` - [Documentation](https://docs.djangoproject.com/en/2.0/topics/email/#topic-email-backends)
 1. `TWO_FACTOR_SMS_GATEWAY` - [Documentation](http://django-two-factor-auth.readthedocs.io/en/stable/configuration.html#twilio-gateway)
+
+## Deployment
+
+```shell
+zappa deploy prod
+zappa manage prod migrate
+zappa certify prod
+zappa invoke --raw prod "from django.contrib.auth.models import User; User.objects.create_superuser('username', 'email@domain.tld', 'password')" ;
+```
