@@ -41,11 +41,28 @@
 
   <section class="section">
       <h2 class="subtitle">
-        Characters
+        Player Characters
       </h2>
       <div>
-        {% if characters %}
-          {% for character in characters %}
+        {% if player_characters %}
+          {% for character in player_characters %}
+            <a href="{% url 'campaign:character_detail' campaign.slug character.slug %}">
+              <p>{{ character.name }}</p>
+            </a>
+          {% endfor %}
+        {% else %}
+          <h2 style="subtitle">No characters are available.</h2>
+        {% endif %}
+      </div>
+  </section>
+
+  <section class="section">
+      <h2 class="subtitle">
+        Non-Player Characters
+      </h2>
+      <div>
+        {% if non_player_characters %}
+          {% for character in non_player_characters %}
             <a href="{% url 'campaign:character_detail' campaign.slug character.slug %}">
               <p>{{ character.name }}</p>
             </a>

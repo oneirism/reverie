@@ -51,6 +51,9 @@ class CharacterEntryForm(forms.ModelForm):
             empty_label="----",
         )
 
+        self.fields['is_pc'].label = "Is Player Character"
+        self.fields['slug'].label = "Slug Override (Optional)"
+
     description = MarkdownxFormField(
         widget=ReverieMarkdownWidget()
     )
@@ -58,7 +61,7 @@ class CharacterEntryForm(forms.ModelForm):
     class Meta:
         model = Character
 
-        fields = ['name', 'tagline', 'image', 'cropping', 'description', 'player']
+        fields = ['name', 'tagline', 'image', 'cropping', 'description', 'player', 'is_pc', 'slug']
 
         widgets = {
             'image': ImageCropWidget,

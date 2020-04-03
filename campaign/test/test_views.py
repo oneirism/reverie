@@ -24,12 +24,22 @@ TEST_CAMPAIGN = {
     'public': True,
 }
 
-TEST_CHARACTER = {
-    'name': 'Test Character',
+TEST_PLAYER_CHARACTER = {
+    'name': 'Test Player Character',
     'tagline': 'Test Tagline',
     'description': 'Test Description',
     'player': TEST_USERS.index(PLAYER_USER),
     'campaign_slug': 1,
+    'is_pc': True,
+}
+
+TEST_NON_PLAYER_CHARACTER = {
+    'name': 'Test Non-Player Character',
+    'tagline': 'Test Tagline',
+    'description': 'Test Description',
+    'player': TEST_USERS.index(PLAYER_USER),
+    'campaign_slug': 1,
+    'is_pc': False,
 }
 
 TEST_FACTION = {
@@ -123,13 +133,18 @@ class CharacterViewTest(TestCase):
         self.campaign = Campaign.objects.get(name = 'Public Campaign')
 
         # Create Characters
-        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_CHARACTER)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(TEST_CHARACTER.get("name"))}))
-        self.character = Character.objects.get(name = 'Test Character')
+        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_PLAYER_CHARACTER)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(TEST_PLAYER_CHARACTER.get("name"))}))
+        self.player_character = Character.objects.get(name = 'Test Player Character')
+
+        response = self.client.post(reverse('campaign:character_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), TEST_NON_PLAYER_CHARACTER)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(TEST_NON_PLAYER_CHARACTER.get("name"))}))
+        self.non_player_character = Character.objects.get(name = 'Test Non-Player Character')
 
         # Ensure character is visible
         response = self.client.get(reverse('campaign:character_list', kwargs={'campaign_slug': slugify(self.campaign.name)}))
-        self.assertContains(response, 'Test Character', status_code=200)
+        self.assertContains(response, 'Test Player Character', status_code=200)
+        self.assertContains(response, 'Test Non-Player Character', status_code=200)
 
         # Logout
         self.client.logout()
@@ -151,35 +166,16 @@ class CharacterViewTest(TestCase):
 
         self.client.logout()
 
-    def test_invalid_edit_character(self):
-        bad_character_form = {
-            'tagline': 'Test tagline.',
-            'description': 'Test description',
-            'player': TEST_USERS.index(PLAYER_USER),
-        }
-
-        self.client.login(username=GM_USER, password=TEST_PASSWORD)
-
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), bad_character_form)
-        self.assertEqual(response.status_code, 200)
-
-        character = Character.objects.get(slug=slugify(self.character.name))
-
-        self.assertEqual(character.tagline, 'New tagline!')
-
-        self.client.logout()
-
-
     def test_gm_edit_character(self):
-        new_character = TEST_CHARACTER
+        new_character = TEST_NON_PLAYER_CHARACTER
         new_character['tagline'] = 'New tagline!'
 
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}))
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.non_player_character.name)}), new_character)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.non_player_character.name)}))
 
-        character = Character.objects.get(slug=slugify(self.character.name))
+        character = Character.objects.get(slug=slugify(self.non_player_character.name))
 
         self.assertEqual(character.tagline, 'New tagline!')
 
@@ -187,15 +183,15 @@ class CharacterViewTest(TestCase):
 
 
     def test_player_edit_character(self):
-        new_character = TEST_CHARACTER
+        new_character = TEST_PLAYER_CHARACTER
         new_character['tagline'] = 'New tagline!'
 
         self.client.login(username=PLAYER_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
-        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}))
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.player_character.name)}), new_character)
+        self.assertRedirects(response, reverse('campaign:character_detail', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.player_character.name)}))
 
-        character = Character.objects.get(slug=slugify(self.character.name))
+        character = Character.objects.get(slug=slugify(self.player_character.name))
 
         self.assertEqual(character.tagline, 'New tagline!')
 
@@ -203,12 +199,12 @@ class CharacterViewTest(TestCase):
 
 
     def test_not_player_edit_character(self):
-        new_character = TEST_CHARACTER
+        new_character = TEST_PLAYER_CHARACTER
         new_character['tagline'] = 'New tagline!'
 
         self.client.login(username=NOT_PLAYER_USER, password=TEST_PASSWORD)
 
-        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.character.name)}), new_character)
+        response = self.client.post(reverse('campaign:character_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'character_slug': slugify(self.player_character.name)}), new_character)
         self.assertEqual(response.status_code, 403)
 
         self.client.logout()
@@ -258,23 +254,6 @@ class FactionViewTest(TestCase):
 
         response = self.client.post(reverse('campaign:faction_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_faction_form)
         self.assertEqual(response.status_code, 200)
-
-        self.client.logout()
-
-    def test_invalid_edit_faction(self):
-        bad_faction_form = {
-            'tagline': 'Test tagline.',
-            'description': 'Test description',
-        }
-
-        self.client.login(username=GM_USER, password=TEST_PASSWORD)
-
-        response = self.client.post(reverse('campaign:faction_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'faction_slug': slugify(self.faction.name)}), bad_faction_form)
-        self.assertEqual(response.status_code, 200)
-
-        faction = Faction.objects.get(slug=slugify(self.faction.name))
-
-        self.assertEqual(faction.tagline, 'New tagline!')
 
         self.client.logout()
 
@@ -339,23 +318,6 @@ class ItemViewTest(TestCase):
 
         response = self.client.post(reverse('campaign:item_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_item_form)
         self.assertEqual(response.status_code, 200)
-
-        self.client.logout()
-
-    def test_invalid_edit_item(self):
-        bad_item_form = {
-            'tagline': 'Test tagline.',
-            'description': 'Test description',
-        }
-
-        self.client.login(username=GM_USER, password=TEST_PASSWORD)
-
-        response = self.client.post(reverse('campaign:item_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'item_slug': slugify(self.item.name)}), bad_item_form)
-        self.assertEqual(response.status_code, 200)
-
-        item = Item.objects.get(slug=slugify(self.item.name))
-
-        self.assertEqual(item.tagline, 'New tagline!')
 
         self.client.logout()
 
@@ -424,23 +386,6 @@ class LocationViewTest(TestCase):
 
         self.client.logout()
 
-    def test_invalid_edit_location(self):
-        bad_location_form = {
-            'tagline': 'Test tagline.',
-            'description': 'Test description',
-        }
-
-        self.client.login(username=GM_USER, password=TEST_PASSWORD)
-
-        response = self.client.post(reverse('campaign:location_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'location_slug': slugify(self.location.name)}), bad_location_form)
-        self.assertEqual(response.status_code, 200)
-
-        location = Location.objects.get(slug=slugify(self.location.name))
-
-        self.assertEqual(location.tagline, 'New tagline!')
-
-        self.client.logout()
-
 
     def test_edit_location(self):
         new_location = TEST_LOCATION
@@ -500,19 +445,6 @@ class LogViewTest(TestCase):
         self.client.login(username=GM_USER, password=TEST_PASSWORD)
 
         response = self.client.post(reverse('campaign:log_entry', kwargs={'campaign_slug': slugify(self.campaign.name)}), bad_log_form)
-        self.assertEqual(response.status_code, 200)
-
-        self.client.logout()
-
-    def test_invalid_edit_log(self):
-        bad_log_form = {
-            'tagline': 'Test tagline.',
-            'description': 'Test description',
-        }
-
-        self.client.login(username=GM_USER, password=TEST_PASSWORD)
-
-        response = self.client.post(reverse('campaign:log_edit', kwargs={'campaign_slug': slugify(self.campaign.name), 'log_slug': slugify(self.log.name)}), bad_log_form)
         self.assertEqual(response.status_code, 200)
 
         self.client.logout()

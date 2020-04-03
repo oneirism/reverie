@@ -69,12 +69,17 @@ class Campaign(models.Model):
 class Character(models.Model):
     """ A Reverie campaign character. """
     slug = models.SlugField(
+        blank=True,
         unique=True
     )
 
     name = models.CharField(
         unique=True,
         max_length=50,
+    )
+
+    is_pc = models.BooleanField(
+        default=False,
     )
 
     tagline = models.CharField(
