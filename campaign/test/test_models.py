@@ -15,8 +15,14 @@ class CampaignTest(TestCase):
 
         name = "Test Campaign"
 
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        self.gm = User.objects.create_user(**gm)
+
         campaign = {
-            'game_master_id': 1,
+            'game_master_id': self.gm.id,
             'name': name,
             'description': 'Test description.',
         }
@@ -42,9 +48,10 @@ class CampaignTest(TestCase):
         """ Test Campaign player addition. """
         campaign = self.campaign
 
-        campaign.players.add(1)
+        campaign.players.add(self.player.id)
+        campaign.players.add(self.gm.id)
 
-        self.assertQuerysetEqual(campaign.players.all(), [self.player], transform=lambda x: x)
+        self.assertQuerysetEqual(campaign.players.all().order_by("username"), [self.gm, self.player], transform=lambda x: x)
 
 
 class CharacterTest(TestCase):
@@ -54,11 +61,32 @@ class CharacterTest(TestCase):
 
     """
     def setUp(self):
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+
+        player = {
+            'username': 'testplayer',
+            'password': 'testpw',
+        }
+
+        self.gm = User.objects.create_user(**gm)
+        self.player = User.objects.create_user(**player)
+
+        campaign = {
+            'game_master_id': self.gm.id,
+            'name': 'Test Campaign',
+            'description': 'Test description.',
+        }
+
+        self.campaign = Campaign.objects.create(**campaign)
+
         self.character_raw = {
             'name': 'Test Character',
             'tagline': 'Test tagline.',
-            'player_id': 1,
-            'campaign_id': 1,
+            'player_id': self.player.id,
+            'campaign_id': self.campaign.id,
         }
 
         self.character = Character.objects.create(**self.character_raw)
@@ -82,10 +110,24 @@ class CharacterTest(TestCase):
 class FactionTest(TestCase):
     """ Test cases related to the Faction model. """
     def setUp(self):
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        self.gm = User.objects.create_user(**gm)
+
+        campaign = {
+            'game_master_id': self.gm.id,
+            'name': 'Test Campaign',
+            'description': 'Test description.',
+        }
+
+        self.campaign = Campaign.objects.create(**campaign)
+
         self.faction_raw = {
             'name': 'Test Faction',
             'tagline': 'Test tagline.',
-            'campaign_id': 1,
+            'campaign_id': self.campaign.id,
         }
 
         self.faction = Faction.objects.create(**self.faction_raw)
@@ -109,9 +151,23 @@ class FactionTest(TestCase):
 class ItemTest(TestCase):
     """ Test cases related to the Item model. """
     def setUp(self):
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        self.gm = User.objects.create_user(**gm)
+
+        campaign = {
+            'game_master_id': self.gm.id,
+            'name': 'Test Campaign',
+            'description': 'Test description.',
+        }
+
+        self.campaign = Campaign.objects.create(**campaign)
+
         self.item_raw = {
             'name': 'Test Item',
-            'campaign_id': 1,
+            'campaign_id': self.campaign.id,
         }
 
         self.item = Item.objects.create(**self.item_raw)
@@ -135,9 +191,23 @@ class ItemTest(TestCase):
 class LocationTest(TestCase):
     """ Test cases related to the Location model. """
     def setUp(self):
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        self.gm = User.objects.create_user(**gm)
+
+        campaign = {
+            'game_master_id': self.gm.id,
+            'name': 'Test Campaign',
+            'description': 'Test description.',
+        }
+
+        self.campaign = Campaign.objects.create(**campaign)
+
         self.location_raw = {
             'name': 'Test Location',
-            'campaign_id': 1,
+            'campaign_id': self.campaign.id,
         }
 
         self.location = Location.objects.create(**self.location_raw)
@@ -161,11 +231,25 @@ class LocationTest(TestCase):
 class LogTest(TestCase):
     """ Test cases related to the Log model. """
     def setUp(self):
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        self.gm = User.objects.create_user(**gm)
+
+        campaign = {
+            'game_master_id': self.gm.id,
+            'name': 'Test Campaign',
+            'description': 'Test description.',
+        }
+
+        self.campaign = Campaign.objects.create(**campaign)
+
         self.log_raw = {
             'name': 'Test Log',
             'description': 'Test Description',
             'date': datetime(2010, 9, 12),
-            'campaign_id': 1,
+            'campaign_id': self.campaign.id,
         }
 
         self.log = Log.objects.create(**self.log_raw)

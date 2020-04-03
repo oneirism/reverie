@@ -1,12 +1,15 @@
 from campaign.models import Campaign, Character
 from reverie.utils import markdownify
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 class UtilsTest(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user('test_user', 'user@test.com', 'test_password')
+
         campaign = {
-            'game_master_id': 1,
+            'game_master_id': self.user.id,
             'name': 'Test Campaign',
             'description': 'Test Description',
             'public': True
