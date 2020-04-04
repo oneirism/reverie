@@ -6,7 +6,7 @@
     "bulma-timeline": "^3.0.0",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-mjml": "^3.0.0",
     "jquery": "^3.3.1",
     "node-sass": "^4.10.0",
@@ -22,5 +22,7 @@
     "build": "gulp",
     "test": "python manage.py test"
   },
-  "dependencies": {}
+  "dependencies": {
+    "del": "^5.1.0"
+  }
 }

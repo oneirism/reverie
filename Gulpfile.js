@@ -1,11 +1,20 @@
+const del = require('del');
 const gulp = require('gulp');
-
 const mjml = require('gulp-mjml');
 
-gulp.task('emails', function() {
+function clean() {
+  return del([ 'dist' ]);
+}
+
+function emails() {
   return gulp.src('./assets/src/mjml/*.mjml')
     .pipe(mjml())
     .pipe(gulp.dest('./templates/email/'))
-});
+}
 
-gulp.task('default', ['emails']);
+var build = gulp.series(clean, emails)
+
+exports.clean = clean;
+exports.emails = emails;
+
+exports.default = build;
