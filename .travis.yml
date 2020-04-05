@@ -3,7 +3,7 @@ cache:
   - "pip"
   - "yarn"
 python:
-  - "3.6"
+  - "3.8"
 install:
   # Purge virtualenv
   - "pip freeze | xargs pip uninstall -y"

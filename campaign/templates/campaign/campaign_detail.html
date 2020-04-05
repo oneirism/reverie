@@ -65,7 +65,7 @@
         <div>
           <p class="title">
             <a href="{% url 'campaign:character_list' campaign.slug %}">
-              Characters
+              {{ characters.count }} Characters
             </a>
           </p>
         </div>
@@ -74,7 +74,7 @@
         <div>
           <p class="title">
             <a href="{% url 'campaign:faction_list' campaign.slug %}">
-              Factions
+              {{ factions.count }} Factions
             </a>
           </p>
         </div>
@@ -83,7 +83,7 @@
         <div>
           <p class="title">
             <a href="{% url 'campaign:item_list' campaign.slug %}">
-              Items
+              {{ items.count }} Items
             </a>
           </p>
         </div>
@@ -92,7 +92,7 @@
         <div>
           <p class="title">
             <a href="{% url 'campaign:location_list' campaign.slug %}">
-              Locations
+              {{ locations.count }} Locations
             </a>
           </p>
         </div>

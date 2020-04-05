@@ -112,9 +112,24 @@ def campaign_detail(request, campaign_slug=None):
         campaign = campaign
     )
 
+    factions = Faction.objects.filter(
+        campaign = campaign
+    )
+
+    items = Item.objects.filter(
+        campaign = campaign
+    )
+
+    locations = Location.objects.filter(
+        campaign = campaign
+    )
+
     context = {
         'campaign': campaign,
-        'characters': characters
+        'characters': characters,
+        'factions': factions,
+        'items': items,
+        'locations': locations
     }
 
     return render(request, 'campaign/campaign_detail.html', context)
@@ -125,13 +140,22 @@ def campaign_detail(request, campaign_slug=None):
 def character_list(request, campaign_slug=None):
     campaign = get_object_or_404(Campaign, slug=campaign_slug)
 
-    characters = Character.objects.filter(
+    player_characters = Character.objects.filter(
         campaign = campaign
-    )
+    ).filter(
+        is_pc = True
+    ).order_by('name')
+
+    non_player_characters = Character.objects.filter(
+        campaign = campaign
+    ).filter(
+        is_pc = False
+    ).order_by('name')
 
     context = {
         'campaign': campaign,
-        'characters': characters,
+        'player_characters': player_characters,
+        'non_player_characters': non_player_characters,
     }
 
     return render(request, 'campaign/character_list.html', context)

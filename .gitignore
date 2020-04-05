@@ -29,7 +29,6 @@ assets/dist/**
 templates/email/**
 
 ### Django ###
-**/migrations
 **/static
 
 ### Node.js ###

@@ -17,6 +17,7 @@ if __name__ == "__main__":
     is_testing = 'test' in sys.argv
 
     if is_testing:
+        print("Importing coverage for testing...")
         import coverage
         cov = coverage.coverage(
             source=['account', 'campaign', 'reverie', 'splash'],

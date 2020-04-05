@@ -1,4 +1,5 @@
 from django.contrib.admin.sites import AdminSite
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 from campaign.admin import CampaignAdmin
@@ -9,8 +10,14 @@ class CampaignAdminTest(TestCase):
     def test_admin_model(self):
         name = "Test Campaign"
 
+        gm = {
+            'username': 'testgm',
+            'password': 'testpw',
+        }
+        gm = User.objects.create_user(**gm)
+
         campaign = {
-            'game_master_id': 1,
+            'game_master_id': gm.id,
             'name': name,
             'description': 'Test description.',
         }
