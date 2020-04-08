@@ -225,7 +225,8 @@ def faction_list(request, campaign_slug=None):
 
     factions = Faction.objects.filter(
         campaign = campaign
-    )
+    ).order_by('name')
+
 
     context = {
         'campaign': campaign,

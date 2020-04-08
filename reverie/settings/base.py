@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
     'django_select2',
+    'django_s3_sqlite',
     'django_tables2',
     'easy_thumbnails',
     'image_cropping',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'two_factor',
     'webpack_loader',
     'widget_tweaks',
-    'zappa_django_utils',
 
     # Django Contrib
     'django.contrib.admin',

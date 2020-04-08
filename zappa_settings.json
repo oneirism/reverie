@@ -49,6 +49,7 @@
         "exclude": [".coverage", "assets", "db.sqlite3", "htmlcov", "media", "node_modules", "static"],
         "django_settings": "reverie.settings.prod",
         "s3_bucket": "zappa-reverie-prod",
+        "delete_s3_zip": false,
         "extra_permissions": [{
           "Effect": "Allow",
           "Resource": "*",
